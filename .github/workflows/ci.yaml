@@ -1,0 +1,27 @@
+name: Lint
+on: pull_request
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup node and npm
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Install dependencies
+        run: pnpm install --ignore-scripts --frozen-lockfile
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
+
+      - name: Lint
+        run: pnpm lint
