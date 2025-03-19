@@ -1,17 +1,22 @@
 {
   "name": "assets",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "build": "tsx index.ts"
-  },
-  "keywords": [],
   "author": "",
   "license": "ISC",
+  "keywords": [],
+  "main": "index.js",
+  "scripts": {
+    "build": "tsx index.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
   "devDependencies": {
+    "@nortic-ab/eslint-config": "^0.1.0",
     "@types/node": "22.13.1",
+    "eslint": "^9.22.0",
+    "eslint-plugin-format": "^1.0.1",
     "sharp": "0.33.5",
     "tsx": "4.19.2"
   }
