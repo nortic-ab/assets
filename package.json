@@ -1,18 +1,37 @@
 {
   "name": "assets",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "type": "module",
-  "scripts": {
-    "build": "tsx index.ts"
-  },
-  "keywords": [],
+  "version": "1.0.0",
+  "packageManager": "pnpm@9.9.0",
+  "description": "",
   "author": "",
   "license": "ISC",
+  "keywords": [],
+  "main": "index.js",
+  "scripts": {
+    "build": "tsx index.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prepare": "pnpx simple-git-hooks"
+  },
   "devDependencies": {
+    "@commitlint/config-conventional": "^19.8.0",
+    "@nortic-ab/commitlint-config": "^0.1.0",
+    "@nortic-ab/eslint-config": "^0.1.0",
     "@types/node": "22.13.1",
+    "commitlint": "^19.8.0",
+    "eslint": "^9.22.0",
+    "eslint-plugin-format": "^1.0.1",
+    "lint-staged": "^15.5.0",
     "sharp": "0.33.5",
+    "simple-git-hooks": "^2.11.1",
     "tsx": "4.19.2"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged",
+    "commit-msg": "pnpx commitlint --edit $1"
+  },
+  "lint-staged": {
+    "*": "eslint . --fix"
   }
 }
