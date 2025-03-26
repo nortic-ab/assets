@@ -1,0 +1,151 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "hello": "Hello",
+    "language": "Language",
+    "select": "Select",
+    "save": "Save",
+    "cancel": "Cancel",
+    "changes": "Changes",
+    "save_changes": "@:common.save @.lower:common.changes",
+    "hello_value": "@:hello {value}",
+    "select_language": "@:common.select @.lower:common.language",
+    "ticket": "no ticket | one ticket | {count} tickets"
+  },
+  "services": {
+    "insight": "Insight",
+    "lobby": "Lobby",
+    "eventsystem": "Event Manager",
+    "help-center": "Help"
+  },
+  "settings": {
+    "integrity": {
+      "title": "We Use Cookies",
+      "description": "We use cookies to enhance your experience on our website. You can choose which types of cookies you allow, including necessary and analytics cookies.",
+      "confirm_button": "Accept All",
+      "customize_button": "Customize",
+      "link": "More information about cookies and your choices",
+      "necessary": "Necessary",
+      "functional": "Functional",
+      "analytics": "Analytics",
+      "marketing": "Marketing",
+      "necessary_description": "Required for the website to function.",
+      "functional_description": "Enhances the functionality of the website.",
+      "analytics_description": "Used to collect information about how visitors use the website.",
+      "marketing_description": "Used to display ads that are relevant to you."
+    }
+  },
+  "validation": {
+    "zod": {
+      "errors": {
+        "required": "This field is required",
+        "invalid_type": "This field must be of type {expected}, received {received}",
+        "invalid_string": {
+          "email": "Invalid {validation}",
+          "time": "Invalid {validation}",
+          "url": "Invalid {validation}",
+          "date": "Invalid {validation}",
+          "datetime": "Invalid {validation}",
+          "regex": "Invalid value",
+          "endsWith": "Must end with {endsWith}",
+          "startsWith": "Must start with {startsWith}"
+        },
+        "too_small": {
+          "array": {
+            "exact": "Array must contain exactly {min} item",
+            "inclusive": "Array must contain at least {min} items",
+            "not_inclusive": "Array must contain more than {min} items"
+          },
+          "string": {
+            "exact": "String must contain exactly {min} character",
+            "inclusive": "String must contain at least {min} characters",
+            "not_inclusive": "String must contain more than {min} characters"
+          },
+          "number": {
+            "exact": "Number must be exactly {min}",
+            "inclusive": "Number must be at least {min}",
+            "not_inclusive": "Number must be more than {min}"
+          },
+          "bigint": {
+            "exact": "Number must be exactly {min}",
+            "inclusive": "Number must be at least {min}",
+            "not_inclusive": "Number must be less than {min}"
+          },
+          "date": {
+            "exact": "Date must be exactly {min}",
+            "inclusive": "Date must be {min} or later",
+            "not_inclusive": "Date must be later than {min}"
+          },
+          "set": {
+            "exact": "Set must contain exactly {min} items",
+            "inclusive": "Set must contain at least {min} items",
+            "not_inclusive": "Set must contain more than {min} items"
+          }
+        },
+        "too_big": {
+          "array": {
+            "exact": "Array must contain exactly {max} item",
+            "inclusive": "Array must contain at most {max} items",
+            "not_inclusive": "Array must contain less than {max} items"
+          },
+          "string": {
+            "exact": "String must contain exactly {max} character",
+            "inclusive": "String must contain at most {max} characters",
+            "not_inclusive": "String must contain less than {max} characters"
+          },
+          "number": {
+            "exact": "Number must be exactly {max}",
+            "inclusive": "Number must be at most {max}",
+            "not_inclusive": "Number must be less than {max}"
+          },
+          "bigint": {
+            "exact": "Number must be exactly {max}",
+            "inclusive": "Number must be at most {max}",
+            "not_inclusive": "Number must be less than {max}"
+          },
+          "date": {
+            "exact": "Date must be exactly {max}",
+            "inclusive": "Date must be {max} or earlier",
+            "not_inclusive": "Date must be earlier than {max}"
+          },
+          "set": {
+            "exact": "Set must contain exactly {max} items",
+            "inclusive": "Set must contain at most {max} items",
+            "not_inclusive": "Set must contain less than {max} items"
+          }
+        },
+        "invalid_literal": "Invalid value, expected {expected}",
+        "invalid_date": "Invalid date"
+      },
+      "validations": {
+        "email": "email",
+        "url": "url",
+        "date": "date",
+        "datetime": "date and/or time",
+        "time": "time"
+      },
+      "types": {
+        "function": "function",
+        "number": "number",
+        "string": "string",
+        "nan": "NaN",
+        "integer": "integer",
+        "float": "float",
+        "boolean": "boolean",
+        "date": "date",
+        "bigint": "bigint",
+        "undefined": "undefined",
+        "symbol": "symbol",
+        "null": "null",
+        "array": "array",
+        "object": "object",
+        "unknown": "unknown",
+        "promise": "promise",
+        "void": "void",
+        "never": "never",
+        "map": "map",
+        "set": "set"
+      }
+    }
+  }
+}
