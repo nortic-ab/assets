@@ -1,0 +1,151 @@
+{
+  "common": {
+    "welcome": "Välkommen",
+    "hello": "Hej",
+    "language": "Språk",
+    "select": "Välj",
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "changes": "Ändringar",
+    "save_changes": "@:common.save @.lower:common.changes",
+    "hello_value": "@:common.hello {value}",
+    "select_language": "@:common.select @.lower:common.language",
+    "ticket": "inga biljetter | en biljett | {count} biljetter"
+  },
+  "services": {
+    "insight": "Insight",
+    "lobby": "Lobby",
+    "eventsystem": "Event Manager",
+    "help-center": "Hjälp"
+  },
+  "settings": {
+    "integrity": {
+      "title": "Vi använder cookies",
+      "description": "Vi använder cookies för att förbättra din upplevelse på vår webbplats. Du kan välja vilka typer av cookies du tillåter, inklusive nödvändiga och analytiska cookies.",
+      "confirm_button": "Acceptera alla",
+      "customize_button": "Anpassa",
+      "link": "Mer information om cookies och dina valmöjligheter",
+      "necessary": "Nödvändiga",
+      "functional": "Funktionella",
+      "analytics": "Analys",
+      "marketing": "Marknadsföring",
+      "necessary_description": "Krävs för att webbplatsen ska fungera.",
+      "functional_description": "Förbättrar funktionaliteten på webbplatsen.",
+      "analytics_description": "Används för att samla in information om hur besökare använder webbplatsen.",
+      "marketing_description": "Används för att visa annonser som är relevanta för dig."
+    }
+  },
+  "validation": {
+    "zod": {
+      "errors": {
+        "required": "Fältet måste vara ifyllt",
+        "invalid_type": "Fältet måste vara av typen {expected}, tog emot {received}",
+        "invalid_string": {
+          "email": "Ogiltig {validation}",
+          "time": "Ogiltig {validation}",
+          "url": "Ogiltig {validation}",
+          "date": "Ogiltigt {validation}",
+          "datetime": "Ogiltigt {validation}",
+          "regex": "Ogiltigt värde",
+          "endsWith": "Måste sluta med {endsWith}",
+          "startsWith": "Måste börja med {startsWith}"
+        },
+        "too_small": {
+          "array": {
+            "exact": "Listan måste innehålla exakt {min} element",
+            "inclusive": "Listan måste innehålla minst {min} element",
+            "not_inclusive": "Listan måste innehålla fler än {min} element"
+          },
+          "string": {
+            "exact": "Texten måste innehålla exakt {min} tecken",
+            "inclusive": "Texten måste innehålla minst {min} tecken",
+            "not_inclusive": "Texten måste innehålla fler än {min} tecken"
+          },
+          "number": {
+            "exact": "Värdet måste vara exakt {min}",
+            "inclusive": "Värdet måste vara minst {min}",
+            "not_inclusive": "Värdet måste vara större än {min}"
+          },
+          "bigint": {
+            "exact": "Värdet måste vara exakt {min}",
+            "inclusive": "Värdet får vara högst {min}",
+            "not_inclusive": "Värdet måste vara mindre än {min}"
+          },
+          "date": {
+            "exact": "Datumet måste vara exakt {min}",
+            "inclusive": "Datumet måste vara {min} eller senare",
+            "not_inclusive": "Datumet måste vara senare än {min}"
+          },
+          "set": {
+            "exact": "Mängden måste vara exakt {min}",
+            "inclusive": "Mängden måste vara minst {min}",
+            "not_inclusive": "Mängden måste vara större än {min}"
+          }
+        },
+        "too_big": {
+          "array": {
+            "exact": "Listan måste innehålla exakt {max} element",
+            "inclusive": "Listan får innehålla högst {max} element",
+            "not_inclusive": "Listan måste innehålla färre än {max} element"
+          },
+          "string": {
+            "exact": "Texten måste innehålla exakt {max} tecken",
+            "inclusive": "Texten får innehålla högst {max} tecken",
+            "not_inclusive": "Texten måste innehålla färre än {max} tecken"
+          },
+          "number": {
+            "exact": "Värdet måste vara exakt {max}",
+            "inclusive": "Värdet får vara högst {max}",
+            "not_inclusive": "Värdet måste vara mindre än {max}"
+          },
+          "bigint": {
+            "exact": "Värdet måste vara exakt {max}",
+            "inclusive": "Värdet får vara högst {max}",
+            "not_inclusive": "Värdet måste vara mindre än {max}"
+          },
+          "date": {
+            "exact": "Datumet måste vara exakt {max}",
+            "inclusive": "Datumet måste vara {max} eller tidigare",
+            "not_inclusive": "Datumet måste vara tidigare än {max}"
+          },
+          "set": {
+            "exact": "Mängden måste vara exakt {max}",
+            "inclusive": "Mängden får vara högst {max}",
+            "not_inclusive": "Mängden måste vara mindre än {max}"
+          }
+        },
+        "invalid_literal": "Ogiltigt värde, förväntade {expected}",
+        "invalid_date": "Ogiltigt datum"
+      },
+      "validations": {
+        "email": "e-postadress",
+        "url": "webbadress",
+        "date": "datum",
+        "datetime": "datum och/eller tid",
+        "time": "tid"
+      },
+      "types": {
+        "function": "funktion",
+        "number": "nummer",
+        "string": "sträng",
+        "nan": "NaN",
+        "integer": "heltal",
+        "float": "flyttal",
+        "boolean": "boolesk",
+        "date": "datum",
+        "bigint": "bigint",
+        "undefined": "obestämd",
+        "symbol": "symbol",
+        "null": "null",
+        "array": "array",
+        "object": "objekt",
+        "unknown": "okänd",
+        "promise": "promise",
+        "void": "void",
+        "never": "aldrig",
+        "map": "map",
+        "set": "set"
+      }
+    }
+  }
+}
