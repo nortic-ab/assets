@@ -8,7 +8,7 @@
     "cancel": "Cancel",
     "changes": "Changes",
     "save_changes": "@:common.save @.lower:common.changes",
-    "hello_value": "@:hello {value}",
+    "hello_value": "@:common.hello {value}",
     "select_language": "@:common.select @.lower:common.language",
     "ticket": "no ticket | one ticket | {count} tickets"
   },
