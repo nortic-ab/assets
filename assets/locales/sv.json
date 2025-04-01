@@ -7,6 +7,7 @@
     "save": "Spara",
     "cancel": "Avbryt",
     "changes": "Ändringar",
+    "contact_us": "Kontakta oss",
     "save_changes": "@:common.save @.lower:common.changes",
     "hello_value": "@:common.hello {value}",
     "select_language": "@:common.select @.lower:common.language",
