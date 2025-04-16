@@ -11,7 +11,8 @@
     "save_changes": "@:common.save @.lower:common.changes",
     "hello_value": "@:common.hello {value}",
     "select_language": "@:common.select @.lower:common.language",
-    "ticket": "inga biljetter | en biljett | {count} biljetter"
+    "ticket": "inga biljetter | en biljett | {count} biljetter",
+    "explore": "Utforska"
   },
   "services": {
     "insight": "Insight",
