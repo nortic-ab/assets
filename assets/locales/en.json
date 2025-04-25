@@ -12,7 +12,8 @@
     "hello_value": "@:common.hello {value}",
     "select_language": "@:common.select @.lower:common.language",
     "ticket": "no ticket | one ticket | {count} tickets",
-    "explore": "Explore"
+    "explore": "Explore",
+    "loading": "Loading"
   },
   "services": {
     "insight": "Insight",

@@ -12,7 +12,8 @@
     "hello_value": "@:common.hello {value}",
     "select_language": "@:common.select @.lower:common.language",
     "ticket": "inga biljetter | en biljett | {count} biljetter",
-    "explore": "Utforska"
+    "explore": "Utforska",
+    "loading": "Laddar"
   },
   "services": {
     "insight": "Insight",
