@@ -15,6 +15,17 @@
     "explore": "Explore",
     "loading": "Loading"
   },
+  "permissions": {
+    "services": {
+      "insight": "Insight",
+      "nortic_id": "Nortic ID",
+      "eventsystem": "Event Manager"
+    },
+    "scopes": {
+      "manage": "Manage",
+      "read": "Read"
+    }
+  },
   "services": {
     "insight": "Insight",
     "lobby": "Lobby",

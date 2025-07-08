@@ -15,6 +15,17 @@
     "explore": "Utforska",
     "loading": "Laddar"
   },
+  "permissions": {
+    "services": {
+      "insight": "Insight",
+      "nortic_id": "Nortic ID",
+      "eventsystem": "Event Manager"
+    },
+    "scopes": {
+      "manage": "Hantera",
+      "read": "Läs"
+    }
+  },
   "services": {
     "insight": "Insight",
     "lobby": "Lobby",
