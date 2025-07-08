@@ -16,11 +16,6 @@
     "loading": "Loading"
   },
   "permissions": {
-    "services": {
-      "insight": "Insight",
-      "nortic_id": "Nortic ID",
-      "eventsystem": "Event Manager"
-    },
     "scopes": {
       "manage": "Manage",
       "read": "Read"
@@ -28,9 +23,10 @@
   },
   "services": {
     "insight": "Insight",
-    "lobby": "Lobby",
+    "nortic-id": "Lobby",
     "eventsystem": "Event Manager",
-    "help-center": "Help"
+    "help-center": "Help",
+    "lobby": "@:services.nortic-id"
   },
   "settings": {
     "integrity": {

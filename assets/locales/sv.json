@@ -16,11 +16,6 @@
     "loading": "Laddar"
   },
   "permissions": {
-    "services": {
-      "insight": "Insight",
-      "nortic_id": "Nortic ID",
-      "eventsystem": "Event Manager"
-    },
     "scopes": {
       "manage": "Hantera",
       "read": "Läs"
@@ -28,9 +23,10 @@
   },
   "services": {
     "insight": "Insight",
-    "lobby": "Lobby",
+    "nortic-id": "Lobby",
     "eventsystem": "Event Manager",
-    "help-center": "Hjälp"
+    "help-center": "Hjälp",
+    "lobby": "@:services.nortic-id"
   },
   "settings": {
     "integrity": {
