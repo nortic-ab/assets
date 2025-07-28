@@ -36,6 +36,12 @@ const assetsMap: Record<string, Array<{ src: string, outputFormat: keyof FormatE
     { src: path.join(assets, 'logotypes/logo-slogan-ver-blue.svg'), outputFormat: 'png', sizes: [{ width: 300 }, { width: 600 }] },
     { src: path.join(assets, 'logotypes/logo-slogan-ver-white.svg'), outputFormat: 'png', sizes: [{ width: 300 }, { width: 600 }] },
     { src: path.join(assets, 'logotypes/logo-white.svg'), outputFormat: 'png', sizes: [{ width: 300 }, { width: 600 }] },
+    { src: path.join(assets, 'logotypes/facebook-logo.svg'), outputFormat: 'png', sizes: [{ width: 300 }, { width: 600 }] },
+    { src: path.join(assets, 'logotypes/instagram-logo-white.svg'), outputFormat: 'png', sizes: [{ width: 300 }, { width: 600 }] },
+    { src: path.join(assets, 'logotypes/instagram-logo-black.svg'), outputFormat: 'png', sizes: [{ width: 300 }, { width: 600 }] },
+    { src: path.join(assets, 'logotypes/linkedin-logo.svg'), outputFormat: 'png', sizes: [{ width: 300 }, { width: 600 }] },
+    { src: path.join(assets, 'logotypes/linkedin-logo-black.svg'), outputFormat: 'png', sizes: [{ width: 300 }, { width: 600 }] },
+    { src: path.join(assets, 'logotypes/linkedin-logo-white.svg'), outputFormat: 'png', sizes: [{ width: 300 }, { width: 600 }] },
   ],
 }
 
