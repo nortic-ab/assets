@@ -55,27 +55,7 @@ To use the images in emails or other platforms, you can link directly to the raw
    For example, if you have an image located at /generated/logotypes/logo-slogan-large-blue.svg_300.png, its URL would be:
 
    ```
-   https://github.com/nortic-ab/assets/blob/main/generated/logotypes/logo-slogan-large-blue.svg_300.png
-   ```
-
-2. Modify the URL to access the raw file:
-
-   Replace /blob/ with /raw/ in the URL:
-
-   ```
-   https://github.com/nortic-ab/assets/raw/main/generated/logotypes/logo-slogan-large-blue.svg_300.png
-   ```
-
-   Alternatively, append ?raw=true to the original URL:
-
-   ```
-   https://github.com/nortic-ab/assets/blob/main/generated/logotypes/logo-slogan-large-blue.svg_300.png?raw=true
-   ```
-
-   This will redirect to the raw content URL:
-
-   ```
-   https://raw.githubusercontent.com/nortic-ab/assets/main/generated/logotypes/logo-slogan-large-blue.svg_300.png
+   https://cdn.jsdelivr.net/gh/nortic-ab/assets/generated/logotypes/logo-slogan-large-blue.svg_300.png
    ```
 
    You can use this URL to embed the image directly in emails or other platforms.
