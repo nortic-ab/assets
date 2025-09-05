@@ -23,7 +23,7 @@
   },
   "services": {
     "insight": "Insight",
-    "nortic-id": "Lobby",
+    "nortic-id": "Hem",
     "eventsystem": "Event Manager",
     "help-center": "Hjälp",
     "lobby": "@:services.nortic-id"
