@@ -15,6 +15,9 @@
     "explore": "Explore",
     "loading": "Loading"
   },
+  "accessibility": {
+    "new_tab": "Opens in a new tab/window"
+  },
   "permissions": {
     "scopes": {
       "manage": "Manage",
