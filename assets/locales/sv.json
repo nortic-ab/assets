@@ -15,6 +15,9 @@
     "explore": "Utforska",
     "loading": "Laddar"
   },
+  "accessibility": {
+    "new_tab": "Öppnas i ny flik eller nytt fönster"
+  },
   "permissions": {
     "scopes": {
       "manage": "Hantera",
