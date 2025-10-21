@@ -18,6 +18,13 @@
   "accessibility": {
     "new_tab": "Opens in a new tab/window"
   },
+  "roles": {
+    "administrator_role": "Administrator",
+    "event_manager_user_role": "Event Manager",
+    "insight_user_role": "Insight",
+    "owner_role": "Owner",
+    "user_role": "User"
+  },
   "permissions": {
     "scopes": {
       "manage": "Manage",
