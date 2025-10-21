@@ -18,6 +18,13 @@
   "accessibility": {
     "new_tab": "Öppnas i ny flik eller nytt fönster"
   },
+  "roles": {
+    "administrator_role": "Administratör",
+    "event_manager_user_role": "Event Manager",
+    "insight_user_role": "Insight",
+    "owner_role": "Ägare",
+    "user_role": "Användare"
+  },
   "permissions": {
     "scopes": {
       "manage": "Hantera",
