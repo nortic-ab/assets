@@ -21,7 +21,7 @@
   "roles": {
     "administrator_role": "Administratör",
     "event_manager_user_role": "Event Manager",
-    "insight_user_role": "Insight",
+    "insights_user_role": "Insight",
     "owner_role": "Ägare",
     "user_role": "Användare"
   },
