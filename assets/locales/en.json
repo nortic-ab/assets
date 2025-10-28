@@ -19,11 +19,26 @@
     "new_tab": "Opens in a new tab/window"
   },
   "roles": {
-    "administrator_role": "Administrator",
-    "event_manager_user_role": "Event Manager",
-    "insights_user_role": "Insight",
-    "owner_role": "Owner",
-    "user_role": "User"
+    "administrator_role": {
+      "name": "Administrator",
+      "description": "Behörighet till att administrera användare och full behörighet till flera tjänster"
+    },
+    "event_manager_user_role": {
+      "name": "Event Manager",
+      "description": "Behörighet till Eventsystem"
+    },
+    "insights_user_role": {
+      "name": "Insight",
+      "description": "Behörighet till Insight"
+    },
+    "owner_role": {
+      "name": "Owner",
+      "description": "Full behörighet till organisationen och tjänster"
+    },
+    "user_role": {
+      "name": "User",
+      "description": "Behörighet till dashboard"
+    }
   },
   "permissions": {
     "scopes": {
