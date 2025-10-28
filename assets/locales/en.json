@@ -19,11 +19,26 @@
     "new_tab": "Opens in a new tab/window"
   },
   "roles": {
-    "administrator_role": "Administrator",
-    "event_manager_user_role": "Event Manager",
-    "insights_user_role": "Insight",
-    "owner_role": "Owner",
-    "user_role": "User"
+    "administrator_role": {
+      "name": "Administrator",
+      "description": "Acccess to user administration and full access to multiple services"
+    },
+    "event_manager_user_role": {
+      "name": "Event Manager",
+      "description": "Access to Event System"
+    },
+    "insights_user_role": {
+      "name": "Insight",
+      "description": "Access to Insight"
+    },
+    "owner_role": {
+      "name": "Owner",
+      "description": "Full access to the organization and services"
+    },
+    "user_role": {
+      "name": "User",
+      "description": "Access to dashboard"
+    }
   },
   "permissions": {
     "scopes": {
