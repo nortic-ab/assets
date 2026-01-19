@@ -28,8 +28,8 @@
       "description": "Behörighet till Eventsystem"
     },
     "insights_user_role": {
-      "name": "Insight",
-      "description": "Behörighet till Insight"
+      "name": "Insights",
+      "description": "Behörighet till Insights"
     },
     "owner_role": {
       "name": "Ägare",
@@ -47,7 +47,7 @@
     }
   },
   "services": {
-    "insight": "Insight",
+    "insight": "Insights",
     "nortic-id": "Hem",
     "eventsystem": "Event Manager",
     "help-center": "Hjälp",

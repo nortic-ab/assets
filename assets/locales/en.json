@@ -28,8 +28,8 @@
       "description": "Access to Event System"
     },
     "insights_user_role": {
-      "name": "Insight",
-      "description": "Access to Insight"
+      "name": "Insights",
+      "description": "Access to Insights"
     },
     "owner_role": {
       "name": "Owner",
@@ -47,7 +47,7 @@
     }
   },
   "services": {
-    "insight": "Insight",
+    "insight": "Insights",
     "nortic-id": "Home",
     "eventsystem": "Event Manager",
     "help-center": "Help",
