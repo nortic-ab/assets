@@ -51,7 +51,9 @@
     "nortic-id": "Home",
     "eventsystem": "Event Manager",
     "help-center": "Help",
-    "lobby": "@:services.nortic-id"
+    "lobby": "@:services.nortic-id",
+    "marketing": "Marketing",
+    "planner": "Planner"
   },
   "settings": {
     "integrity": {
