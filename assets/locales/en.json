@@ -47,7 +47,7 @@
     }
   },
   "services": {
-    "insight": "Insight",
+    "insight": "Insights",
     "nortic-id": "Home",
     "eventsystem": "Event Manager",
     "help-center": "Help",
