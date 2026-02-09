@@ -47,11 +47,13 @@
     }
   },
   "services": {
-    "insight": "Insight",
+    "insight": "Insights",
     "nortic-id": "Hem",
     "eventsystem": "Event Manager",
     "help-center": "Hjälp",
-    "lobby": "@:services.nortic-id"
+    "lobby": "@:services.nortic-id",
+    "marketing": "Marketing",
+    "planner": "Planner"
   },
   "settings": {
     "integrity": {
