@@ -38,6 +38,10 @@
     "user_role": {
       "name": "User",
       "description": "Access to dashboard"
+    },
+    "planner_role": {
+      "name": "Planner",
+      "description": "Access to Planner"
     }
   },
   "permissions": {
