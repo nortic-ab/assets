@@ -1,0 +1,32 @@
+name: Deploy custom CSS to Firebase Hosting
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - assets/custom-css/**
+      - firebase.json
+      - .firebaserc
+      - .github/workflows/deploy-custom-css.yaml
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-custom-css
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # No build step: the files under assets/custom-css are deployed as-is.
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NORTIC_ASSETS }}
+          channelId: live
+          projectId: nortic-assets

@@ -1,2 +1,5 @@
 node_modules
 /.idea
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
