@@ -12,6 +12,7 @@
     "build": "tsx index.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "serve:custom-css": "pnpm dlx firebase-tools@15 emulators:start --only hosting",
     "prepare": "simple-git-hooks"
   },
   "devDependencies": {
