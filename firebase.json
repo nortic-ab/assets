@@ -8,7 +8,11 @@
     ],
     "rewrites": [
       {
-        "source": "/@(prod|staging)/eventsystem/@(organizers|events)/*/styles.css",
+        "source": "/@(prod|staging)/eventsystem/organizers/*/styles.css",
+        "destination": "/empty.css"
+      },
+      {
+        "source": "/@(prod|staging)/eventsystem/organizers/*/events/*/styles.css",
         "destination": "/empty.css"
       }
     ],

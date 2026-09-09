@@ -4,5 +4,5 @@
  * the event stylesheet after the organizer stylesheet.
  */
 #background-container {
-  background-image: url('assets/parken-zoo.jpg');
+  background-image: url('../../assets/nortic-event-bg.jpg') !important;
 }
