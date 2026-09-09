@@ -4,5 +4,5 @@
  * the event stylesheet after the organizer stylesheet.
  */
 .payment-page.klarna {
-  background-image: url('assets/halloween-bg.jpg');
+  background-image: url('../../assets/halloween-bg.jpg');
 }

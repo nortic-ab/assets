@@ -74,18 +74,18 @@ Unlike the rest of this repository, these files are **not** meant to be consumed
 Files map 1:1 to URLs; the `assets/custom-css/` prefix is stripped. The first path segment is the environment (`prod` or `staging`), mirroring `assets/gatekeeper/`:
 
 - `assets/custom-css/<env>/eventsystem/organizers/<organizerId>/styles.css` → `https://nortic-assets.web.app/<env>/eventsystem/organizers/<organizerId>/styles.css`
-- `assets/custom-css/<env>/eventsystem/events/<eventId>/styles.css` → `https://nortic-assets.web.app/<env>/eventsystem/events/<eventId>/styles.css`
+- `assets/custom-css/<env>/eventsystem/organizers/<organizerId>/events/<eventId>/styles.css` → `https://nortic-assets.web.app/<env>/eventsystem/organizers/<organizerId>/events/<eventId>/styles.css`
 
-Put referenced images and fonts next to the stylesheet in an `assets/` folder and reference them with relative URLs (`url('assets/background.png')`). Relative URLs resolve against the stylesheet URL.
+Put images and fonts in the organizer's `assets/` folder only, never under `events/`. Reference them with relative URLs: `url('assets/background.png')` from the organizer stylesheet and `url('../../assets/background.png')` from an event stylesheet. Relative URLs resolve against the stylesheet URL.
 
 ### Missing stylesheets return an empty stylesheet
 
-Requests for `/<env>/eventsystem/organizers/<id>/styles.css` or `/<env>/eventsystem/events/<id>/styles.css` that do not match a file are rewritten to `/empty.css` (see `rewrites` in `firebase.json`), so EventSystem always gets `200 text/css`. Static files take priority over rewrites, so an existing stylesheet is never shadowed. Any other missing path (typos, missing images) returns 404.
+Requests for `/<env>/eventsystem/organizers/<id>/styles.css` or `/<env>/eventsystem/organizers/<id>/events/<id>/styles.css` that do not match a file are rewritten to `/empty.css` (see `rewrites` in `firebase.json`), so EventSystem always gets `200 text/css`. Static files take priority over rewrites, so an existing stylesheet is never shadowed. Any other missing path (typos, missing images) returns 404.
 
 ### Adding CSS for an organizer or event
 
-1. Create `assets/custom-css/staging/eventsystem/organizers/<organizerId>/styles.css` (or `events/<eventId>/styles.css`).
-2. Add any images to `assets/` next to it and reference them relatively.
+1. Create `assets/custom-css/staging/eventsystem/organizers/<organizerId>/styles.css` (or `organizers/<organizerId>/events/<eventId>/styles.css` for a single event).
+2. Put any images in the organizer's `assets/` folder and reference them relatively (`../../assets/` from an event stylesheet).
 3. Open a PR. On merge to `main`, `.github/workflows/deploy-custom-css.yaml` deploys to Firebase Hosting (no build step).
 4. Verify in staging EventSystem, then add the same files under `assets/custom-css/prod/`.
 
@@ -114,11 +114,16 @@ curl -si http://localhost:5055/prod/eventsystem/organizers/4937/styles.css
 curl -si http://localhost:5055/prod/eventsystem/organizers/9999/styles.css
 ```
 
+To test against a locally running EventSystem, point it at the emulator by adding
+`system.customcss.baseurl=http://localhost:5055/staging` to EventSystem's gitignored
+`src/main/resources/config/local.properties` and restart Tomcat. Stylesheets are served
+with `max-age=300`, so keep "Disable cache" enabled in DevTools while iterating.
+
 ### EventSystem
 
-In `paymentPageKlarna.jsp`, replace the hardcoded organizer/event `<c:if>`/`<c:choose>` blocks with two links. Keep the organizer link before the event link. `customCssBaseUrl` is an environment property: `https://nortic-assets.web.app/prod` or `https://nortic-assets.web.app/staging`.
+EventSystem links the stylesheets from `fragments/customer/dagny/head.jsp`, after the theme stylesheets. Keep the organizer link before the event link. `customCssBaseUrl` comes from the property `system.customcss.baseurl`: `https://nortic-assets.web.app/prod` in `live.properties`, `https://nortic-assets.web.app/staging` otherwise.
 
 ```jsp
 <link rel="stylesheet" href="${customCssBaseUrl}/eventsystem/organizers/${organizer.id}/styles.css">
-<link rel="stylesheet" href="${customCssBaseUrl}/eventsystem/events/${show.event.id}/styles.css">
+<link rel="stylesheet" href="${customCssBaseUrl}/eventsystem/organizers/${organizer.id}/events/${event.id}/styles.css">
 ```
