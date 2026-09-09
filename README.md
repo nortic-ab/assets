@@ -8,7 +8,7 @@ This repository serves as a centralized location for storing static assets, prim
 
 - **`assets/`**: Contains the source image files.
 - **`generated/`**: Contains processed or optimized versions of the images.
-- **`assets/custom-css/`**: Per-organizer and per-event stylesheets for EventSystem, deployed to Firebase Hosting (see below).
+- **`assets/hosting/`**: Per-organizer and per-event stylesheets and scripts for EventSystem, deployed to Firebase Hosting (see below).
 
 ---
 
@@ -63,33 +63,51 @@ To use the images in emails or other platforms, you can link directly to the raw
 
 ---
 
-## Custom CSS for EventSystem (Firebase Hosting)
+## Custom CSS and JS for EventSystem (Firebase Hosting)
 
-The directory `assets/custom-css/` is deployed to Firebase Hosting (project `nortic-assets`) and served at `https://nortic-assets.web.app/`.
+The directory `assets/hosting/` is deployed to Firebase Hosting (project `nortic-assets`) and served at `https://nortic-assets.web.app/`.
 
-Unlike the rest of this repository, these files are **not** meant to be consumed via jsDelivr (jsDelivr caches branch URLs for up to 7 days). They exist so that EventSystem can load per-organizer and per-event stylesheets without hardcoding special cases in JSP templates.
+Unlike the rest of this repository, these files are **not** meant to be consumed via jsDelivr (jsDelivr caches branch URLs for up to 7 days). They exist so that EventSystem can load per-organizer and per-event stylesheets and scripts without hardcoding special cases in JSP templates.
 
-### URL pattern
+### Folder structure and URL pattern
 
-Files map 1:1 to URLs; the `assets/custom-css/` prefix is stripped. The first path segment is the environment (`prod` or `staging`), mirroring `assets/gatekeeper/`:
+Files map 1:1 to URLs; the `assets/hosting/` prefix is stripped. The first segment is the type (`custom-css` or `custom-js`), the second the environment (`prod` or `staging`, mirroring `assets/gatekeeper/`):
 
-- `assets/custom-css/<env>/eventsystem/organizers/<organizerId>/styles.css` → `https://nortic-assets.web.app/<env>/eventsystem/organizers/<organizerId>/styles.css`
-- `assets/custom-css/<env>/eventsystem/organizers/<organizerId>/events/<eventId>/styles.css` → `https://nortic-assets.web.app/<env>/eventsystem/organizers/<organizerId>/events/<eventId>/styles.css`
+```
+assets/hosting/
+├── custom-css/
+│   ├── empty.css
+│   └── <env>/eventsystem/organizers/<organizerId>/
+│       ├── styles.css
+│       ├── assets/                     ← all images and fonts for the organizer and its events
+│       └── events/<eventId>/styles.css
+└── custom-js/
+    ├── empty.js
+    └── <env>/eventsystem/organizers/<organizerId>/
+        ├── script.js
+        ├── assets/                     ← videos, images etc. used by the scripts
+        └── events/<eventId>/script.js
+```
+
+- `https://nortic-assets.web.app/custom-css/<env>/eventsystem/organizers/<organizerId>/styles.css`
+- `https://nortic-assets.web.app/custom-css/<env>/eventsystem/organizers/<organizerId>/events/<eventId>/styles.css`
+- `https://nortic-assets.web.app/custom-js/<env>/eventsystem/organizers/<organizerId>/script.js`
+- `https://nortic-assets.web.app/custom-js/<env>/eventsystem/organizers/<organizerId>/events/<eventId>/script.js`
 
 Put images and fonts in the organizer's `assets/` folder only, never under `events/`. Reference them with relative URLs: `url('assets/background.png')` from the organizer stylesheet and `url('../../assets/background.png')` from an event stylesheet. Relative URLs resolve against the stylesheet URL.
 
-### Missing stylesheets return an empty stylesheet
+### Missing files return an empty file
 
-Requests for `/<env>/eventsystem/organizers/<id>/styles.css` or `/<env>/eventsystem/organizers/<id>/events/<id>/styles.css` that do not match a file are rewritten to `/empty.css` (see `rewrites` in `firebase.json`), so EventSystem always gets `200 text/css`. Static files take priority over rewrites, so an existing stylesheet is never shadowed. Any other missing path (typos, missing images) returns 404.
+Requests for a `styles.css` or `script.js` at one of the paths above that do not match a file are rewritten to `/custom-css/empty.css` or `/custom-js/empty.js` (see `rewrites` in `firebase.json`), so EventSystem always gets a `200`. Static files take priority over rewrites, so an existing file is never shadowed. Any other missing path (typos, missing images) returns 404.
 
-### Adding CSS for an organizer or event
+### Adding CSS or JS for an organizer or event
 
-1. Create `assets/custom-css/staging/eventsystem/organizers/<organizerId>/styles.css` (or `organizers/<organizerId>/events/<eventId>/styles.css` for a single event).
+1. Create `assets/hosting/custom-css/staging/eventsystem/organizers/<organizerId>/styles.css` (or `events/<eventId>/styles.css` under the organizer), and/or the matching `script.js` under `custom-js/`.
 2. Put any images in the organizer's `assets/` folder and reference them relatively (`../../assets/` from an event stylesheet).
-3. Open a PR. On merge to `main`, `.github/workflows/deploy-custom-css.yaml` deploys to Firebase Hosting (no build step).
-4. Verify in staging EventSystem, then add the same files under `assets/custom-css/prod/`.
+3. Open a PR. On merge to `main`, `.github/workflows/deploy-hosting.yaml` deploys to Firebase Hosting (no build step).
+4. Verify in staging EventSystem, then add the same files under `prod/`.
 
-Example (`organizers/4937/styles.css`):
+Example (`custom-css/prod/eventsystem/organizers/4937/styles.css`):
 
 ```css
 .payment-page.klarna {
@@ -97,33 +115,81 @@ Example (`organizers/4937/styles.css`):
 }
 ```
 
-The organizer stylesheet is linked before the event stylesheet, so an event stylesheet overrides organizer rules of equal specificity.
+The organizer stylesheet and script are linked before the event ones, so event rules override organizer rules of equal specificity and event scripts run after the organizer script.
 
-### Caching
+### Rules for custom scripts
 
-- Stylesheets: `Cache-Control: public, max-age=300, s-maxage=31536000`. Browsers re-check after 5 minutes; the CDN keeps files until the next deploy (every deploy purges the CDN).
+Scripts run with full access to the page, including the payment page that embeds the Klarna checkout. Keep them small and defensive:
+
+- Wrap everything in an IIFE with `'use strict'`; do not create globals.
+- Feature-detect. `window.jQuery` is usually present on dagny pages but must not be assumed.
+- The script runs on every dagny page for the organizer (event page, organizer page, travel pages), not only on the payment page. The payment modal is injected later via AJAX, so use delegated event handlers or a `MutationObserver` on `#material-modal` instead of querying the DOM once.
+- Never read or modify customer or payment form fields, never load external scripts, never use `eval`, `new Function` or `document.write`.
+- Make the script idempotent: it may run again when the modal content is reloaded.
+- Files a script needs (videos, images) go in `custom-js/<env>/eventsystem/organizers/<organizerId>/assets/`. Resolve their URLs from the script's own URL with `document.currentScript`; a plain relative string like `'assets/video.mp4'` would resolve against the EventSystem page instead. Read `document.currentScript` synchronously at the top of the script, it is `null` inside callbacks.
+
+Example (`custom-js/<env>/eventsystem/organizers/<organizerId>/script.js`):
+
+```js
+(function () {
+  'use strict'
+  document.documentElement.dataset.norticCustomJs = 'organizer-538'
+})()
+```
+
+Example of referencing a file in the organizer's `assets/` folder. From an event script (`organizers/<organizerId>/events/<eventId>/script.js`) the same file is `'../../assets/background.mp4'`:
+
+```js
+(function () {
+  'use strict'
+  const scriptUrl = document.currentScript && document.currentScript.src
+  if (!scriptUrl)
+    return
+  const video = document.createElement('video')
+  video.src = new URL('assets/background.mp4', scriptUrl).href
+  video.autoplay = true
+  video.muted = true
+  video.loop = true
+  video.playsInline = true
+  document.body.appendChild(video)
+})()
+```
+
+### Caching and headers
+
+- Stylesheets and scripts: `Cache-Control: public, max-age=300, s-maxage=31536000`. Browsers re-check after 5 minutes; the CDN keeps files until the next deploy (every deploy purges the CDN).
+- Scripts also get `X-Content-Type-Options: nosniff` and `Access-Control-Allow-Origin: *`, so `<script crossorigin="anonymous">` reports real errors instead of "Script error.".
 - Images and fonts: `max-age=86400`. When replacing an image, give it a new file name and update the CSS so browsers do not keep showing the old one.
 - Fonts get `Access-Control-Allow-Origin: *` (required for cross-origin `@font-face`).
 
 ### Testing locally
 
 ```bash
-pnpm serve:custom-css
+pnpm serve:hosting
 # then, in another terminal
-curl -si http://localhost:5055/prod/eventsystem/organizers/4937/styles.css
-curl -si http://localhost:5055/prod/eventsystem/organizers/9999/styles.css
+curl -si http://localhost:5055/custom-css/prod/eventsystem/organizers/4937/styles.css
+curl -si http://localhost:5055/custom-css/prod/eventsystem/organizers/9999/styles.css
+curl -si http://localhost:5055/custom-js/staging/eventsystem/organizers/538/events/84917/script.js
 ```
 
-To test against a locally running EventSystem, point it at the emulator by adding
-`system.customcss.baseurl=http://localhost:5055/staging` to EventSystem's gitignored
-`src/main/resources/config/local.properties` and restart Tomcat. Stylesheets are served
-with `max-age=300`, so keep "Disable cache" enabled in DevTools while iterating.
+Restart the emulator after changing `firebase.json`; rewrites and headers are only read at startup. File changes under `assets/hosting/` are served immediately.
+
+To test against a locally running EventSystem, add these to EventSystem's gitignored `src/main/resources/config/local.properties` and restart Tomcat:
+
+```properties
+system.customcss.baseurl=http://localhost:5055/custom-css/staging
+system.customjs.baseurl=http://localhost:5055/custom-js/staging
+```
+
+JSP changes in EventSystem reach Tomcat only after "Update resources" in IntelliJ. Files are served with `max-age=300`, so keep "Disable cache" enabled in DevTools while iterating.
 
 ### EventSystem
 
-EventSystem links the stylesheets from `fragments/customer/dagny/head.jsp`, after the theme stylesheets. Keep the organizer link before the event link. `customCssBaseUrl` comes from the property `system.customcss.baseurl`: `https://nortic-assets.web.app/prod` in `live.properties`, `https://nortic-assets.web.app/staging` otherwise.
+EventSystem links the files from `fragments/customer/dagny/head.jsp`, after the theme stylesheets. Keep the organizer tag before the event tag. `customCssBaseUrl` and `customJsBaseUrl` come from the properties `system.customcss.baseurl` and `system.customjs.baseurl`: `https://nortic-assets.web.app/custom-css/prod` and `https://nortic-assets.web.app/custom-js/prod` in `live.properties`, the `staging` folders otherwise. An empty `system.customjs.baseurl` disables custom scripts for that environment.
 
 ```jsp
 <link rel="stylesheet" href="${customCssBaseUrl}/eventsystem/organizers/${organizer.id}/styles.css">
 <link rel="stylesheet" href="${customCssBaseUrl}/eventsystem/organizers/${organizer.id}/events/${event.id}/styles.css">
+<script src="${customJsBaseUrl}/eventsystem/organizers/${organizer.id}/script.js" defer crossorigin="anonymous"></script>
+<script src="${customJsBaseUrl}/eventsystem/organizers/${organizer.id}/events/${event.id}/script.js" defer crossorigin="anonymous"></script>
 ```

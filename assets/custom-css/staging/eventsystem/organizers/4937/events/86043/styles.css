@@ -1,8 +1,0 @@
-/*
- * Parken Zoo Halloween (event 86043): custom background on the Klarna payment page.
- * Overrides the organizer stylesheet (organizers/4937) because EventSystem links
- * the event stylesheet after the organizer stylesheet.
- */
-.payment-page.klarna {
-  background-image: url('../../assets/halloween-bg.jpg') !important;
-}

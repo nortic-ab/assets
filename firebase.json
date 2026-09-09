@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "assets/custom-css",
+    "public": "assets/hosting",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -8,12 +8,20 @@
     ],
     "rewrites": [
       {
-        "source": "/@(prod|staging)/eventsystem/organizers/*/styles.css",
-        "destination": "/empty.css"
+        "source": "/custom-css/@(prod|staging)/eventsystem/organizers/*/styles.css",
+        "destination": "/custom-css/empty.css"
       },
       {
-        "source": "/@(prod|staging)/eventsystem/organizers/*/events/*/styles.css",
-        "destination": "/empty.css"
+        "source": "/custom-css/@(prod|staging)/eventsystem/organizers/*/events/*/styles.css",
+        "destination": "/custom-css/empty.css"
+      },
+      {
+        "source": "/custom-js/@(prod|staging)/eventsystem/organizers/*/script.js",
+        "destination": "/custom-js/empty.js"
+      },
+      {
+        "source": "/custom-js/@(prod|staging)/eventsystem/organizers/*/events/*/script.js",
+        "destination": "/custom-js/empty.js"
       }
     ],
     "headers": [
@@ -27,7 +35,24 @@
         ]
       },
       {
-        "source": "**/*.@(png|jpg|jpeg|gif|webp|avif|svg)",
+        "source": "**/*.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=300, s-maxage=31536000"
+          },
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(png|jpg|jpeg|gif|webp|avif|svg|mp4|webm)",
         "headers": [
           {
             "key": "Cache-Control",
