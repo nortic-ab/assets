@@ -3,6 +3,6 @@
  * Overrides the organizer stylesheet (organizers/538) because EventSystem links
  * the event stylesheet after the organizer stylesheet.
  */
-.payment-page.klarna {
-  background-image: url('assets/halloween-bg.jpg');
+#background-container {
+  background-image: url('assets/parken-zoo.jpg');
 }
