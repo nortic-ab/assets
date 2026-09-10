@@ -1,8 +1,0 @@
-/*
- * Nortic test: custom background on the Klarna payment page.
- * Overrides the organizer stylesheet (organizers/538) because EventSystem links
- * the event stylesheet after the organizer stylesheet.
- */
-#background-container {
-  background-image: url('../../assets/nortic-event-bg.jpg') !important;
-}

@@ -1,8 +1,662 @@
-/*
- * Nortic test: custom background on the Klarna payment page.
- * Overrides the organizer stylesheet (organizers/538) because EventSystem links
- * the event stylesheet after the organizer stylesheet.
- */
-#background-container {
-  background-image: url('../../assets/nortic-event-bg.jpg') !important;
+@import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+
+:root {
+  --pz-night: #1a0f2a;
+  --pz-night-deep: #0f0818;
+  --pz-night-soft: #23153a;
+  --pz-forest: #123d2e;
+  --pz-pumpkin: #f28c1e;
+  --pz-ember: #d9531e;
+  --pz-glow: #ffc24b;
+  --pz-bone: #f3e5c8;
+  --pz-bone-dim: rgba(243, 229, 200, 0.75);
+  --pz-witch: #6a3fa0;
+  --pz-line: rgba(255, 194, 75, 0.22);
+}
+
+#background-container,
+.payment-page {
+  background-image: url('../../assets/halloween-bg.jpg') !important;
+}
+@media (max-width: 700px) {
+  #background-container,
+  .payment-page {
+    background-image: url('../../assets/halloween-bg-mobile.jpg') !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * 1. Ground
+ * ------------------------------------------------------------------------- */
+body,
+.st-content {
+  background-color: var(--pz-night);
+  color: var(--pz-bone);
+}
+a {
+  color: var(--pz-glow);
+}
+footer.page-footer {
+  opacity: 0.8;
+}
+
+/* ---------------------------------------------------------------------------
+ * 2. Hero
+ * ------------------------------------------------------------------------- */
+div#main-ribbon > h1 {
+  font-family: 'Creepster', 'Roboto Slab', serif;
+  font-weight: 400;
+  font-size: 56px;
+  letter-spacing: 0.04em;
+  color: var(--pz-glow);
+  text-shadow:
+    0 0 18px rgba(242, 140, 30, 0.55),
+    2px 3px 0 var(--pz-night-deep);
+}
+div#main-ribbon .event-info {
+  color: var(--pz-bone) !important;
+}
+div#main-ribbon .event-info > i.material-icons {
+  color: var(--pz-glow);
+}
+section#top div.event-information:not(.minimized) {
+  background: rgba(26, 15, 42, 0.82);
+  border: 1px solid rgba(255, 194, 75, 0.3);
+  border-radius: 10px;
+}
+
+/* ---------------------------------------------------------------------------
+ * 3. Buttons and theme classes (the organizer theme sets these earlier in <head>)
+ * ------------------------------------------------------------------------- */
+.btn,
+.btn-large {
+  background-color: var(--pz-pumpkin);
+  color: var(--pz-night-deep);
+  border-radius: 999px;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(242, 140, 30, 0.35);
+}
+.btn.btn-flat,
+.btn-flat.btn-plain {
+  background-color: transparent;
+  color: var(--pz-bone);
+  box-shadow: none;
+}
+.btn:hover,
+.btn-large:hover,
+.btn:focus,
+.btn-large:focus {
+  background-color: var(--pz-ember);
+  color: var(--pz-night-deep);
+}
+.btn:focus-visible,
+.btn-large:focus-visible {
+  outline: 3px solid var(--pz-glow);
+  outline-offset: 2px;
+}
+.theme-background-color {
+  background-color: var(--pz-pumpkin);
+  color: var(--pz-night-deep);
+}
+.theme-background-color-on-hover:hover {
+  background-color: var(--pz-ember);
+  color: var(--pz-night-deep);
+}
+.theme-background-color-override {
+  background-color: var(--pz-glow) !important;
+}
+.theme-text-color-override {
+  color: var(--pz-night-deep) !important;
+}
+.theme-secondary-background-color,
+.theme-secondary-background-color:hover {
+  background-color: var(--pz-witch);
+  color: var(--pz-bone);
+}
+.theme-color,
+.theme-secondary-color {
+  color: var(--pz-glow);
+  fill: var(--pz-glow);
+}
+.spinner-color-secondary {
+  border-color: var(--pz-glow);
+}
+
+/* ---------------------------------------------------------------------------
+ * 4. Calendar: the lantern board
+ * ------------------------------------------------------------------------- */
+@keyframes pz-marquee {
+  0%,
+  100% {
+    border-color: var(--pz-glow);
+    box-shadow:
+      0 0 0 4px var(--pz-night-deep),
+      0 0 24px rgba(255, 194, 75, 0.35),
+      0 20px 50px rgba(0, 0, 0, 0.45);
+  }
+  50% {
+    border-color: var(--pz-bone);
+    box-shadow:
+      0 0 0 4px var(--pz-night-deep),
+      0 0 8px rgba(255, 194, 75, 0.15),
+      0 20px 50px rgba(0, 0, 0, 0.45);
+  }
+}
+@keyframes pz-lantern {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 3px var(--pz-glow),
+      0 0 22px rgba(255, 194, 75, 0.75);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px var(--pz-glow),
+      0 0 10px rgba(255, 194, 75, 0.35);
+  }
+}
+
+.filter-calender-base #calendar-wrapper > div {
+  background: var(--pz-forest);
+  border: 6px dotted var(--pz-glow);
+  border-radius: 16px;
+  box-shadow:
+    0 0 0 4px var(--pz-night-deep),
+    0 0 24px rgba(255, 194, 75, 0.35),
+    0 20px 50px rgba(0, 0, 0, 0.45);
+  animation: pz-marquee 2.6s ease-in-out infinite;
+}
+.filter-calender-base .calendar-header .current-date {
+  font-family: 'Creepster', 'Roboto Slab', serif;
+  font-weight: 400;
+  font-size: 1.7rem;
+  letter-spacing: 0.04em;
+  color: var(--pz-bone);
+}
+.filter-calender-base .calendar-header .icons span {
+  color: var(--pz-glow);
+}
+.filter-calender-base .calendar-header .icons span:hover {
+  background: rgba(255, 194, 75, 0.15);
+}
+.filter-calender-base .calendar li {
+  color: var(--pz-bone);
+}
+.filter-calender-base .calendar .weeks li {
+  color: var(--pz-glow);
+  opacity: 0.85;
+}
+.filter-calender-base .days li.selectable {
+  color: var(--pz-night-deep);
+  font-weight: 700;
+}
+.filter-calender-base .days li::before {
+  pointer-events: none;
+}
+.filter-calender-base .days li.selectable::before,
+.filter-calender-base .days li.selectable.bookable::before {
+  background: radial-gradient(circle at 50% 35%, #ffb347 0%, var(--pz-pumpkin) 55%, var(--pz-ember) 100%);
+  box-shadow:
+    0 0 14px rgba(242, 140, 30, 0.65),
+    inset 0 -4px 6px rgba(0, 0, 0, 0.25);
+}
+.filter-calender-base .days li.selectable.bookable.half-sold::before {
+  background: radial-gradient(circle at 50% 35%, #ffe08a 0%, var(--pz-glow) 55%, var(--pz-pumpkin) 100%);
+  box-shadow:
+    0 0 14px rgba(255, 194, 75, 0.6),
+    inset 0 -4px 6px rgba(0, 0, 0, 0.2);
+}
+.filter-calender-base .calendar .days li.selectable.selected {
+  color: var(--pz-bone);
+}
+.filter-calender-base .calendar .days li.selectable.selected::before {
+  background: radial-gradient(circle at 50% 35%, #8f5fd0 0%, var(--pz-witch) 60%, #3f2266 100%);
+  box-shadow:
+    0 0 0 3px var(--pz-glow),
+    0 0 22px rgba(255, 194, 75, 0.75);
+  animation: pz-lantern 3.2s ease-in-out infinite;
+}
+.filter-calender-base .days li.selectable:not(.selected):hover::before {
+  background: var(--pz-ember);
+}
+.filter-calender-base .days li:not(.selectable):hover::before {
+  background: rgba(255, 255, 255, 0.08);
+}
+#flex-info-wrapper.info-text {
+  color: var(--pz-bone);
+}
+
+/* ---------------------------------------------------------------------------
+ * 5. Show listing
+ * ------------------------------------------------------------------------- */
+section#active-events #show-listing {
+  background-color: var(--pz-night);
+  color: var(--pz-bone);
+  border: 1px solid var(--pz-line);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+section#active-events #show-listing .month-name {
+  font-family: 'Creepster', 'Roboto Slab', serif;
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: var(--pz-glow);
+}
+section#active-events #show-listing > #show-listing-body .show-listing-show {
+  border-bottom: 1px dashed var(--pz-line);
+}
+section#active-events #show-listing #show-listing-body .show-listing-show:hover {
+  background-color: rgba(242, 140, 30, 0.1);
+}
+section#active-events #show-listing > #show-listing-body .show-listing-show.unnumbered-show.expanded {
+  background-color: var(--pz-night-soft);
+}
+section#active-events #show-listing > #show-listing-body .show-listing-show .show-info,
+section#active-events #show-listing > #show-listing-body .show-listing-show .price-range {
+  color: var(--pz-bone);
+}
+section#active-events #show-listing > #show-listing-body .arenaLocationLink,
+section#active-events #show-listing .read-more-info-link {
+  color: var(--pz-glow);
+}
+section#active-events #show-listing > #show-listing-body .no-shows-available {
+  color: var(--pz-bone);
+  opacity: 0.7;
+}
+.dateball {
+  background-color: var(--pz-pumpkin);
+}
+.dateball span {
+  color: var(--pz-night-deep);
+  font-weight: 700;
+}
+.show-listing-show:hover .dateball,
+.show-listing-show.expanded .dateball {
+  background-color: var(--pz-glow);
+}
+.show-listing-show .no-date-show {
+  color: var(--pz-night-deep);
+}
+.sold-out-box {
+  background-color: var(--pz-witch) !important;
+  color: var(--pz-bone) !important;
+}
+.show-listing-arrow i.material-icons.theme-color {
+  color: var(--pz-glow);
+}
+
+/* ---------------------------------------------------------------------------
+ * 6. Ticket cards (unnumbered show, expands inline)
+ * ------------------------------------------------------------------------- */
+section#active-events .container .booking-contents.unnumbered-show {
+  background-color: var(--pz-night-soft);
+}
+section#active-events .container .booking-contents.unnumbered-show hr {
+  background-color: var(--pz-line);
+}
+section#active-events .container .unnumbered-show h2 {
+  color: var(--pz-bone);
+}
+.unnumbered-show-container .supply-info.list-info {
+  color: var(--pz-bone-dim);
+}
+.unnumbered-show-container .show-category-row .show-category-container .show-category,
+.unnumbered-show-container .show-category-row .show-category-container .show-category:has(div.available-at) {
+  background: linear-gradient(180deg, #2a1a45 0%, var(--pz-night) 100%);
+  border: 1px solid rgba(255, 194, 75, 0.28);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+.show-category-container .list-title {
+  color: var(--pz-bone);
+}
+section#active-events .list-price {
+  color: var(--pz-glow);
+  font-size: 15px;
+}
+.show-category-container .show-category-info.list-info {
+  color: var(--pz-bone-dim);
+}
+.unnumbered-show-container .show-category-row .show-category-container .show-category .sold-out-banner {
+  background-color: var(--pz-witch);
+  color: var(--pz-bone);
+}
+.booking-contents .amount-blob.plus,
+.booking-contents .amount-blob.minus {
+  background-color: var(--pz-pumpkin);
+  color: var(--pz-night-deep);
+}
+.booking-contents .amount-blob.amount {
+  background-color: var(--pz-night-deep);
+  color: var(--pz-bone);
+  border: 1px solid rgba(255, 194, 75, 0.35);
+}
+.booking-contents .amount-blob.amount.zero {
+  border-color: rgba(255, 194, 75, 0.15);
+}
+.booking-contents .amount-blob .amount-indicator {
+  color: var(--pz-bone);
+}
+.booking-contents .amount-blob.disabled {
+  background-color: #3a2e4a !important;
+  color: rgba(243, 229, 200, 0.4);
+}
+.unnumbered-show-container a.btn.open-addons {
+  background-color: var(--pz-witch) !important;
+  color: var(--pz-bone) !important;
+}
+
+/* ---------------------------------------------------------------------------
+ * 7. Modal and checkout
+ * ------------------------------------------------------------------------- */
+.modal__bg {
+  background-color: rgba(15, 8, 24, 0.78);
+}
+.modal__content {
+  background-color: var(--pz-night);
+  color: var(--pz-bone);
+}
+section#booking.payment-page.klarna {
+  background-color: var(--pz-night) !important;
+}
+section#booking .booking-contents .payment-list {
+  background-color: rgba(26, 15, 42, 0.9);
+  color: var(--pz-bone);
+}
+section#booking.payment-page .booking-contents .payment-list .list-box .voucher-code-used,
+section#booking.payment-page .booking-contents .payment-list .list-box .voucher-code-input,
+section#booking.payment-page .booking-contents .payment-list .list-box .addon,
+section#booking.payment-page .booking-contents .payment-list .list-box .addon-empty,
+section#booking.payment-page .booking-contents .payment-list .list-box .ticket,
+section#booking.payment-page .booking-contents .payment-list .list-box .used-voucher-code {
+  background-color: rgba(26, 15, 42, 0.94);
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(255, 194, 75, 0.25);
+}
+section#booking.payment-page .booking-contents .payment-list .list-box .empty {
+  background-color: rgba(26, 15, 42, 0.6);
+  border-color: var(--pz-line);
+}
+section#booking.payment-page .booking-contents .payment-list .list-box-background {
+  background-color: rgba(26, 15, 42, 0.94);
+}
+section#booking .booking-contents .payment-list header.payment-section-header h2 {
+  color: var(--pz-glow);
+}
+section#booking .booking-contents .payment-list header.payment-section-header p {
+  color: var(--pz-bone);
+}
+section#booking .booking-contents .payment-list header.payment-section-header p span:not(.spacer) {
+  background: var(--pz-pumpkin);
+  color: var(--pz-night-deep);
+}
+section#booking .list-title {
+  color: var(--pz-bone);
+}
+section#booking .list-info {
+  color: var(--pz-bone-dim);
+}
+section#booking .list-price,
+section#booking.payment-page .booking-contents .payment-list .summary-ticket-price,
+section#booking.payment-page .booking-contents .payment-list .summary-details-price {
+  color: var(--pz-glow);
+}
+section#booking.payment-page .booking-contents .payment-list i.material-icons {
+  color: var(--pz-bone);
+}
+section#booking.payment-page .booking-contents .payment-list .detail-container.minimal-shade {
+  background-color: rgba(26, 15, 42, 0.94);
+  border: 1px solid var(--pz-line);
+  border-radius: 8px;
+  box-shadow: none;
+}
+section#booking.payment-page .booking-contents .payment-list #details .klarna-detail-container {
+  border-top-color: var(--pz-line);
+}
+section#booking.payment-page .booking-contents .payment-list #klarna-box.list-box.list-box-background {
+  background-color: var(--pz-bone);
+  color: var(--pz-night);
+}
+section#booking.payment-page .booking-contents .payment-list #klarna-box a {
+  color: var(--pz-ember);
+}
+section#booking .booking-contents .payment-list label[for='accept-terms'] {
+  color: var(--pz-bone);
+}
+section#booking .booking-contents .payment-list a.terms-link,
+section#booking .booking-contents .payment-list a.cancellation-insurance-info {
+  color: var(--pz-glow);
+}
+section#booking.payment-page .payment-list .input-field label {
+  color: var(--pz-bone-dim);
+}
+section#booking.payment-page .payment-list .input-field input,
+section#booking.payment-page .payment-list .input-field select,
+section#booking.payment-page .payment-list .input-field textarea {
+  color: var(--pz-bone);
+}
+section#booking.payment-page .payment-list .input-field input[type='email']:focus + label,
+section#booking.payment-page .payment-list .input-field input[type='tel']:focus + label,
+section#booking.payment-page .payment-list .input-field input[type='text']:focus + label,
+section#booking.payment-page .payment-list .input-field .prefix.active {
+  color: var(--pz-glow);
+}
+section#booking.payment-page .payment-list .input-field input[type='text']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field input[type='email']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field input[type='tel']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field input[type='number']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field input[type='password']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field input[type='search']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field input[type='url']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field input[type='date']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field input[type='time']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field textarea.materialize-textarea:focus:not([readonly]) {
+  border-bottom: 1px solid var(--pz-pumpkin);
+  box-shadow: 0 1px 0 0 var(--pz-pumpkin);
+}
+section#booking.payment-page
+  .booking-contents
+  .payment-list
+  input[type='checkbox'].filled-in:checked:not([disabled])
+  + label:after {
+  border: 2px solid var(--pz-pumpkin);
+  background-color: var(--pz-pumpkin);
+}
+section#booking [type='radio'].with-gap:checked + label:before,
+section#booking [type='radio'].with-gap:checked + label:after {
+  border: 2px solid var(--pz-pumpkin);
+}
+section#booking [type='radio'].with-gap:checked + label:after {
+  background-color: var(--pz-pumpkin);
+}
+button#addon-modal-go-back {
+  background-color: var(--pz-witch) !important;
+  color: var(--pz-bone) !important;
+}
+section#booking .modal {
+  background-color: var(--pz-night);
+  color: var(--pz-bone);
+}
+section#booking .modal .close-modal i.material-icons {
+  color: var(--pz-bone);
+}
+
+/* ---------------------------------------------------------------------------
+ * 7b. Checkout rows, insurance and addon cards (dagny paints these white/green)
+ * ------------------------------------------------------------------------- */
+section#booking.payment-page .booking-contents .payment-list #details #details-list .detail-container,
+section#booking.payment-page .booking-contents .payment-list #details #details-list .detail-container.gdpr-container {
+  background-color: rgba(26, 15, 42, 0.94);
+  border: 1px solid var(--pz-line);
+  border-radius: 8px;
+  color: var(--pz-bone);
+}
+section#booking.payment-page.klarna .booking-contents .payment-list #details #details-list .expandable-detail {
+  background-color: rgba(15, 8, 24, 0.6);
+}
+section#booking.payment-page .booking-contents .payment-list #details #details-list .detail-container p {
+  color: var(--pz-bone-dim);
+}
+section#booking.payment-page .booking-contents .payment-list #details #details-list .detail-container p a {
+  color: var(--pz-glow);
+}
+section#booking.payment-page.klarna .booking-contents .payment-list #details #details-list .insurance-detail-container,
+section#booking.payment-page.klarna
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container.selected,
+section#booking.payment-page.klarna
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container
+  .expandable-detail {
+  background-color: rgba(26, 15, 42, 0.94);
+}
+section#booking.payment-page.klarna
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container.selected
+  .expandable-detail {
+  background-color: rgba(26, 15, 42, 0.94) !important;
+}
+section#booking.payment-page.klarna
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container
+  .selection-row.selected {
+  background-color: var(--pz-forest);
+  color: var(--pz-bone);
+}
+section#booking.payment-page.klarna
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container
+  .selection-row.not-selected {
+  background-color: var(--pz-ember);
+  color: var(--pz-night-deep);
+}
+.basket-cart-change-order h3 {
+  color: var(--pz-glow);
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card {
+  background-color: rgba(26, 15, 42, 0.94);
+  border: 1px solid var(--pz-line);
+  border-radius: 12px;
+  color: var(--pz-bone);
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .addon-name,
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .addon-price {
+  color: var(--pz-glow);
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-content p {
+  color: var(--pz-bone);
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-content p a {
+  color: var(--pz-glow);
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-action {
+  background-color: transparent;
+  border-top: 1px solid var(--pz-line);
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-action label,
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-action a {
+  color: var(--pz-bone);
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-action a.read-more-button {
+  color: var(--pz-glow);
+}
+
+section#booking.payment-page .booking-contents .payment-list #addons .card-container .banner {
+  background-color: var(--pz-witch);
+  color: var(--pz-bone);
+}
+section#booking.payment-page.klarna .booking-contents .payment-list .premium-ticket-detail-container::after {
+  opacity: 0.12;
+}
+
+section#booking .payment-list a.basket-color,
+section#booking .payment-list .basket-color {
+  color: var(--pz-glow) !important;
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .read-more-button {
+  color: var(--pz-glow) !important;
+}
+
+/* ---------------------------------------------------------------------------
+ * 8. Floating basket
+ * ------------------------------------------------------------------------- */
+div#basket,
+div#basket-cart,
+div#basket-cart-go-to-payment,
+div#addons-basket {
+  background-color: var(--pz-pumpkin);
+  color: var(--pz-night-deep);
+}
+div#basket .price,
+div#basket .amount,
+div#basket .proceed-arrow,
+div#basket span.icon i.material-icons,
+div#addons-basket .price,
+div#addons-basket .amount,
+div#addons-basket i.material-icons,
+div#basket-cart .title-container,
+div#basket-cart span.icon i.material-icons,
+div#basket-cart-go-to-payment .text-wrapper,
+div#basket-cart-go-to-payment i.material-icons {
+  color: var(--pz-night-deep);
+}
+div#basket-cart .amount-blob,
+div#basket-cart-go-to-payment .payment-blob {
+  background-color: var(--pz-night-deep);
+}
+div#basket-cart .amount-blob .icon i.material-icons,
+div#basket-cart-go-to-payment .payment-blob i.material-icons {
+  color: var(--pz-glow);
+}
+div#basket-cart .chip {
+  background-color: var(--pz-night-deep);
+  color: var(--pz-bone);
+}
+div#basket-overlay {
+  background-color: var(--pz-night);
+}
+
+/* ---------------------------------------------------------------------------
+ * 9. Motion off when asked
+ * ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .filter-calender-base #calendar-wrapper > div,
+  .filter-calender-base .calendar .days li.selectable.selected::before {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * 10. Mobile
+ * ------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  div#main-ribbon > h1 {
+    font-size: 40px;
+  }
+  .filter-calender-base #calendar-wrapper > div {
+    border-width: 4px;
+  }
+  section#active-events #show-listing {
+    border-radius: 10px;
+  }
+  section#active-events #show-listing .month-name {
+    font-size: 13px;
+  }
 }
