@@ -527,15 +527,24 @@ section#booking.payment-page.klarna
   .expandable-detail {
   background-color: rgba(26, 15, 42, 0.94) !important;
 }
+/* Colour the row by the checked radio, not by .selected/.not-selected: on some pages the row keeps
+   not-selected on load even though "yes" is checked, and only JS toggles the classes later. */
 section#booking.payment-page.klarna
   .booking-contents
   .payment-list
   #details
   #details-list
   .insurance-detail-container
-  .selection-row.selected {
-  background-color: var(--pz-forest);
-  color: var(--pz-bone);
+  .selection-row.not-selected,
+section#booking.payment-page.klarna
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container
+  .selection-row:has(.no [type='radio']:checked) {
+  background-color: var(--pz-ember);
+  color: var(--pz-night-deep);
 }
 section#booking.payment-page.klarna
   .booking-contents
@@ -543,9 +552,33 @@ section#booking.payment-page.klarna
   #details
   #details-list
   .insurance-detail-container
-  .selection-row.not-selected {
-  background-color: var(--pz-ember);
-  color: var(--pz-night-deep);
+  .selection-row.selected,
+section#booking.payment-page.klarna
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container
+  .selection-row:has(.yes [type='radio']:checked) {
+  background-color: var(--pz-forest);
+  color: var(--pz-bone);
+}
+/* The row icons are blue PNGs (cart.png, forsakring.png); tint them warm. The Klarna logo is left alone. */
+section#booking.payment-page
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .tickets-detail-container
+  img.payment-icon,
+section#booking.payment-page
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container
+  img.payment-icon {
+  filter: brightness(0) invert(1) sepia(1) saturate(4) hue-rotate(345deg) brightness(1.05);
 }
 .basket-cart-change-order h3 {
   color: var(--pz-glow);
@@ -605,22 +638,26 @@ div#addons-basket {
   color: var(--pz-night-deep);
 }
 div#basket .price,
-div#basket .amount,
-div#basket .proceed-arrow,
-div#basket span.icon i.material-icons,
 div#addons-basket .price,
-div#addons-basket .amount,
-div#addons-basket i.material-icons,
 div#basket-cart .title-container,
 div#basket-cart span.icon i.material-icons,
 div#basket-cart-go-to-payment .text-wrapper,
 div#basket-cart-go-to-payment i.material-icons {
   color: var(--pz-night-deep);
 }
+div#basket .amount-blob,
+div#basket .proceed-arrow-blob,
+div#addons-basket .amount-blob,
+div#addons-basket .proceed-arrow-blob,
 div#basket-cart .amount-blob,
 div#basket-cart-go-to-payment .payment-blob {
   background-color: var(--pz-night-deep);
 }
+div#basket .amount-blob .icon i.material-icons,
+div#basket .amount-blob .amount,
+div#addons-basket .amount-blob .amount,
+div#basket .proceed-arrow-blob .proceed-arrow,
+div#addons-basket .amount-blob i.material-icons,
 div#basket-cart .amount-blob .icon i.material-icons,
 div#basket-cart-go-to-payment .payment-blob i.material-icons {
   color: var(--pz-glow);
