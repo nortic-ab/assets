@@ -188,8 +188,16 @@ JSP changes in EventSystem reach Tomcat only after "Update resources" in Intelli
 EventSystem links the files from `fragments/customer/dagny/head.jsp`, after the theme stylesheets. Keep the organizer tag before the event tag. `customCssBaseUrl` and `customJsBaseUrl` come from the properties `system.customcss.baseurl` and `system.customjs.baseurl`: `https://nortic-assets.web.app/custom-css/prod` and `https://nortic-assets.web.app/custom-js/prod` in `live.properties`, the `staging` folders otherwise. An empty `system.customjs.baseurl` disables custom scripts for that environment.
 
 ```jsp
-<link rel="stylesheet" href="${customCssBaseUrl}/eventsystem/organizers/${organizer.id}/styles.css">
-<link rel="stylesheet" href="${customCssBaseUrl}/eventsystem/organizers/${organizer.id}/events/${event.id}/styles.css">
-<script src="${customJsBaseUrl}/eventsystem/organizers/${organizer.id}/script.js" defer crossorigin="anonymous"></script>
-<script src="${customJsBaseUrl}/eventsystem/organizers/${organizer.id}/events/${event.id}/script.js" defer crossorigin="anonymous"></script>
+<c:if test="${not empty customCssBaseUrl and not empty organizer}">
+    <link rel="stylesheet" href="${customCssBaseUrl}/eventsystem/organizers/${organizer.id}/styles.css">
+</c:if>
+<c:if test="${not empty customCssBaseUrl and not empty organizer and not empty event}">
+    <link rel="stylesheet" href="${customCssBaseUrl}/eventsystem/organizers/${organizer.id}/events/${event.id}/styles.css">
+</c:if>
+<c:if test="${not empty customJsBaseUrl and not empty organizer}">
+    <script src="${customJsBaseUrl}/eventsystem/organizers/${organizer.id}/script.js" defer crossorigin="anonymous"></script>
+</c:if>
+<c:if test="${not empty customJsBaseUrl and not empty organizer and not empty event}">
+    <script src="${customJsBaseUrl}/eventsystem/organizers/${organizer.id}/events/${event.id}/script.js" defer crossorigin="anonymous"></script>
+</c:if>
 ```
