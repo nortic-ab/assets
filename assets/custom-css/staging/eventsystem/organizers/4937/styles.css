@@ -1,6 +1,0 @@
-/*
- * Parken Zoo (organizer 4937): custom background on the Klarna payment page.
- */
-.payment-page.klarna {
-  background-image: url('assets/parken-zoo.jpg') !important;
-}

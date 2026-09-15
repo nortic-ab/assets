@@ -1,14 +1,14 @@
-name: Deploy custom CSS to Firebase Hosting
+name: Deploy hosting (custom CSS/JS) to Firebase
 
 on:
   push:
     branches:
       - main
     paths:
-      - assets/custom-css/**
+      - assets/hosting/**
       - firebase.json
       - .firebaserc
-      - .github/workflows/deploy-custom-css.yaml
+      - .github/workflows/deploy-hosting.yaml
   workflow_dispatch:
 
 concurrency:
@@ -26,7 +26,7 @@ jobs:
         with:
           persist-credentials: false
 
-      # No build step: the files under assets/custom-css are deployed as-is.
+      # No build step: the files under assets/hosting are deployed as-is.
       - uses: FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a # v0.11.0
         with:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NORTIC_ASSETS }}
