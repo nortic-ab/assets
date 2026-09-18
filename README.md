@@ -107,6 +107,8 @@ Requests for a `styles.css` or `script.js` at one of the paths above that do not
 3. Open a PR. On merge to `main`, `.github/workflows/deploy-hosting.yaml` deploys to Firebase Hosting (no build step).
 4. Verify in staging EventSystem, then add the same files under `prod/`.
 
+Working with an AI assistant on a theme: the project skill in `.claude/skills/custom-css-theme/` (type `/custom-css-theme` in Claude Code, or just describe the organizer, event and brand) carries the dagny selectors, known quirks and the local verification routine.
+
 Example (`custom-css/prod/eventsystem/organizers/4937/styles.css`):
 
 ```css
