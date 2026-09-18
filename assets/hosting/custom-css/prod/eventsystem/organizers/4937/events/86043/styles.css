@@ -43,6 +43,11 @@ footer.page-footer {
 /* ---------------------------------------------------------------------------
  * 2. Hero
  * ------------------------------------------------------------------------- */
+/* dagny reserves 35-75 % of the width above the title to show off the event photo; the poster is
+   already the fixed page background here, so a fixed, modest offset is enough. */
+div#main-ribbon {
+  padding-top: 140px;
+}
 div#main-ribbon > h1 {
   font-family: 'Creepster', 'Roboto Slab', serif;
   font-weight: 400;
@@ -58,6 +63,14 @@ div#main-ribbon .event-info {
 }
 div#main-ribbon .event-info > i.material-icons {
   color: var(--pz-glow);
+}
+/* The info chips sit in a horizontal scroller; when they run a hair wider than the hero, browsers
+   with classic scrollbars draw a grey bar under the row. Keep it scrollable, hide the bar. */
+div#main-ribbon .slider-wrapper {
+  scrollbar-width: none;
+}
+div#main-ribbon .slider-wrapper::-webkit-scrollbar {
+  display: none;
 }
 section#top div.event-information:not(.minimized) {
   background: rgba(26, 15, 42, 0.82);
@@ -877,6 +890,20 @@ div#basket .price-container {
  * 10. Mobile
  * ------------------------------------------------------------------------- */
 @media (max-width: 600px) {
+  div#main-ribbon {
+    padding-top: 56px;
+  }
+  /* Stack the info chips instead of dagny's one-line horizontal scroller, which cuts the date off */
+  div#main-ribbon .slider-wrapper > .slider-inner {
+    float: none;
+    white-space: normal;
+  }
+  div#main-ribbon .slider-wrapper > .slider-inner > .event-info.slider-item {
+    display: block;
+    height: auto;
+    padding-right: 0;
+    margin-bottom: 6px;
+  }
   div#main-ribbon > h1 {
     font-size: 40px;
   }
