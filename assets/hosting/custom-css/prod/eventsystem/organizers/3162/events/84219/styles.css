@@ -1,0 +1,808 @@
+/*
+ * Midsommarfesten i Leksand (organizer 3162, event 84219): event theme for the dagny event page.
+ *
+ * Brand: green #598353 and mist #E2E7E2, the white logo, the woven folk ribbon and the display
+ * face Sloke (Bold, the weight midsommarfesten.se uses for its uppercase headings), all served
+ * from the organizer's assets folder. IBM Plex Mono is the label face the site already uses.
+ * Loaded last in <head>, so selectors mirror dagny.css for equal specificity; !important only
+ * against inline styles.
+ */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+@font-face {
+  font-family: 'Sloke';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../../assets/sloke-bold.woff2') format('woff2');
+}
+
+:root {
+  --mf-green: #598353;
+  --mf-green-deep: #3f6140;
+  --mf-ink: #2f4a31;
+  --mf-mist: #e2e7e2;
+  --mf-mist-deep: #cfd8cf;
+  --mf-paper: #f4f6f2;
+  --mf-white: #ffffff;
+  --mf-muted: rgba(47, 74, 49, 0.65);
+  --mf-red: #b8443d;
+  --mf-ribbon: url('../../assets/band-gront.svg');
+  --mf-display: 'Sloke', 'Roboto', Arial, sans-serif;
+  --mf-mono: 'IBM Plex Mono', 'Roboto Mono', monospace;
+}
+
+/* ---------------------------------------------------------------------------
+ * 1. Ground
+ * ------------------------------------------------------------------------- */
+body,
+.st-content {
+  background-color: var(--mf-mist);
+  color: var(--mf-ink);
+}
+a {
+  color: var(--mf-green-deep);
+}
+footer.page-footer {
+  opacity: 1;
+}
+footer.page-footer,
+footer.page-footer #left-column > a:not(#nortic-footer-link) {
+  color: var(--mf-ink);
+}
+footer #divider {
+  border-right-color: var(--mf-ink);
+}
+footer.page-footer img {
+  filter: brightness(0) saturate(100%) invert(24%) sepia(14%) saturate(900%) hue-rotate(80deg) brightness(95%);
+}
+
+/* ---------------------------------------------------------------------------
+ * 2. Hero: the white logo above the title, Sloke for the title
+ * ------------------------------------------------------------------------- */
+/* dagny reserves 35-75 % of the width above the title to show off an event photo; with the textile
+   background that is just empty space, so use a fixed, modest offset instead. */
+div#main-ribbon {
+  padding-top: 110px;
+  padding-bottom: 48px;
+}
+div#main-ribbon::before {
+  content: '';
+  display: block;
+  width: min(460px, 78vw);
+  aspect-ratio: 1200 / 378;
+  margin-bottom: 18px;
+  background: url('../../assets/logo-white.webp') no-repeat left center / contain;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+}
+div#main-ribbon > h1 {
+  font-family: var(--mf-display);
+  font-weight: 700;
+  font-size: 48px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--mf-white);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+}
+div#main-ribbon .event-info {
+  font-family: var(--mf-mono);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--mf-white) !important;
+}
+/* The event has no image of its own, so dagny falls back to its blue stock photo (set inline in the
+   page). The fixed background layer becomes plain mist so the page reads as one surface, and the
+   hero gets its own gradient node below. Remove these rules if a real event image is added. */
+section#top #background-container {
+  background-color: var(--mf-mist);
+  background-image: none !important;
+  filter: none !important;
+}
+/* Hero background node: a plain green gradient, exactly the height of the hero section, sitting
+   above the fixed layer and below the ribbon content. */
+section#top::before {
+  content: '';
+  position: absolute;
+  /* .st-content leaves a strip above <main> where dagny's header icons sit; reach up under it */
+  inset: -80px 0 0 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, #5f8a58 0%, var(--mf-green) 55%, var(--mf-green-deep) 100%);
+}
+section#top div.event-information:not(.minimized) {
+  background: rgba(63, 97, 64, 0.88);
+  border-radius: 8px;
+}
+
+/* ---------------------------------------------------------------------------
+ * 3. Buttons and the organizer theme classes
+ * ------------------------------------------------------------------------- */
+.btn,
+.btn-large {
+  background-color: var(--mf-green-deep);
+  color: var(--mf-white);
+  border-radius: 8px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 0 4px 14px rgba(63, 97, 64, 0.25);
+}
+.btn.btn-flat,
+.btn-flat.btn-plain {
+  background-color: transparent;
+  color: var(--mf-green-deep);
+  box-shadow: none;
+}
+.btn:hover,
+.btn-large:hover,
+.btn:focus,
+.btn-large:focus {
+  background-color: var(--mf-green);
+  color: var(--mf-white);
+}
+.btn:focus-visible,
+.btn-large:focus-visible {
+  outline: 3px solid var(--mf-green);
+  outline-offset: 2px;
+}
+.theme-background-color {
+  background-color: var(--mf-green-deep);
+  color: var(--mf-white);
+}
+.theme-background-color-on-hover:hover {
+  background-color: var(--mf-green);
+  color: var(--mf-white);
+}
+.theme-background-color-override {
+  background-color: var(--mf-green) !important;
+}
+.theme-text-color-override {
+  color: var(--mf-white) !important;
+}
+.theme-secondary-background-color,
+.theme-secondary-background-color:hover {
+  background-color: var(--mf-green);
+  color: var(--mf-white);
+}
+.theme-color,
+.theme-secondary-color {
+  color: var(--mf-green-deep);
+  fill: var(--mf-green-deep);
+}
+.spinner-color-secondary {
+  border-color: var(--mf-green);
+}
+
+/* ---------------------------------------------------------------------------
+ * 4. Calendar: paper card with the folk ribbon woven along the top
+ * ------------------------------------------------------------------------- */
+.filter-calender-base #calendar-wrapper > div {
+  position: relative;
+  background: var(--mf-paper);
+  border: 1px solid var(--mf-mist-deep);
+  border-radius: 12px;
+  box-shadow: 0 18px 40px rgba(47, 74, 49, 0.12);
+  padding-top: 14px;
+}
+.filter-calender-base #calendar-wrapper > div::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 30px;
+  right: 30px;
+  height: 14px;
+  background: var(--mf-ribbon) repeat-x center / auto 14px;
+  pointer-events: none;
+}
+.filter-calender-base .wrapper .calendar-header {
+  padding-top: 40px;
+}
+.filter-calender-base .calendar-header .current-date {
+  font-family: var(--mf-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--mf-green-deep);
+}
+.filter-calender-base .calendar-header .icons span {
+  color: var(--mf-green-deep);
+}
+.filter-calender-base .calendar-header .icons span:hover {
+  background: var(--mf-mist);
+}
+.filter-calender-base .calendar li {
+  color: var(--mf-ink);
+}
+.filter-calender-base .calendar .weeks li {
+  font-family: var(--mf-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mf-green);
+}
+.filter-calender-base .days li.selectable {
+  color: var(--mf-white);
+  font-weight: 700;
+}
+.filter-calender-base .days li::before {
+  pointer-events: none;
+  transition: transform 0.15s ease;
+}
+.filter-calender-base .days li.selectable::before,
+.filter-calender-base .days li.selectable.bookable::before {
+  background-color: var(--mf-green);
+}
+.filter-calender-base .days li.selectable.bookable.half-sold::before {
+  background-color: var(--mf-green-deep);
+}
+.filter-calender-base .calendar .days li.selectable.selected {
+  color: var(--mf-white);
+}
+.filter-calender-base .calendar .days li.selectable.selected::before {
+  background-color: var(--mf-ink);
+  box-shadow:
+    0 0 0 3px var(--mf-paper),
+    0 0 0 5px var(--mf-green);
+}
+.filter-calender-base .days li.selectable:not(.selected):hover::before {
+  background: var(--mf-green-deep);
+  transform: translate(-50%, -50%) scale(1.06);
+}
+.filter-calender-base .days li:not(.selectable):hover::before {
+  background: var(--mf-mist);
+}
+#flex-info-wrapper.info-text {
+  color: var(--mf-ink);
+}
+
+/* ---------------------------------------------------------------------------
+ * 5. Show listing: white sheet, ribbon header, green date coins
+ * ------------------------------------------------------------------------- */
+section#active-events #show-listing {
+  background-color: var(--mf-white);
+  color: var(--mf-ink);
+  border: 1px solid var(--mf-mist-deep);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(47, 74, 49, 0.14);
+}
+section#active-events #show-listing::before {
+  content: '';
+  display: block;
+  height: 14px;
+  margin: 24px 30px 0;
+  background: var(--mf-ribbon) repeat-x center / auto 14px;
+}
+section#active-events #show-listing .month-name {
+  font-family: var(--mf-mono);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--mf-green);
+}
+section#active-events #show-listing > #show-listing-body .show-listing-show {
+  border-bottom: 1px solid var(--mf-mist);
+}
+section#active-events #show-listing #show-listing-body .show-listing-show:hover {
+  background-color: var(--mf-paper);
+}
+section#active-events #show-listing > #show-listing-body .show-listing-show.unnumbered-show.expanded {
+  background-color: var(--mf-paper);
+}
+section#active-events #show-listing > #show-listing-body .show-listing-show .show-info,
+section#active-events #show-listing > #show-listing-body .show-listing-show .price-range {
+  color: var(--mf-muted);
+}
+section#active-events #show-listing > #show-listing-body .arenaLocationLink,
+section#active-events #show-listing .read-more-info-link {
+  color: var(--mf-green-deep);
+}
+.dateball {
+  background-color: var(--mf-green);
+}
+.dateball span {
+  color: var(--mf-white);
+  font-family: var(--mf-mono);
+  font-weight: 600;
+}
+.show-listing-show:hover .dateball,
+.show-listing-show.expanded .dateball {
+  background-color: var(--mf-green-deep);
+}
+.show-listing-show .no-date-show {
+  color: var(--mf-white);
+}
+.sold-out-box {
+  background-color: var(--mf-ink) !important;
+  color: var(--mf-white) !important;
+}
+.show-listing-arrow i.material-icons.theme-color {
+  color: var(--mf-green-deep);
+}
+
+/* ---------------------------------------------------------------------------
+ * 6. Ticket cards (unnumbered show, expands inline)
+ * ------------------------------------------------------------------------- */
+section#active-events .container .booking-contents.unnumbered-show {
+  background-color: var(--mf-paper);
+}
+section#active-events .container .booking-contents.unnumbered-show hr {
+  background-color: var(--mf-mist-deep);
+}
+section#active-events .container .unnumbered-show h2 {
+  color: var(--mf-ink);
+}
+.unnumbered-show-container .supply-info.list-info {
+  color: var(--mf-muted);
+}
+.unnumbered-show-container .show-category-row .show-category-container .show-category,
+.unnumbered-show-container .show-category-row .show-category-container .show-category:has(div.available-at) {
+  background: var(--mf-white);
+  border: 1px solid var(--mf-mist-deep);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(47, 74, 49, 0.1);
+}
+.show-category-container .list-title {
+  color: var(--mf-ink);
+}
+section#active-events .list-price {
+  font-family: var(--mf-mono);
+  font-weight: 600;
+  color: var(--mf-green-deep);
+  font-size: 15px;
+}
+.show-category-container .show-category-info.list-info {
+  color: var(--mf-muted);
+}
+.unnumbered-show-container .show-category-row .show-category-container .show-category .sold-out-banner {
+  background-color: var(--mf-ink);
+  color: var(--mf-white);
+}
+.booking-contents .amount-blob.plus,
+.booking-contents .amount-blob.minus {
+  background-color: var(--mf-green-deep);
+  color: var(--mf-white);
+}
+.booking-contents .amount-blob.amount {
+  background-color: var(--mf-white);
+  color: var(--mf-ink);
+  border: 1px solid var(--mf-mist-deep);
+}
+.booking-contents .amount-blob.amount.zero {
+  border-color: var(--mf-mist);
+}
+.booking-contents .amount-blob .amount-indicator {
+  color: var(--mf-ink);
+}
+.booking-contents .amount-blob.disabled {
+  background-color: var(--mf-mist-deep) !important;
+  color: var(--mf-white);
+}
+/* Category with a later release date: dagny lays the "Släpps" chip over the amount controls and
+   relies on them being white on white; our bordered and tinted blobs peek out around it. */
+.booking-contents .amount-blob-container:has(> .available-at) .amount-blob {
+  visibility: hidden;
+}
+.unnumbered-show-container a.btn.open-addons {
+  background-color: var(--mf-ink) !important;
+  color: var(--mf-white) !important;
+}
+
+/* ---------------------------------------------------------------------------
+ * 7. Modal and checkout: mist background, white cards, green accents
+ * ------------------------------------------------------------------------- */
+.modal__bg {
+  background-color: rgba(47, 74, 49, 0.72);
+}
+.modal__content {
+  background-color: var(--mf-mist);
+  color: var(--mf-ink);
+}
+section#booking.payment-page.klarna {
+  background-color: var(--mf-mist) !important;
+  background-image: none !important;
+}
+section#booking .booking-contents .payment-list {
+  background-color: var(--mf-mist);
+  color: var(--mf-ink);
+}
+/* dagny centres the list with left: 50% + translate(-50%, 0), but the slideInUp entrance from
+   animate.css replaces that transform for its 0.3 s, so the list slides in with its left edge at the
+   middle of the screen and then jumps half a width to the left. Same slide, with the centring kept.
+   Below 600px dagny skips the animation and centres with margins instead. */
+@media (min-width: 601px) {
+  section#booking .booking-contents .payment-list.animated.slideInUp {
+    animation-name: mf-payment-list-slide-in;
+  }
+}
+@keyframes mf-payment-list-slide-in {
+  from {
+    transform: translate3d(-50%, 100%, 0);
+    visibility: visible;
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+section#booking .booking-contents .payment-list header.payment-section-header h2 {
+  font-family: var(--mf-display);
+  font-weight: 700;
+  font-size: 15pt;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--mf-green-deep);
+}
+section#booking .booking-contents .payment-list header.payment-section-header p {
+  color: var(--mf-ink);
+}
+section#booking .booking-contents .payment-list header.payment-section-header p span:not(.spacer) {
+  background: var(--mf-green-deep);
+  color: var(--mf-white);
+}
+section#booking.payment-page .booking-contents .payment-list .list-box .voucher-code-used,
+section#booking.payment-page .booking-contents .payment-list .list-box .voucher-code-input,
+section#booking.payment-page .booking-contents .payment-list .list-box .addon,
+section#booking.payment-page .booking-contents .payment-list .list-box .addon-empty,
+section#booking.payment-page .booking-contents .payment-list .list-box .ticket,
+section#booking.payment-page .booking-contents .payment-list .list-box .used-voucher-code {
+  background-color: var(--mf-white);
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px var(--mf-mist-deep);
+}
+section#booking.payment-page .booking-contents .payment-list .list-box .empty {
+  background-color: var(--mf-paper);
+  border-color: var(--mf-mist-deep);
+}
+section#booking.payment-page .booking-contents .payment-list .list-box-background {
+  background-color: var(--mf-white);
+}
+section#booking .list-title {
+  color: var(--mf-ink);
+}
+section#booking .list-info {
+  color: var(--mf-muted);
+}
+section#booking .list-price,
+section#booking.payment-page .booking-contents .payment-list .summary-ticket-price,
+section#booking.payment-page .booking-contents .payment-list .summary-details-price {
+  font-family: var(--mf-mono);
+  font-weight: 600;
+  color: var(--mf-green-deep);
+}
+section#booking.payment-page .booking-contents .payment-list i.material-icons {
+  color: var(--mf-ink);
+}
+section#booking.payment-page .booking-contents .payment-list #details #details-list .detail-container,
+section#booking.payment-page .booking-contents .payment-list #details #details-list .detail-container.gdpr-container {
+  background-color: var(--mf-white);
+  border: 1px solid var(--mf-mist-deep);
+  border-radius: 8px;
+  box-shadow: none;
+  color: var(--mf-ink);
+}
+section#booking.payment-page.klarna .booking-contents .payment-list #details #details-list .expandable-detail {
+  background-color: var(--mf-paper);
+}
+section#booking.payment-page .booking-contents .payment-list #details #details-list .detail-container p {
+  color: var(--mf-ink);
+}
+section#booking.payment-page .booking-contents .payment-list #details #details-list .detail-container p a {
+  color: var(--mf-green-deep);
+}
+section#booking.payment-page .booking-contents .payment-list #details .klarna-detail-container {
+  border-top-color: var(--mf-mist-deep);
+}
+section#booking.payment-page
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .tickets-detail-container
+  img.payment-icon,
+section#booking.payment-page
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container
+  img.payment-icon {
+  filter: brightness(0) saturate(100%) invert(30%) sepia(20%) saturate(700%) hue-rotate(75deg) brightness(90%);
+}
+/* Insurance: green when insured, quiet grey-green when declined; keyed on the checked radio */
+section#booking.payment-page.klarna .booking-contents .payment-list #details #details-list .insurance-detail-container,
+section#booking.payment-page.klarna
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container.selected,
+section#booking.payment-page.klarna
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container
+  .expandable-detail {
+  background-color: var(--mf-white);
+}
+section#booking.payment-page.klarna
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container.selected
+  .expandable-detail {
+  background-color: var(--mf-white) !important;
+}
+section#booking.payment-page.klarna
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container
+  .selection-row.not-selected,
+section#booking.payment-page.klarna
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container
+  .selection-row:has(.no [type='radio']:checked) {
+  background-color: var(--mf-red);
+  color: var(--mf-white);
+}
+section#booking.payment-page.klarna
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container
+  .selection-row.selected,
+section#booking.payment-page.klarna
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container
+  .selection-row:has(.yes [type='radio']:checked) {
+  background-color: var(--mf-green);
+  color: var(--mf-white);
+}
+section#booking .payment-list a.basket-color,
+section#booking .payment-list .basket-color {
+  color: var(--mf-green-deep) !important;
+}
+.basket-cart-change-order h3 {
+  color: var(--mf-green-deep);
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card {
+  background-color: var(--mf-white);
+  border: 1px solid var(--mf-mist-deep);
+  border-radius: 10px;
+  color: var(--mf-ink);
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .addon-name,
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .addon-price {
+  color: var(--mf-green-deep);
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-content p {
+  color: var(--mf-ink);
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-content p a,
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .read-more-button {
+  color: var(--mf-green-deep) !important;
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-action {
+  background-color: transparent;
+  border-top: 1px solid var(--mf-mist);
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-action label {
+  color: var(--mf-ink);
+}
+section#booking.payment-page .booking-contents .payment-list #addons .card-container .banner {
+  background-color: var(--mf-green-deep);
+  color: var(--mf-white);
+}
+section#booking.payment-page.klarna .booking-contents .payment-list .premium-ticket-detail-container::after {
+  display: none;
+}
+section#booking .booking-contents .payment-list label[for='accept-terms'] {
+  color: var(--mf-ink);
+}
+section#booking .booking-contents .payment-list a.terms-link,
+section#booking .booking-contents .payment-list a.cancellation-insurance-info {
+  color: var(--mf-green-deep);
+}
+section#booking.payment-page .payment-list .input-field label {
+  color: var(--mf-muted);
+}
+section#booking.payment-page .payment-list .input-field input[type='email']:focus + label,
+section#booking.payment-page .payment-list .input-field input[type='tel']:focus + label,
+section#booking.payment-page .payment-list .input-field input[type='text']:focus + label,
+section#booking.payment-page .payment-list .input-field .prefix.active {
+  color: var(--mf-green-deep);
+}
+section#booking.payment-page .payment-list .input-field input[type='text']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field input[type='email']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field input[type='tel']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field input[type='number']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field input[type='password']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field input[type='search']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field input[type='url']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field input[type='date']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field input[type='time']:focus:not([readonly]),
+section#booking.payment-page .payment-list .input-field textarea.materialize-textarea:focus:not([readonly]) {
+  border-bottom: 1px solid var(--mf-green);
+  box-shadow: 0 1px 0 0 var(--mf-green);
+}
+section#booking.payment-page
+  .booking-contents
+  .payment-list
+  input[type='checkbox'].filled-in:checked:not([disabled])
+  + label:after {
+  border: 2px solid var(--mf-green-deep);
+  background-color: var(--mf-green-deep);
+}
+section#booking [type='radio'].with-gap:checked + label:before,
+section#booking [type='radio'].with-gap:checked + label:after {
+  border: 2px solid var(--mf-green-deep);
+}
+section#booking [type='radio'].with-gap:checked + label:after {
+  background-color: var(--mf-green-deep);
+}
+button#addon-modal-go-back {
+  background-color: var(--mf-green-deep) !important;
+  color: var(--mf-white) !important;
+}
+section#booking .modal {
+  background-color: var(--mf-white);
+  color: var(--mf-ink);
+}
+
+/* ---------------------------------------------------------------------------
+ * 7b. Small JS modals (waitlist, campaign code, access code): dagny paints them blue
+ * ------------------------------------------------------------------------- */
+.nortic-modal-overlay {
+  background-color: var(--mf-ink);
+}
+.nortic-modal {
+  background-color: var(--mf-paper);
+  color: var(--mf-ink);
+  border: 1px solid var(--mf-mist-deep);
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgba(47, 74, 49, 0.35);
+}
+.nortic-modal h3 {
+  font-family: var(--mf-display);
+  font-weight: 700;
+  font-size: 22px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--mf-green-deep);
+  margin-bottom: 28px;
+}
+.nortic-modal h3 i.material-icons {
+  color: var(--mf-green);
+}
+.nortic-modal p {
+  color: var(--mf-ink);
+  opacity: 0.85;
+}
+.nortic-modal .close-button i.material-icons {
+  color: var(--mf-ink);
+}
+.nortic-modal .input-field.big-ass-input-field {
+  border: 1px solid var(--mf-mist-deep);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.nortic-modal .input-field.big-ass-input-field input[type='text'] {
+  color: var(--mf-ink);
+}
+.nortic-modal .input-field.big-ass-input-field input[type='text']::placeholder {
+  color: var(--mf-muted);
+}
+.nortic-blue-background,
+.big-ass-input-field div.flat-button {
+  background-color: var(--mf-green-deep);
+  color: var(--mf-white);
+  border-radius: 6px;
+}
+.big-ass-input-field div.flat-button:hover {
+  background-color: var(--mf-green);
+}
+.big-ass-input-field div.flat-button.disabled {
+  background-color: var(--mf-mist-deep);
+  color: var(--mf-muted);
+}
+
+/* ---------------------------------------------------------------------------
+ * 8. Floating basket
+ * ------------------------------------------------------------------------- */
+div#basket,
+div#basket-cart,
+div#basket-cart-go-to-payment,
+div#addons-basket {
+  background-color: var(--mf-green);
+  color: var(--mf-white);
+}
+div#basket .price,
+div#addons-basket .price,
+div#basket-cart .title-container,
+div#basket-cart-go-to-payment .text-wrapper {
+  color: var(--mf-white);
+}
+div#basket .amount-blob,
+div#basket .proceed-arrow-blob,
+div#addons-basket .amount-blob,
+div#addons-basket .proceed-arrow-blob,
+div#basket-cart .amount-blob,
+div#basket-cart-go-to-payment .payment-blob {
+  background-color: var(--mf-ink);
+}
+div#basket .amount-blob .icon i.material-icons,
+div#basket .amount-blob .amount,
+div#addons-basket .amount-blob .amount,
+div#basket .proceed-arrow-blob .proceed-arrow,
+div#addons-basket .amount-blob i.material-icons,
+div#basket-cart .amount-blob .icon i.material-icons,
+div#basket-cart-go-to-payment .payment-blob i.material-icons {
+  color: var(--mf-white);
+}
+div#basket-cart .chip {
+  background-color: var(--mf-white);
+  color: var(--mf-ink);
+}
+div#basket-cart:hover,
+div#basket-cart-go-to-payment:hover {
+  background-color: var(--mf-green-deep);
+}
+div#add-to-basket-cart .btn,
+div#add-to-basket-cart .valign-wrapper {
+  background-color: var(--mf-green-deep);
+  color: var(--mf-white);
+}
+div#add-to-basket-cart:hover .btn {
+  background-color: var(--mf-green);
+}
+div#basket-overlay {
+  background-color: var(--mf-ink);
+}
+/* dagny gives #basket a fixed 170px width and a 60px price box that collides with the arrow circle
+   for prices like "200 SEK". Widen the pill and let the price sit centred between the two circles. */
+div#basket {
+  width: 224px;
+}
+div#basket .price-container {
+  left: 58px;
+  right: 58px;
+  width: auto;
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------------
+ * 9. Mobile
+ * ------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  div#main-ribbon {
+    padding-top: 84px;
+  }
+  div#main-ribbon::before {
+    width: min(320px, 82vw);
+    margin-bottom: 12px;
+  }
+  div#main-ribbon > h1 {
+    font-size: 34px;
+  }
+  .filter-calender-base #calendar-wrapper > div::before,
+  section#active-events #show-listing::before {
+    left: 20px;
+    right: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    height: 12px;
+    background-size: auto 12px;
+  }
+}
