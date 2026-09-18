@@ -283,8 +283,13 @@ section#active-events #show-listing::before {
   content: '';
   display: block;
   height: 14px;
-  margin: 24px 30px 0;
+  margin: 24px 30px 18px;
   background: var(--mf-ribbon) repeat-x center / auto 14px;
+}
+/* No month headings above the shows; the "pick a date" hint (.fake-month) that the calendar
+   toggles is kept. The ribbon's bottom margin takes over the spacing to the first row. */
+section#active-events #show-listing .show-listing-month:not(.fake-month) {
+  display: none;
 }
 section#active-events #show-listing .month-name {
   font-family: var(--mf-mono);
