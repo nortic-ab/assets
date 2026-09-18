@@ -25,7 +25,8 @@
   --mf-mist-deep: #cfd8cf;
   --mf-paper: #f4f6f2;
   --mf-white: #ffffff;
-  --mf-muted: rgba(47, 74, 49, 0.65);
+  /* opaque so the 4.5:1 text contrast holds on white, paper and mist alike (5.97 / 5.49 / 4.77) */
+  --mf-muted: #4f6a52;
   --mf-red: #b8443d;
   --mf-ribbon: url('../../assets/band-gront.svg');
   --mf-display: 'Sloke', 'Roboto', Arial, sans-serif;
@@ -798,11 +799,16 @@ div#basket .price-container {
   }
   .filter-calender-base #calendar-wrapper > div::before,
   section#active-events #show-listing::before {
-    left: 20px;
-    right: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
     height: 12px;
     background-size: auto 12px;
+  }
+  /* the calendar ribbon is absolutely positioned, the listing ribbon is in flow */
+  .filter-calender-base #calendar-wrapper > div::before {
+    left: 20px;
+    right: 20px;
+  }
+  section#active-events #show-listing::before {
+    margin-left: 20px;
+    margin-right: 20px;
   }
 }
