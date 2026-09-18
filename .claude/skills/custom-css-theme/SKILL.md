@@ -99,9 +99,10 @@ Follow `references/verification.md` for the mechanics (local EventSystem + Fireb
 3. Show listing: month rows, a show row with date ball, a sold-out show, a not-yet-released show if the event has one.
 4. Ticket cards: +/− blobs, disabled minus, a category with a later release date (the chip covers the blobs), addons button.
 5. Basket pill / cart button with a three-digit price ("200 SEK") and the hover state.
-6. Payment modal: the slide-in (no jump), section headers with their right-hand text, order rows and the expanded "Din order" details (group headings, divider), insurance yes and no, addon cards including the "premium" one and its "Läs mer" modal (desktop and phone), the VILLKOR terms modal scrolled to its last paragraph (links), Klarna box and icon, terms checkbox, input focus colours.
-7. Small modals: waitlist and campaign code.
-8. `document.fonts` reports your fonts loaded; no console errors; both `<link href*="/custom-css/">` tags present.
+6. Payment modal: the slide-in (no jump), section headers with their right-hand text, order rows and the expanded "Din order" details (group headings, divider), insurance yes and no, addon cards including the "premium" one and its "Läs mer" modal (desktop and phone), Klarna box and icon, terms checkbox, input focus colours.
+7. The four Materialize modals that share dagny's terms-modal rules, each opened and scrolled to its end: `#insurance-terms-modal` (VILLKOR link; check the links in the last paragraph), `#terms-modal` ("Villkor & integritetspolicy"; the organizer's own HTML), `#read-more-about-simple-addon-modal` and `#customer-data-modal` (no local trigger; open them directly, see `references/verification.md`).
+8. Small modals: waitlist and campaign code.
+9. `document.fonts` reports your fonts loaded; no console errors; both `<link href*="/custom-css/">` tags present.
 
 Report in the user's language: what changed, what you verified and how, what you could not verify locally, and anything the customer must confirm (font licence, colours you had to choose).
 
