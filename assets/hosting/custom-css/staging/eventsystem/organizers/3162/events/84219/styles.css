@@ -91,6 +91,18 @@ div#main-ribbon .event-info {
   letter-spacing: 0.06em;
   color: var(--mf-white) !important;
 }
+/* dagny's 18px plus the wide mono space put the label too far from its icon */
+div#main-ribbon .event-info > i.material-icons {
+  margin-right: 6px;
+}
+/* The info chips sit in a horizontal scroller; when they run a hair wider than the hero, browsers
+   with classic scrollbars draw a grey bar under the row. Keep it scrollable, hide the bar. */
+div#main-ribbon .slider-wrapper {
+  scrollbar-width: none;
+}
+div#main-ribbon .slider-wrapper::-webkit-scrollbar {
+  display: none;
+}
 /* The event has no image of its own, so dagny falls back to its blue stock photo (set inline in the
    page). The fixed background layer becomes plain mist so the page reads as one surface, and the
    hero gets its own gradient node below. Remove these rules if a real event image is added. */
@@ -432,6 +444,23 @@ section#booking .booking-contents .payment-list header.payment-section-header h2
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: var(--mf-green-deep);
+}
+/* Sloke runs wide: dagny's fixed 50/50 columns let "Betalningsalternativ" run under "Säkra
+   betalningar". Size the columns by content and let the right one drop below when the row is
+   too narrow. */
+section#booking .booking-contents .payment-list header.payment-section-header {
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+section#booking .booking-contents .payment-list header.payment-section-header > .col.s6 {
+  width: auto;
+  flex: 0 1 auto;
+  min-width: 0;
+  /* Materialize's .col has margin-left: auto, which in a flex row would push the heading right */
+  margin-left: 0;
+}
+section#booking .booking-contents .payment-list header.payment-section-header > .col.s6:last-child {
+  margin-left: auto;
 }
 section#booking .booking-contents .payment-list header.payment-section-header p {
   color: var(--mf-ink);
