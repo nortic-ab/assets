@@ -365,6 +365,24 @@ section#booking .booking-contents .payment-list {
   background-color: rgba(26, 15, 42, 0.9);
   color: var(--pz-bone);
 }
+/* dagny centres the list with left: 50% + translate(-50%, 0), but the slideInUp entrance from
+   animate.css replaces that transform for its 0.3 s, so the list slides in with its left edge at the
+   middle of the screen and then jumps half a width to the left. Same slide, with the centring kept.
+   Below 600px dagny skips the animation and centres with margins instead. */
+@media (min-width: 601px) {
+  section#booking .booking-contents .payment-list.animated.slideInUp {
+    animation-name: pz-payment-list-slide-in;
+  }
+}
+@keyframes pz-payment-list-slide-in {
+  from {
+    transform: translate3d(-50%, 100%, 0);
+    visibility: visible;
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
 section#booking.payment-page .booking-contents .payment-list .list-box .voucher-code-used,
 section#booking.payment-page .booking-contents .payment-list .list-box .voucher-code-input,
 section#booking.payment-page .booking-contents .payment-list .list-box .addon,
@@ -475,12 +493,151 @@ button#addon-modal-go-back {
   background-color: var(--pz-witch) !important;
   color: var(--pz-bone) !important;
 }
-section#booking .modal {
-  background-color: var(--pz-night);
+/* "Läs mer" modals (premium ticket, addons): dagny paints the shell blue (#3644aa) and the
+   description card white; the card's text inherits the theme's bone from .payment-list and
+   disappears on white. Dark shell, white card with dark text. */
+section#booking.payment-page #premium-ticket-modal .premium-ticket-modal-inner,
+section#booking.payment-page #addon-modals .addon-modal {
+  background-color: var(--pz-night-soft);
+  border: 1px solid rgba(255, 194, 75, 0.35);
+  border-radius: 12px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+}
+/* dagny dims the page behind the modal to 40 %; against the night background the modal barely
+   separates, so darken the backdrop more. */
+section#booking.payment-page #premium-ticket-modal .obfuscator,
+section#booking.payment-page #addon-modals .obfuscator {
+  opacity: 0.75;
+}
+section#booking.payment-page #premium-ticket-modal .description-header .light-or-dark-color,
+section#booking.payment-page #addon-modals .addon-modal .description-header .light-or-dark-color {
   color: var(--pz-bone);
 }
-section#booking .modal .close-modal i.material-icons {
+section#booking.payment-page #premium-ticket-modal .description-header .event-name,
+section#booking.payment-page #addon-modals .addon-modal .description-header .event-name {
+  color: var(--pz-glow);
+}
+section#booking.payment-page #premium-ticket-modal .description-info,
+section#booking.payment-page #addon-modals .addon-modal .description-info {
+  background-color: #ffffff;
+  color: #333333;
+  border-radius: 8px;
+  overflow: hidden;
+}
+section#booking.payment-page
+  #premium-ticket-modal
+  .description-info
+  #event-description-details
+  #short-event-description
+  > h1,
+section#booking.payment-page
+  #addon-modals
+  .addon-modal
+  .description-info
+  #event-description-details
+  #short-event-description
+  > h1 {
+  color: var(--pz-night);
+}
+section#booking.payment-page #premium-ticket-modal .description-info #event-description-details #long-description,
+section#booking.payment-page #premium-ticket-modal .description-info #event-description-details #long-description p,
+section#booking.payment-page #addon-modals .addon-modal .description-info #event-description-details #long-description,
+section#booking.payment-page
+  #addon-modals
+  .addon-modal
+  .description-info
+  #event-description-details
+  #long-description
+  p {
+  color: #333333;
+}
+/* Terms and "read more" modals (insurance terms, organizer terms, addon info, customer data):
+   dagny gives them a 350 px box, a grey close square and a 13 px heading. Lift the box off the
+   night background, make the close cross a quiet round button and give the legal text room. */
+section#booking .modal {
+  background-color: var(--pz-night-soft);
   color: var(--pz-bone);
+  border: 1px solid rgba(255, 194, 75, 0.35);
+  border-radius: 12px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+}
+section#booking.payment-page .booking-contents .payment-list #customer-data-modal,
+section#booking.payment-page .booking-contents .payment-list #insurance-terms-modal,
+section#booking.payment-page .booking-contents .payment-list #read-more-about-simple-addon-modal,
+section#booking.payment-page .booking-contents .payment-list #terms-modal {
+  max-width: 520px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 194, 75, 0.45) transparent;
+}
+section#booking .modal::-webkit-scrollbar {
+  width: 8px;
+}
+section#booking .modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+section#booking .modal::-webkit-scrollbar-thumb {
+  background: rgba(255, 194, 75, 0.45);
+  border-radius: 4px;
+}
+section#booking.payment-page .booking-contents .payment-list #customer-data-modal .close-modal,
+section#booking.payment-page .booking-contents .payment-list #insurance-terms-modal .close-modal,
+section#booking.payment-page .booking-contents .payment-list #read-more-about-simple-addon-modal .close-modal,
+section#booking.payment-page .booking-contents .payment-list #terms-modal .close-modal {
+  top: 8px;
+  right: 8px;
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+  border-radius: 50%;
+  background-color: transparent;
+}
+section#booking .modal .close-modal:hover {
+  background-color: rgba(255, 194, 75, 0.15);
+}
+section#booking .modal .close-modal i.material-icons {
+  color: var(--pz-glow);
+}
+section#booking.payment-page .booking-contents .payment-list #customer-data-modal .modal-content,
+section#booking.payment-page .booking-contents .payment-list #insurance-terms-modal .modal-content,
+section#booking.payment-page .booking-contents .payment-list #read-more-about-simple-addon-modal .modal-content,
+section#booking.payment-page .booking-contents .payment-list #terms-modal .modal-content {
+  padding: 56px 36px 40px;
+}
+section#booking .modal .modal-content h1 {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--pz-glow);
+  margin: 0 0 18px;
+}
+section#booking .modal .modal-content h2,
+section#booking .modal .modal-content h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--pz-bone);
+  margin: 22px 0 8px;
+}
+section#booking .modal .modal-content p,
+section#booking .modal .modal-content li {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--pz-bone);
+}
+section#booking .modal .modal-content li {
+  margin-bottom: 10px;
+}
+section#booking .modal .modal-content li::marker {
+  color: var(--pz-glow);
+}
+/* The terms text nests <p> inside <ul> and links carry inline color: black */
+section#booking.payment-page .booking-contents .payment-list #insurance-terms-modal #insurance-terms p,
+section#booking.payment-page .booking-contents .payment-list #terms-modal .modal-content p {
+  font-size: 15px;
+  line-height: 1.55;
+  margin: 0 0 14px;
+}
+section#booking .modal .modal-content a {
+  color: var(--pz-glow) !important;
 }
 
 /* ---------------------------------------------------------------------------
@@ -495,6 +652,14 @@ section#booking.payment-page .booking-contents .payment-list #details #details-l
 }
 section#booking.payment-page.klarna .booking-contents .payment-list #details #details-list .expandable-detail {
   background-color: rgba(15, 8, 24, 0.6);
+}
+/* Group headings ("Biljetter", "Tillval") and the divider inside the expanded order details */
+section#booking.payment-page .booking-contents .payment-list #details #details-list .expandable-detail h3 {
+  color: var(--pz-glow);
+}
+section#booking .booking-contents .payment-list .payment-section .content hr,
+section#booking.payment-page .booking-contents .payment-list #details #details-list .expandable-detail hr {
+  border-top-color: var(--pz-line);
 }
 section#booking.payment-page .booking-contents .payment-list #details #details-list .detail-container p {
   color: var(--pz-bone-dim);
@@ -580,6 +745,10 @@ section#booking.payment-page
   img.payment-icon {
   filter: brightness(0) invert(1) sepia(1) saturate(4) hue-rotate(345deg) brightness(1.05);
 }
+/* Klarna's K is a blue PNG; on the night surface it should read white like the other icons */
+section#booking.payment-page .booking-contents .payment-list img.payment-icon[alt='Klarna'] {
+  filter: brightness(0) invert(1);
+}
 .basket-cart-change-order h3 {
   color: var(--pz-glow);
 }
@@ -625,6 +794,17 @@ section#booking .payment-list .basket-color {
 }
 section#booking.payment-page .payment-list #addons .card.simple-addon-card .read-more-button {
   color: var(--pz-glow) !important;
+}
+
+/* On phones dagny stretches the modal to the full height, so its header ends up under the checkout's
+   own title row and close cross (a dagny default). Hide that row while the modal is open; the modal
+   has its own back arrow. */
+@media (max-width: 600px) {
+  section#booking.payment-page:has(#premium-ticket-modal .premium-ticket-modal-inner:not(.display-none))
+    header.booking-header,
+  section#booking.payment-page:has(#addon-modals .addon-modal:not(.display-none)) header.booking-header {
+    visibility: hidden;
+  }
 }
 
 /* ---------------------------------------------------------------------------
