@@ -1,7 +1,7 @@
 /*
  * Parken Zoo Halloween (event 7035, staging): video background in the top section.
- * Desktop/mobile variant is picked with matchMedia at the 700px breakpoint, webm first
- * with mp4 fallback. The background image stays underneath as poster/fallback and is
+ * Desktop/mobile variant is picked with matchMedia at the 700px breakpoint and swapped
+ * when the viewport crosses it, webm first with mp4 fallback. The background image stays underneath as poster/fallback and is
  * what users with prefers-reduced-motion get. The reduced-motion preference is also
  * followed at runtime: the video is removed when it turns on and recreated when it turns off.
  */
@@ -14,6 +14,7 @@
 
   const VIDEO_ID = 'custom-background-video'
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+  const mobileBreakpoint = window.matchMedia('(max-width: 700px)')
 
   function unmount() {
     const existing = document.getElementById(VIDEO_ID)
@@ -28,7 +29,7 @@
     if (reducedMotion.matches)
       return
 
-    const variant = window.matchMedia('(max-width: 700px)').matches ? 'mobile' : 'desktop'
+    const variant = mobileBreakpoint.matches ? 'mobile' : 'desktop'
     const sources = [
       { file: `parken-zoo-halloween-${variant}.webm`, type: 'video/webm' },
       { file: `parken-zoo-halloween-${variant}.mp4`, type: 'video/mp4' },
@@ -77,10 +78,15 @@
     video.play().catch(() => {})
   }
 
+  function subscribe(query) {
+    if (typeof query.addEventListener === 'function')
+      query.addEventListener('change', mount)
+    else if (typeof query.addListener === 'function')
+      query.addListener(mount)
+  }
+
   mount()
-  // One listener per script execution; the script itself runs once per page load.
-  if (typeof reducedMotion.addEventListener === 'function')
-    reducedMotion.addEventListener('change', mount)
-  else if (typeof reducedMotion.addListener === 'function')
-    reducedMotion.addListener(mount)
+  // One listener per query and script execution; the script itself runs once per page load.
+  subscribe(reducedMotion)
+  subscribe(mobileBreakpoint)
 })()
