@@ -76,6 +76,18 @@ Rules that come from experience, with the reason behind each:
 - **Fonts.** Google Fonts via `@import` on line one, `display=swap`. Self-hosted fonts as woff2 in the organizer's `assets/` with `@font-face { font-display: swap }`; `firebase.json` already sends `Access-Control-Allow-Origin: *` for font files, which cross-origin fonts require. Verify with `document.fonts.check('700 20px <Family>')`. A display face changes widths: re-check every heading that shares a row with something else (the payment section headers do).
 - **Klarna's checkout is an iframe you cannot style.** It is white; give `#klarna-box.list-box.list-box-background` a white background even in dark themes, otherwise a coloured frame shows around it.
 
+### Ship these in every theme
+
+Some dagny defects show in every theme, whatever the palette, and customers report them as "our" bugs. Put the fixes in each new stylesheet from the start; all of them are in the Midsommarfesten and Parken Zoo files, copy from there.
+
+- **The payment list "jumps in".** Its `slideInUp` entrance loses dagny's centring transform and snaps half a screen to the left when it finishes. Override `animation-name` with a keyframe that keeps `translate3d(-50%, …)` (desktop only). This is the one customers notice first; never skip it.
+- `div#basket` is 170 px wide and hides three-digit prices: 224 px plus a centred `.price-container`.
+- The "Släpps <date>" chip on a category with a later release date lies over the amount blobs: hide them with `:has(> .available-at)`.
+- The payment section headers are fixed 50/50 columns: size them by content and let the right-hand text wrap below.
+- The hero info chips can draw a grey scrollbar: hide it on `div#main-ribbon .slider-wrapper`.
+- The small "Läs mer" and terms modals (`#premium-ticket-modal`, `#insurance-terms-modal`, `#terms-modal`, `#read-more-about-simple-addon-modal`) keep dagny's blue shell, grey close square and inline-black links unless you theme them; next to a themed checkout they look broken.
+- The `h3` group headings ("Biljetter", "Tillval") inside the expanded order details and Klarna's `img.payment-icon` take no colour from the theme: set them explicitly.
+
 `references/dagny-quirks.md` lists every dagny and Materialize behaviour that has bitten a theme so far, with the selector and the fix. Read it once per theme; most of the fixes belong in every new stylesheet.
 
 ## Verify before you hand over
@@ -87,7 +99,7 @@ Follow `references/verification.md` for the mechanics (local EventSystem + Fireb
 3. Show listing: month rows, a show row with date ball, a sold-out show, a not-yet-released show if the event has one.
 4. Ticket cards: +/− blobs, disabled minus, a category with a later release date (the chip covers the blobs), addons button.
 5. Basket pill / cart button with a three-digit price ("200 SEK") and the hover state.
-6. Payment modal: the slide-in (no jump), section headers with their right-hand text, order rows, insurance yes and no, addon cards including the "premium" one, Klarna box, terms checkbox, input focus colours.
+6. Payment modal: the slide-in (no jump), section headers with their right-hand text, order rows and the expanded "Din order" details (group headings, divider), insurance yes and no, addon cards including the "premium" one and its "Läs mer" modal (desktop and phone), the VILLKOR terms modal scrolled to its last paragraph (links), Klarna box and icon, terms checkbox, input focus colours.
 7. Small modals: waitlist and campaign code.
 8. `document.fonts` reports your fonts loaded; no console errors; both `<link href*="/custom-css/">` tags present.
 

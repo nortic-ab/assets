@@ -14,18 +14,20 @@
 1. **The event exists locally** (`curl -s -o /dev/null -w '%{http_code}' http://localhost:8081/ticket/event/<id>` → 200 and the page has shows): just open it; `head.jsp` links your files.
 2. **It does not exist** (typical for a customer's new event): open another organizer's event that has the flow you need (locally `event/7035` → show `/ticket/show/248894` has an unnumbered show with a cart, addons and insurance) and swap your stylesheet in over the network. Never copy your files under that organizer.
 
+   Rewrite every request under the host organizer's folders (`custom-css` and `custom-js`) to the customer's folders. The page keeps requesting the host URLs in `head.jsp` order (organizer stylesheet, event stylesheet, organizer script, event script), so the customer's files arrive in the same order, and because the browser still believes it loaded the host URLs, relative `url('../../assets/…')` in the CSS and `new URL('../../assets/…', document.currentScript.src)` in the scripts resolve to host asset URLs, which the same route rewrites too. A customer file that does not exist comes back as the empty stylesheet/script through the hosting rewrites, so a theme without an organizer file or without scripts needs no special case.
+
    ```js
-   const EMU = 'http://localhost:5055/custom-css/staging/eventsystem/organizers/<yourOrg>'
-   const css = (await (await fetch(`${EMU}/events/<yourEvent>/styles.css`)).text())
-     .split(`'../../assets/`)
-     .join(`'${EMU}/assets/`) // relative asset URLs must become absolute
-   await page.route(/custom-css\/staging\/eventsystem\/organizers\/<hostOrg>\//, (route) => {
-     if (/\/events\/<hostEvent>\/styles\.css/.test(route.request().url()))
-       return route.fulfill({ status: 200, contentType: 'text/css', body: css })
-     return route.fulfill({ status: 200, contentType: 'text/css', body: '' }) // silence the host's own theme
+   const HOST_ORG = '<hostOrg>'
+   const HOST_EVENT = '<hostEvent>'
+   const MY_ORG = '<yourOrg>'
+   const MY_EVENT = '<yourEvent>'
+   await page.route(new RegExp(`/custom-(css|js)/staging/eventsystem/organizers/${HOST_ORG}/`), (route) => {
+     const url = route.request().url().replace(`/organizers/${HOST_ORG}/`, `/organizers/${MY_ORG}/`).replace(`/events/${HOST_EVENT}/`, `/events/${MY_EVENT}/`)
+     return route.continue({ url })
    })
-   await page.route(/custom-js\//, route => route.fulfill({ status: 200, contentType: 'application/javascript', body: '' }))
    ```
+
+   To compare with dagny's default instead, fulfil the same route with an empty body (`route.fulfill({ status: 200, contentType: 'text/css', body: '' })` for stylesheets, `application/javascript` for scripts). Confirm what was served with `page.on('response', …)` on `custom-css`/`custom-js` URLs.
 
 3. **Quick look without the flow**: append a `<link>` to `document.body` (a stylesheet appended to `<head>` with `addStyleTag` ends up before dagny's late sheets and loses).
 4. **A state you cannot reach locally** (not-released category, sold-out banner): inject the markup dagny would render (copy it from the JSP) and screenshot. Example: `container.insertAdjacentHTML('beforeend', '<div class="available-at"><i class="material-icons">schedule</i>Släpps <span>2027-06-24 19:00</span></div>')`.
@@ -37,6 +39,10 @@
 - Add tickets: `.amount-blob.plus:visible`; the floating `#basket` (pill) or `#basket-cart-go-to-payment` opens the payment modal.
 - Payment modal: `#material-modal section#booking .payment-list`. Locally the order creation takes ~10 s (Klarna); `waitForSelector(..., { timeout: 40000 })`. The `#basket-overlay` circle covers the page meanwhile.
 - Insurance "no": click `#material-modal .insurance-detail-container .no label`, then `waitForFunction(() => document.querySelector('#material-modal .insurance-detail-container .no [type=radio]:checked'))` — dagny hides the radio and shows a spinner while it saves.
+- "Läs mer" on the premium/addon card: click `#material-modal .read-more-button:visible`, wait for `#premium-ticket-modal .premium-ticket-modal-inner:not(.display-none)`.
+- Terms modal: click `#material-modal a.cancellation-insurance-info:visible` (the VILLKOR link), wait for `#insurance-terms-modal.open`. To see its last paragraph scroll `.scroller` (`el.scrollTop = el.scrollHeight`), not the modal element.
+- Expanded order details: click `#material-modal .tickets-detail-container .detail.expandable`, wait until `.tickets-detail-container .expandable-detail` no longer has `display: none`.
+- Comparing with dagny's default: run the same flow with the theme routed to an empty body. Several "bugs" (the payment list jump, the modal under the title row on phones, the beige-on-white modal text) exist without any theme; they are still worth fixing in the theme, and knowing that changes how you report them.
 - Waitlist modal: click a sold-out show on an event with waitlist → `.nortic-modal.waitlist-modal`.
 - Numbered shows navigate to a seat map page; the cart flow above is easier for checkout checks.
 
