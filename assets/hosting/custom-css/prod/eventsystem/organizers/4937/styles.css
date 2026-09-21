@@ -1,8 +1,16 @@
-#background-container {
+/*
+ * Parken Zoo (organizer 4937): organizer stylesheet.
+ *
+ * head.jsp links this file on every dagny page of the organizer, but the background photo is only
+ * wanted on the organizer page itself. Event and show pages carry data-eventid on <body>
+ * (eventPage.jsp, travelEventPage.jsp), the organizer page does not, so the rules are scoped to
+ * body:not([data-eventid]). Event themes under events/<id>/ set their own backgrounds.
+ */
+body:not([data-eventid]) #background-container {
   background-image: url('assets/parken-zoo.jpg') !important;
 }
 @media (max-width: 700px) {
-  #background-container {
+  body:not([data-eventid]) #background-container {
     background-image: url('assets/parken-zoo-mobile.jpg') !important;
   }
 }

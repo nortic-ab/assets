@@ -3,6 +3,13 @@
 Each entry: where it shows, why it happens, the fix that is known to work (all fixes live in
 `organizers/3162/events/84219/styles.css` unless noted). Selectors are dagny's own; copy them exactly.
 
+## Page hooks on `<body>`
+
+- `eventPage.jsp` (event and show pages): `<body id="st-container" class="event-page" data-eventid="…" data-organizerid="…">`; `travelEventPage.jsp` has the same id, class and `data-eventid`.
+- `organizerPage.jsp`: `<body data-organizerid="…">` — no `data-eventid`, no class; the page is also the only one with `#organizer-calendar` in the markup.
+- `travelPage.jsp`: `<body class="bg-light" data-organizerid="…">`.
+- Use them to scope organizer-level rules: `body:not([data-eventid]) …` for "not on an event or show page", `body.event-page …` for the opposite. Attribute selectors and `:not()` work everywhere, so prefer them over `:has()` for this.
+
 ## Hero (`section#top`, `div#main-ribbon`)
 
 - **Blue stock photo behind everything.** `#background-container` is `position: fixed` with an inline `background-image` from the image API (the event's image, or dagny's fallback), and `fadeBanner()` in `eventPage.js` writes inline `filter`/`transform` while scrolling. Fix: `section#top #background-container { background-color: <surface>; background-image: none !important; filter: none !important }` and paint the hero with `section#top::before { content: ''; position: absolute; inset: -80px 0 0 0; z-index: 2; pointer-events: none; background: <gradient> }`. Keep the fixed layer when the event has a real photo you want.
