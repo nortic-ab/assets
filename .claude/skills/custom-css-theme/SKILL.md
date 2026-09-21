@@ -36,6 +36,7 @@ assets/hosting/custom-js/<staging|prod>/eventsystem/organizers/<organizerId>/
 ```
 
 - Reference assets relatively: `url('assets/x.webp')` from the organizer file, `url('../../assets/x.webp')` from an event file. URLs resolve against the stylesheet URL.
+- The organizer file is linked on every dagny page of the organizer (organizer page, event and show pages, travel pages). When a rule should hit only some of them, scope it by the page hooks on `<body>`: event and show pages have `body#st-container.event-page[data-eventid]`, the organizer page has `body[data-organizerid]` without `data-eventid`, travel pages `body.bg-light`. So `body:not([data-eventid]) #background-container { … }` paints the organizer page only, and an event theme under `events/<id>/` still overrides for its event. Prefer this over a separate per-page file; it needs no EventSystem change.
 - Never create or edit anything under another organizer's folder, not even "temporarily for a preview". Doing so once overwrote a committed theme for a real customer. Preview by network interception instead.
 - `prod/` is a byte-identical copy of `staging/` made when the customer has approved. Change staging first, then `cp`, then `diff -r` the two folders.
 - Replacing an image or font: give it a new file name. Assets are cached for a day; stylesheets for five minutes.
