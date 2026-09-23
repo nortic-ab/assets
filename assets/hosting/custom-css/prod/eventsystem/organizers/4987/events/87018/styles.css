@@ -1354,6 +1354,7 @@ section#booking .modal .modal-content a {
   background-color: var(--be-bg);
 }
 .nortic-modal {
+  overflow-x: hidden;
   background-color: var(--be-surface);
   color: var(--be-ink);
   border: 1px solid var(--be-line);
@@ -1380,7 +1381,11 @@ section#booking .modal .modal-content a {
 .nortic-modal .close-button i.material-icons {
   color: var(--be-ink);
 }
+/* dagny ger fältet width: 110% och margin-left: -5% för att gå utanför modalens padding, vilket
+   ger en vågrät rullist eftersom .nortic-modal har overflow: auto */
 .nortic-modal .input-field.big-ass-input-field {
+  width: 100%;
+  margin-left: 0;
   border: 0;
   border-radius: 0;
   overflow: hidden;
