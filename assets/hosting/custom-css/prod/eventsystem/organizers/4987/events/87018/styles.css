@@ -1354,6 +1354,7 @@ section#booking .modal .modal-content a {
   background-color: var(--be-bg);
 }
 .nortic-modal {
+  overflow-x: hidden;
   background-color: var(--be-surface);
   color: var(--be-ink);
   border: 1px solid var(--be-line);
@@ -1380,7 +1381,11 @@ section#booking .modal .modal-content a {
 .nortic-modal .close-button i.material-icons {
   color: var(--be-ink);
 }
+/* dagny ger fältet width: 110% och margin-left: -5% för att gå utanför modalens padding, vilket
+   ger en vågrät rullist eftersom .nortic-modal har overflow: auto */
 .nortic-modal .input-field.big-ass-input-field {
+  width: 100%;
+  margin-left: 0;
   border: 0;
   border-radius: 0;
   overflow: hidden;
@@ -1705,6 +1710,49 @@ section#booking .booking-contents .category-selection-modal .attention,
 section#booking .booking-contents .category-selection-modal .campaign-attention {
   color: var(--be-ink);
 }
+/* dagny målar den aktiva, hovrade och kartmarkerade sektionsraden #f6f8fa - i CSS på .section.active
+   och :hover, och inline från arenaPage.js - så raden blir vit under temats ljusa text. Neutralisera
+   och markera i temats färger i stället. */
+section#booking .booking-contents .section-list .section,
+section#booking .booking-contents .section-list .section-container .section.active {
+  background-color: transparent !important;
+}
+section#booking .booking-contents .section-list .section-container .section.active,
+section#booking .booking-contents .section-list .section:hover,
+section#booking .booking-contents .section-list .section[style*='246, 248, 250'],
+section#booking .booking-contents .section-list .category-container:not(.disabled):hover {
+  background-color: var(--be-tint) !important;
+  box-shadow: inset 3px 0 0 var(--be-red);
+}
+/* Knappen som pekar ut sektionen på kartan är vit med mörk ikon */
+section#booking .booking-contents .section-list .section .show-marker-button,
+section#booking
+  .booking-contents
+  .section-list
+  #suggestion-list-scroll-div
+  .section-container
+  .section
+  .show-marker-button {
+  background-color: var(--be-surface-2);
+  border: 1px solid var(--be-line);
+  box-shadow: none;
+  color: var(--be-ink);
+}
+section#booking .booking-contents .section-list #category-list-container .fake-tab a::after {
+  background-color: var(--be-red);
+}
+/* arenaPageCommon.js ger stegarna i ståplatskategorierna sektionens egen färg inline */
+section#booking .booking-contents .category-selection-modal .amount-blob.plus,
+section#booking .booking-contents .standing-section-dropdown .amount-blob.plus {
+  background-color: var(--be-red-solid) !important;
+  color: var(--be-white);
+}
+section#booking .booking-contents .category-selection-modal .amount-blob.minus,
+section#booking .booking-contents .standing-section-dropdown .amount-blob.minus {
+  background-color: transparent !important;
+  border: 1px solid var(--be-line-2);
+  color: var(--be-ink-72);
+}
 /* Ståplatssektioner */
 section#booking .booking-contents .section-list .standing-section-dropdown {
   background-color: var(--be-bg);
@@ -1723,6 +1771,184 @@ section#booking .booking-contents.unnumbered-arena-page .card {
   border: 1px solid var(--be-line);
   border-radius: 0;
   color: var(--be-ink);
+}
+
+/* ---------------------------------------------------------------------------
+ * 8c. Tillvalssidan (#standalone-addon-container)
+ * ------------------------------------------------------------------------- */
+/* Den vyn har sina stilar i en <style> i själva sidan, alltså efter temat i dokumentet. Lika
+   specifika regler förlorar därför, och allt här prefixas med id:t i stället - plus !important där
+   markupen bär inline-färger (den gula ikonplattan, den grå pilen). */
+#standalone-addon-container .addon-wrapper-container {
+  background-color: var(--be-bg);
+  color: var(--be-ink);
+  font-family: var(--be-body);
+  box-shadow: none;
+}
+#standalone-addon-container .hero-wrapper h1 {
+  font-family: var(--be-display);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--be-ink);
+}
+#standalone-addon-container .addon-date-text {
+  font-family: var(--be-cond);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--be-ink-72);
+}
+#standalone-addon-container .addon-date-icon {
+  color: var(--be-red-text);
+}
+#standalone-addon-container .addon-wrapper-header {
+  background-color: var(--be-bg);
+  border-bottom: 1px solid var(--be-line);
+}
+#standalone-addon-container .addon-wrapper-header span {
+  font-family: var(--be-display);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--be-ink);
+}
+/* Datumpillret är en gul cirkel i markupen; här är datumet typografi som i föreställningslistan */
+#standalone-addon-container .addon-dateball-container,
+#standalone-addon-container .addon-dateball-container.yellow-background {
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background-color: transparent !important;
+}
+#standalone-addon-container .addon-dateball,
+#standalone-addon-container .addon-dateball.white-text {
+  font-family: var(--be-display);
+  font-size: 34px;
+  line-height: 0.86;
+  color: var(--be-ink) !important;
+}
+#standalone-addon-container .addon-wrapper-dates-container {
+  color: var(--be-ink);
+}
+/* Veckodagen får samma röda etikett som i föreställningslistan */
+#standalone-addon-container .addon-wrapper-dates-container .bold {
+  font-family: var(--be-cond);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--be-red-text);
+}
+#standalone-addon-container .addon-wrapper-body .show-name {
+  font-family: var(--be-cond);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--be-ink);
+}
+#standalone-addon-container .addon-wrapper-lowest-price,
+#standalone-addon-container .addon-location {
+  font-family: var(--be-cond);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--be-ink-72) !important;
+}
+#standalone-addon-container .popupaddon-header {
+  font-family: var(--be-display);
+  font-size: 22px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--be-ink);
+}
+/* Tillvalsgrupperna ("Mat", "Dryck") */
+#standalone-addon-container .addon-group,
+#standalone-addon-container .collapsible,
+#standalone-addon-container .collapsible-header,
+#standalone-addon-container .collapsible-body {
+  background-color: var(--be-surface);
+  border-color: var(--be-line);
+  color: var(--be-ink);
+}
+#standalone-addon-container .collapsible-header {
+  border-bottom: 1px solid var(--be-line);
+}
+#standalone-addon-container .addon-card-header p {
+  font-family: var(--be-cond);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--be-ink);
+}
+#standalone-addon-container .addon-type-icon {
+  border-radius: 0 !important;
+  background: var(--be-red-solid) !important;
+}
+#standalone-addon-container .addon-arrow {
+  color: var(--be-red-text) !important;
+}
+/* Korten i en öppnad grupp */
+#standalone-addon-container .new-addon-row-wrapper,
+#standalone-addon-container .addon-row-wrapper {
+  border: 1px solid var(--be-line);
+  border-radius: 0;
+  background: var(--be-surface-2) !important;
+  color: var(--be-ink);
+}
+#standalone-addon-container .placeholder-image-container {
+  border-radius: 0;
+}
+#standalone-addon-container .new-addon-the-header,
+#standalone-addon-container .addon-show-header {
+  font-family: var(--be-cond);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--be-ink);
+}
+#standalone-addon-container .category-info,
+#standalone-addon-container .price-info,
+#standalone-addon-container .addon-show-date,
+#standalone-addon-container .addon-show-information {
+  color: var(--be-ink-72);
+}
+#standalone-addon-container .addon-chip {
+  background-color: var(--be-red-solid);
+  color: var(--be-white);
+  font-family: var(--be-cond);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+/* Sidans egen <style> gör stegarna runda och vita */
+#standalone-addon-container .amount-blob.plus,
+#standalone-addon-container .addon-amount-blob.plus {
+  border-radius: 0;
+  background-color: var(--be-red-solid) !important;
+  color: var(--be-white) !important;
+}
+#standalone-addon-container .amount-blob.minus,
+#standalone-addon-container .addon-amount-blob.minus {
+  border: 1px solid var(--be-line-2) !important;
+  border-radius: 0;
+  background-color: transparent !important;
+  color: var(--be-ink-72) !important;
+}
+#standalone-addon-container .amount-blob.amount {
+  border: 1px solid var(--be-line-2) !important;
+  border-radius: 0;
+  background-color: transparent !important;
+  color: var(--be-ink) !important;
+  font-family: var(--be-display);
+}
+#standalone-addon-container .amount-blob.disabled {
+  border-color: var(--be-line) !important;
+  background-color: transparent !important;
+  color: var(--be-ink-40) !important;
+}
+#standalone-addon-container .addon-btn-container .btn.addon-btn {
+  background-color: var(--be-red-solid);
+  color: var(--be-white);
 }
 
 /* ---------------------------------------------------------------------------
