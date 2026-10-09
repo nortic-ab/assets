@@ -1,0 +1,436 @@
+/*
+ * Hotel Grand Stade (organizer 3952): organizer stylesheet, for the organizer page only.
+ *
+ * head.jsp links this file on every dagny page of the organizer, also on the event pages, which
+ * have their own themes (events/85791 Göteborg, events/84422 Stockholm). Every rule is therefore
+ * scoped to body:not([data-eventid]): event and show pages carry data-eventid on <body>, the
+ * organizer page does not. The variables live on that body too, not on :root.
+ *
+ * Samma formspråk som eventsidorna: organisatörssidan är hotellets lobby. Rosa tapet med
+ * harlekinrutor, hotellets brevpapper med nyckelemblemet och den röda logotypen som rubrik, ett
+ * randigt markisband in till eventen och eventkorten som nyckelbrickor med sajtens gula
+ * TICKETS-knapp. Futura (Book, Medium, Heavy) är arrangörens egna filer i assets/; licensen ska täcka
+ * även biljettsidan. Från organisatörsnivå refereras de som assets/… (inte ../../assets/…).
+ *
+ * Kontrast: rött på rosa är 2,3:1, så text ligger på offwhite eller vitt; rubriken direkt på rosa är
+ * stor och i #C40202 (3,4:1). Liten röd text är #C40202, brödtext dark red #5E2B2E.
+ */
+@font-face {
+  font-family: 'HGS Futura';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/futura-book.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'HGS Futura';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('assets/futura-medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'HGS Futura';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('assets/futura-heavy.woff2') format('woff2');
+}
+
+body:not([data-eventid]) {
+  --hgo-red: #f60303;
+  --hgo-red-ink: #c40202;
+  --hgo-pink: #f2abc3;
+  --hgo-pink-light: #f7cdd0;
+  --hgo-yellow: #ffbc03;
+  --hgo-yellow-hover: #f2ad00;
+  --hgo-paper: #f7f4e3;
+  --hgo-white: #ffffff;
+  --hgo-ink: #5e2b2e;
+  --hgo-black: #141010;
+  --hgo-font: 'HGS Futura', Futura, 'Century Gothic', Arial, sans-serif;
+  --hgo-pad: clamp(18px, 4vw, 48px);
+  --hgo-ease: 150ms ease;
+
+  /* Remsan ovanför <main> (där headern ligger) är body */
+  background-color: var(--hgo-red);
+  color: var(--hgo-ink);
+  font-family: var(--hgo-font);
+}
+
+/* ---------------------------------------------------------------------------
+ * 1. Ground, header och footer
+ * ------------------------------------------------------------------------- */
+body:not([data-eventid]) .st-content {
+  background-color: var(--hgo-pink);
+  color: var(--hgo-ink);
+  font-family: var(--hgo-font);
+}
+/* 64px: dagnys meny-nav ligger 64px hög ovanför <main> och syns annars under en lägre header */
+body:not([data-eventid]) header#main-header {
+  height: 64px;
+  background-color: var(--hgo-red);
+}
+body:not([data-eventid]) header#main-header > .row {
+  height: 100%;
+}
+body:not([data-eventid]) header#main-header i.material-icons {
+  color: var(--hgo-white);
+}
+body:not([data-eventid]) footer.page-footer {
+  position: relative;
+  z-index: 2;
+  opacity: 1;
+  background-color: var(--hgo-red-ink);
+}
+body:not([data-eventid]) footer.page-footer,
+body:not([data-eventid]) footer.page-footer #left-column > a:not(#nortic-footer-link) {
+  color: var(--hgo-white);
+  font-family: var(--hgo-font);
+}
+body:not([data-eventid]) footer.page-footer #left-column > a:not(#nortic-footer-link) {
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+}
+body:not([data-eventid]) footer #divider {
+  border-right-color: rgba(255, 255, 255, 0.45);
+}
+body:not([data-eventid]) footer.page-footer img {
+  filter: brightness(0) invert(1);
+}
+
+/* ---------------------------------------------------------------------------
+ * 2. Lobbyn: tapet, brevpapper med emblem och logotyp
+ * ------------------------------------------------------------------------- */
+/* Arrangörens gula logga ligger absolut över heron; logotypen sitter i stället på brevpapperet */
+body:not([data-eventid]) main .organizer-logo-container {
+  display: none;
+}
+/* dagny hänger arrangörens bild i ett fast lager bakom hela sidan och dimmar det; tapeten ritas
+   här i stället, samma harlekinrutor som eventsidorna. fadeBanner() skriver filter och transform
+   inline vid scroll. */
+body:not([data-eventid]) section#top #background-container {
+  display: none;
+  background-image: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+body:not([data-eventid]) section#top {
+  padding: 72px var(--hgo-pad) 88px;
+  background-color: var(--hgo-pink);
+  background-image: conic-gradient(
+    from 45deg,
+    var(--hgo-pink-light) 25%,
+    transparent 0 50%,
+    var(--hgo-pink-light) 0 75%,
+    transparent 0
+  );
+  background-size: 96px 96px;
+  background-position: center top;
+}
+/* Brevpapperet: offwhite med dubbel röd linje. dagny ger #main-ribbon padding-top 35-75 % för
+   bilden bakom. */
+body:not([data-eventid]) section#top div#main-ribbon.container {
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+  width: min(620px, 100%);
+  max-width: none;
+  margin: 0 auto;
+  padding: 40px 48px 44px;
+  border: 2px solid var(--hgo-red);
+  outline: 1.5px solid var(--hgo-red);
+  outline-offset: -9px;
+  background-color: var(--hgo-paper);
+  text-align: center;
+}
+body:not([data-eventid]) section#top div#main-ribbon::before {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 58px;
+  margin: 0 auto 18px;
+  background: url('assets/hgs-keys-red.svg') no-repeat center / contain;
+}
+/* Infochipsen är tomma på organisatörssidan */
+body:not([data-eventid]) div#main-ribbon .slider-wrapper {
+  display: none;
+}
+/* Rubriken är arrangörens namn ("HOTEL GRAND STADE"): den röda logotypen ritas i dess ställe och
+   texten står kvar för skärmläsare */
+body:not([data-eventid]) section#top div#main-ribbon > h1 {
+  width: min(440px, 100%);
+  height: clamp(86px, 11vw, 136px);
+  margin: 0 auto;
+  background: url('assets/hgs-logo-red.svg') no-repeat center / contain;
+  color: transparent;
+  font-size: 1px;
+  line-height: 1;
+  text-shadow: none;
+  overflow: hidden;
+}
+body:not([data-eventid]) section#top div#main-ribbon > h1 span {
+  color: transparent;
+}
+/* Beskrivningen, om arrangören lägger in en */
+body:not([data-eventid]) section#top div.event-information,
+body:not([data-eventid]) section#top div.event-information:not(.minimized) {
+  max-width: none;
+  margin: 20px 0 0 !important;
+  padding: 0 !important;
+  background: none;
+  color: var(--hgo-ink);
+  font-family: var(--hgo-font);
+  font-size: 15.5px;
+  line-height: 1.6;
+}
+body:not([data-eventid]) div#main-ribbon div.event-information p,
+body:not([data-eventid]) section#top div.event-information > span#event-information-text span {
+  color: var(--hgo-ink) !important;
+  font-size: inherit;
+  text-shadow: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * 3. Eventen: markisband, rubrik och nyckelbrickor
+ * ------------------------------------------------------------------------- */
+body:not([data-eventid]) section#popular-events {
+  margin-top: 0;
+  padding: 72px 0 72px;
+  background-color: var(--hgo-pink);
+}
+/* Markisen: röda och ljusrosa ränder i full bredd, brandbokens randmönster */
+body:not([data-eventid]) section#popular-events::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  pointer-events: none;
+  background: repeating-linear-gradient(90deg, var(--hgo-red) 0 24px, var(--hgo-pink-light) 24px 48px);
+}
+body:not([data-eventid]) section#popular-events > .container {
+  width: min(1100px, 100% - 2 * var(--hgo-pad));
+  max-width: none;
+  margin: 0 auto;
+}
+/* Rubriken ovanför korten, i affischernas "Checking in"-ton */
+body:not([data-eventid]) section#popular-events > .container::before {
+  content: 'Now checking in';
+  display: block;
+  margin: 0 0 36px;
+  color: var(--hgo-red-ink);
+  font-family: var(--hgo-font);
+  font-weight: 800;
+  font-size: clamp(24px, 2.8vw, 34px);
+  line-height: 1.1;
+  letter-spacing: 0.05em;
+  text-align: center;
+  text-transform: uppercase;
+}
+body:not([data-eventid]) section#popular-events > .container > .grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 340px));
+  justify-content: center;
+  gap: 40px 32px;
+}
+/* Brickan: vit, röd kant, rundade hörn, ett hål upptill och en röd förskjuten skugga mot tapeten.
+   dagnys lutningseffekt (js-tilt) skriver transform inline och får vara kvar. */
+body:not([data-eventid]) section#popular-events .card.card-background-color {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: visible;
+  padding-top: 34px;
+  border: 2px solid var(--hgo-red-ink);
+  border-radius: 18px;
+  background-color: var(--hgo-white);
+  box-shadow: 7px 7px 0 var(--hgo-red-ink);
+  color: var(--hgo-ink);
+}
+body:not([data-eventid]) section#popular-events .card.card-background-color::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border-radius: 50%;
+  background-color: var(--hgo-pink);
+  box-shadow: inset 0 0 0 2px var(--hgo-red-ink);
+  pointer-events: none;
+}
+body:not([data-eventid]) section#popular-events .card .card-header {
+  height: auto;
+  padding: 0 22px 14px;
+  font-family: var(--hgo-font);
+}
+body:not([data-eventid]) section#popular-events .card .card-header h3 {
+  margin: 0;
+  color: var(--hgo-red-ink);
+  font-family: var(--hgo-font);
+  font-weight: 800;
+  font-size: 17px;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+body:not([data-eventid]) section#popular-events .card .card-image {
+  margin: 0 18px;
+  overflow: hidden;
+  border: 2px solid var(--hgo-red-ink);
+  border-radius: 8px;
+}
+body:not([data-eventid]) section#popular-events .card .card-image img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+body:not([data-eventid]) section#popular-events .card .card-content {
+  flex: 1 1 auto;
+  height: auto;
+  padding: 16px 22px 6px;
+  color: var(--hgo-ink);
+}
+body:not([data-eventid]) section#popular-events .card .card-content .place {
+  color: var(--hgo-red-ink);
+  font-family: var(--hgo-font);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+body:not([data-eventid]) section#popular-events .card .card-content .time {
+  margin-top: 4px;
+  color: var(--hgo-ink);
+  font-family: var(--hgo-font);
+  font-size: 14.5px;
+  line-height: 1.4;
+}
+body:not([data-eventid]) section#popular-events .card p {
+  margin: 12px 0 0;
+  color: var(--hgo-ink);
+  font-family: var(--hgo-font);
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+body:not([data-eventid]) section#popular-events .card .card-content .read-more-button {
+  height: auto;
+  padding: 0;
+  background-color: transparent;
+  color: var(--hgo-red-ink);
+  font-family: var(--hgo-font);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+body:not([data-eventid]) section#popular-events .card .card-content .read-more-button:hover {
+  color: var(--hgo-ink);
+  filter: none;
+}
+body:not([data-eventid]) section#popular-events .card .card-action {
+  padding: 12px 22px 24px;
+  border-top: 0;
+  background-color: transparent;
+}
+/* "Gå till" som sajtens TICKETS-knapp: gul, svart kant, svart text */
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button {
+  height: 42px;
+  padding: 0 26px;
+  border: 2px solid var(--hgo-black);
+  border-radius: 999px;
+  background-color: var(--hgo-yellow);
+  box-shadow: none;
+  color: var(--hgo-black);
+  font-family: var(--hgo-font);
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 38px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background-color var(--hgo-ease);
+}
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button:hover,
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button:focus {
+  background-color: var(--hgo-yellow-hover);
+  color: var(--hgo-black);
+}
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button:focus-visible {
+  outline: 2px solid var(--hgo-ink);
+  outline-offset: 2px;
+}
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button .waves-ripple {
+  display: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * 4. Mobil (dagnys brytpunkt)
+ * ------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  body:not([data-eventid]) {
+    --hgo-pad: 16px;
+  }
+  body:not([data-eventid]) section#top {
+    padding: 40px var(--hgo-pad) 52px;
+  }
+  body:not([data-eventid]) section#top div#main-ribbon.container {
+    padding: 30px 22px 34px;
+  }
+  body:not([data-eventid]) section#top div#main-ribbon::before {
+    width: 48px;
+    height: 46px;
+    margin-bottom: 12px;
+  }
+  body:not([data-eventid]) section#popular-events {
+    padding: 56px 0 56px;
+  }
+  body:not([data-eventid]) section#popular-events > .container::before {
+    margin-bottom: 28px;
+  }
+  /* Footern: dagny låser den till 80px och länkarna till en rad, så de rinner ut till höger. Loggan
+     på egen rad, länkarna radbryts, ingen fast höjd. */
+  body:not([data-eventid]) footer.page-footer,
+  body:not([data-eventid]) footer.page-footer > .container > .row {
+    height: auto;
+  }
+  body:not([data-eventid]) footer.page-footer > .container > .row {
+    margin: 0;
+    padding: 26px 0 28px;
+  }
+  body:not([data-eventid]) footer.page-footer #left-column {
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    width: 100%;
+    padding: 0;
+    line-height: 1.4;
+  }
+  body:not([data-eventid]) footer.page-footer #left-column a#nortic-footer-link {
+    top: 0;
+    flex-basis: 100%;
+    height: auto;
+    line-height: 0;
+  }
+  body:not([data-eventid]) footer #divider {
+    display: none;
+  }
+  body:not([data-eventid]) footer.page-footer #left-column > a:not(#nortic-footer-link) {
+    height: auto;
+    margin-right: 0;
+    line-height: 1.4;
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button {
+    transition: none;
+  }
+}

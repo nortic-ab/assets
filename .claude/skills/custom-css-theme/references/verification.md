@@ -29,8 +29,49 @@
 
    To compare with dagny's default instead, fulfil the same route with an empty body (`route.fulfill({ status: 200, contentType: 'text/css', body: '' })` for stylesheets, `application/javascript` for scripts). Confirm what was served with `page.on('response', …)` on `custom-css`/`custom-js` URLs.
 
-3. **Quick look without the flow**: append a `<link>` to `document.body` (a stylesheet appended to `<head>` with `addStyleTag` ends up before dagny's late sheets and loses).
-4. **A state you cannot reach locally** (not-released category, sold-out banner): inject the markup dagny would render (copy it from the JSP) and screenshot. Example: `container.insertAdjacentHTML('beforeend', '<div class="available-at"><i class="material-icons">schedule</i>Släpps <span>2027-06-24 19:00</span></div>')`.
+3. **The local EventSystem is down (500 everywhere) or the event is an unpublished draft** (`/ticket/event/<id>` on prod redirects to the organizer page; only the logged-in organizer sees "Detta är ett utkast"): use a public prod event with the same flow as host and swap the stylesheet in the browser. Parken Zoo `https://www.nortic.se/ticket/event/86043` has a calendar, a description, unnumbered cards and the `#basket` pill. Route every `nortic-assets.web.app/custom-(css|js)/` request: fulfil the host's event stylesheet from your file on disk, the host's organizer stylesheet and scripts with empty bodies, and `…/organizers/<host>/assets/*` from your organizer's `assets/` folder. Nothing on disk outside your organizer changes. A reusable helper is `~/.cache/pz-verify/so-lib.js` (`open(browser, { width, theme })`).
+
+   ```js
+   await page.route(/nortic-assets\.web\.app\/custom-(css|js)\//, (route) => {
+     const u = new URL(route.request().url())
+     if (/custom-js\//.test(u.pathname))
+       return route.fulfill({ status: 200, contentType: 'application/javascript', body: '' })
+     const rel = (u.pathname.match(/organizers\/\d+\/(.*)$/) || [])[1] || ''
+     if (/^events\/\d+\/styles\.css$/.test(rel))
+       return route.fulfill({ status: 200, contentType: 'text/css', body: fs.readFileSync(MY_EVENT_CSS, 'utf8') })
+     if (rel === 'styles.css')
+       return route.fulfill({ status: 200, contentType: 'text/css', body: '' })
+     if (rel.startsWith('assets/'))
+       return route.fulfill({ status: 200, path: path.join(MY_ORG_DIR, rel) })
+     return route.continue()
+   })
+   ```
+
+   Stop before the checkout on a host you do not own: adding to the cart there creates a real order on another customer's event. Clicking + on a card is client-side and fine. Say in the hand-over that the checkout was checked by the user, not by you.
+
+   **The event is public on prod** (Parken Zoo 86041, Grand Stade 85791): test on the event itself, with the same routing pointed at your own organizer and event (`~/.cache/pz-verify/pz-lib.js`: `open(browser, { width, org, event, theme, url })` serves `styles.css`, `script.js` and `assets/*` from this repo, and `dump(page, selector)` prints the rendered DOM with boxes). Clicking a show row navigates to `/ticket/show/<id>`, which opens the ticket cards directly. The same rule applies as for a host: no checkout, because it creates an order on the customer's real event.
+
+4. **Components the host does not have** (basket-cart buttons, "Din order" overview): copy their markup from the JSP (`priceBlobBasketCart.jsp`, `basketCartOverview.jsp` + `basketCartOverviewContent.jsp` + `klarna/ticketAndAddonsDetailBasketCart.jsp`) into a wrapper with an id of its own, add it with `insertAdjacentHTML`, and screenshot it. The page already holds hidden originals with the same ids, so scope every query and locator to your wrapper (`#so-test #basket-cart`, `#cart-overview-modal.open`).
+5. **Quick look without the flow**: append a `<link>` to `document.body` (a stylesheet appended to `<head>` with `addStyleTag` ends up before dagny's late sheets and loses).
+6. **A state you cannot reach locally** (not-released category, sold-out banner): inject the markup dagny would render (copy it from the JSP) and screenshot. Example: `container.insertAdjacentHTML('beforeend', '<div class="available-at"><i class="material-icons">schedule</i>Släpps <span>2027-06-24 19:00</span></div>')`.
+7. **Checkout parts without a checkout** (insurance row, addon cards such as Kivra, the Kivra modals): the theme's selectors need dagny's nesting, so build it around the copied JSP markup and append it to the event page: `<section id="booking" class="payment-page klarna"><div class="booking-contents"><div class="payment-list" style="position:static;transform:none;left:auto;width:auto"><div id="details"><div id="details-list">…insuranceDetail markup…</div></div><div id="addons"><div class="list-box"><div class="row">…kivraAddonDetail markup…</div></div></div></div></div></section>`. Render one insurance row with "yes" checked and one with "no", and measure what matters (row colours, the computed colour of `span.fake-label`, name/price text boxes not overlapping via `Range.getBoundingClientRect()`). Campaign categories (`.generated-by-campaign-code`) are injected the same way into `.show-category-scoll-wrapper`, from the template in `eventPage.js`.
+
+## When the user previews on the live page (Chrome Local Overrides)
+
+The user can watch a prod theme on the real, possibly draft, event page before it is deployed: DevTools → Sources → Overrides, with the event folder as the overrides root. Chrome then serves `events/<id>/nortic-assets.web.app/longurls/styles.css-<hash>.css` in place of the prod stylesheet. Relative `url('../../assets/…')` still resolves to the prod asset URL, which 404s until the assets are deployed, and a `file://` path is blocked on an https page. So after every change to `styles.css`, rebuild the override with the images inlined:
+
+```js
+// build-override.js — test only, never commit the output
+const fs = require('node:fs')
+const path = require('node:path')
+const dir = '<repo>/assets/hosting/custom-css/prod/eventsystem/organizers/<org>/events/<event>'
+const types = { '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.png': 'image/png', '.woff2': 'font/woff2' }
+const css = fs.readFileSync(`${dir}/styles.css`, 'utf8').replace(/url\('\.\.\/\.\.\/assets\/([^']+)'\)/g, (m, f) =>
+  `url('data:${types[path.extname(f)]};base64,${fs.readFileSync(path.join(dir, '../../assets', f)).toString('base64')}')`)
+fs.writeFileSync(`${dir}/nortic-assets.web.app/longurls/<override-file-name>.css`, css)
+```
+
+The regex expects single quotes, which is what the repo's eslint formatting produces. Self-hosted fonts are inlined the same way (three Futura weights put Grand Stade's override at ~165 kB, which Chrome handles fine). A theme without assets (Parken Zoo 86041) can simply `cp styles.css` into the override. The user then reviews by screenshot, one detail at a time; each round is: fix, lint, rebuild the override, check the detail in Playwright on the host page, and report what you measured.
 
 ## Reaching the views
 
@@ -53,7 +94,27 @@
 
 - Fonts: `document.fonts.check('700 20px <Family>')`, `getComputedStyle(el).fontFamily`; `[...document.fonts].filter(f => f.status === 'loaded')`.
 - Overlap: compare `getBoundingClientRect()` of the two elements (e.g. header `h2` vs `p`).
+- Alignment: log `[left, top, right, bottom]` for the blocks that should line up (title block, description, calendar, listing) at 390, 1000 and 1600 px; a 2 px drift is invisible in a screenshot and obvious to the customer.
+- Icon centring: the gaps between an `i.material-icons` and its button on all four sides should be equal.
+- Page overflow: `document.documentElement.scrollWidth > innerWidth`, and list the elements whose `getBoundingClientRect().right > innerWidth` (the footer at 320 px is the usual culprit).
 - Jank ("hoppar in"): from the click, take screenshots in a tight loop with timestamps and read `PerformanceObserver` entries for `layout-shift` and `longtask` registered via `page.addInitScript`; run with and without the theme (route the theme to an empty body) to know whether the theme caused it.
+- Clicks the way a person makes them: Playwright's `click()` moves, presses and releases in one go and misses bugs where an element moves on hover (dagny's 5 px `hintDown` on "Läs mer" lost real clicks). Point first, wait, then press and release, at several offsets from the top edge, and check the state after each:
+
+  ```js
+  const box = await link.boundingBox()
+  for (const dy of [1, 3, 6, 10, 20]) {
+    await page.mouse.move(box.x + 20, box.y - 40) // leave first, so :hover starts again
+    await page.waitForTimeout(1200)
+    await page.mouse.move(box.x + 20, box.y + dy, { steps: 4 })
+    await page.waitForTimeout(280)
+    await page.mouse.down()
+    await page.waitForTimeout(90)
+    await page.mouse.up()
+    await page.waitForTimeout(1300) // then read the state (e.g. .event-information.minimized)
+  }
+  ```
+
+- Toggles and animations ("hoppar", "studsar"): sample the height every 25 ms while the click runs (`setInterval` in `page.evaluate`, collapsed to distinct values) and toggle twice. A jump shows as a value below the resting height or a sudden step; run it without the theme as well.
 - Contrast (WCAG): run for every text colour against every surface it sits on; 4.5:1 for text, 3:1 for large text and UI.
 
   ```python
@@ -70,4 +131,4 @@
 
 ## When the user sends a screen recording
 
-There is no ffmpeg on the Macs; extract frames with a small Swift script using `AVAssetImageGenerator` (8 fps is plenty), then compute per-frame pixel differences with sharp to find the moment things change, and build a contact sheet of the frames around it. Files on the Desktop are unreadable from the terminal (macOS privacy); ask for a copy inside the repo's `tmp/` folder.
+There is no ffmpeg on the Macs; extract frames with a small Swift script using `AVAssetImageGenerator` (4–8 fps is plenty; `swift frames.swift <mov> <outdir> <fps>` with `appliesPreferredTrackTransform` and zero time tolerance), then compute per-frame pixel differences with sharp to find the moment things change, and look at the frames on both sides of each change. Videos on the Desktop are unreadable from the terminal (macOS privacy); ask for a copy inside the repo's `tmp/` folder. Screenshots on the Desktop can be opened directly with the Read tool.
