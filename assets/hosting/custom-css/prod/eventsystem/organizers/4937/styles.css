@@ -1,0 +1,440 @@
+/*
+ * Parken Zoo (organizer 4937): organizer stylesheet, for the organizer page only.
+ *
+ * head.jsp links this file on every dagny page of the organizer, also on the event pages, which have
+ * their own themes (events/86041 Säsongskort, events/86043 Halloween). Every rule is therefore scoped
+ * to body:not([data-eventid]): event and show pages carry data-eventid on <body>, the organizer page
+ * does not. The variables live on that body too, and the fonts are self-hosted under their own family
+ * names ('PZ …'), so the event pages neither download nor pick them up.
+ *
+ * Samma formspråk som Säsongskort-sidan (events/86041): parkgrön, logoguld och papper, DM Serif
+ * Display för rubriker och Figtree för text, raka kort och runda knappar. Arrangörens bild ("Skapa nya
+ * minnen i sommar", från bild-API:t) visas hel som en skylt på grönt, med bågkanten under. Bannerns
+ * gröna band är #0D302C; headern och ytan runt bannern har samma grön så att de flyter ihop.
+ *
+ * Kontrast: text #1D2A24 på papper 13:1, mörkt guld #7D5F2A på papper 5,3:1 (etiketter), papper på
+ * parkgrön 12:1. Logoguldet används bara som linje och dekor.
+ */
+@font-face {
+  font-family: 'PZ DM Serif Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/dm-serif-display-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'PZ Figtree';
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url('assets/figtree-latin-variable.woff2') format('woff2');
+}
+
+body:not([data-eventid]) {
+  --pzo-gold: #c9a46a;
+  --pzo-gold-light: #e2c48f;
+  --pzo-gold-dark: #7d5f2a;
+  --pzo-green: #15322a;
+  --pzo-green-banner: #0d302c;
+  --pzo-paper: #f6f1e7;
+  --pzo-white: #ffffff;
+  --pzo-ink: #1d2a24;
+  /* guld 16 % på papper */
+  --pzo-tint: #efe5d3;
+  --pzo-line: #e2d9c6;
+  --pzo-display: 'PZ DM Serif Display', Georgia, serif;
+  --pzo-font: 'PZ Figtree', 'Helvetica Neue', Arial, sans-serif;
+  --pzo-pad: clamp(18px, 4vw, 48px);
+  --pzo-ease: 150ms ease;
+
+  /* Remsan ovanför <main> (där headern ligger) är body */
+  background-color: var(--pzo-green-banner);
+  color: var(--pzo-ink);
+  font-family: var(--pzo-font);
+}
+
+/* ---------------------------------------------------------------------------
+ * 1. Ground, header och footer
+ * ------------------------------------------------------------------------- */
+body:not([data-eventid]) .st-content {
+  background-color: var(--pzo-paper);
+  color: var(--pzo-ink);
+  font-family: var(--pzo-font);
+}
+/* 64px: dagnys meny-nav ligger 64px hög ovanför <main> och syns annars under en lägre header */
+body:not([data-eventid]) header#main-header {
+  height: 64px;
+  background-color: var(--pzo-green-banner);
+}
+body:not([data-eventid]) header#main-header > .row {
+  height: 100%;
+}
+body:not([data-eventid]) header#main-header i.material-icons {
+  color: var(--pzo-paper);
+}
+body:not([data-eventid]) footer.page-footer {
+  position: relative;
+  z-index: 2;
+  opacity: 1;
+  background-color: var(--pzo-green);
+}
+body:not([data-eventid]) footer.page-footer,
+body:not([data-eventid]) footer.page-footer #left-column > a:not(#nortic-footer-link) {
+  color: var(--pzo-paper);
+  font-family: var(--pzo-font);
+}
+body:not([data-eventid]) footer.page-footer #left-column > a:not(#nortic-footer-link) {
+  font-weight: 600;
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+}
+body:not([data-eventid]) footer #divider {
+  border-right-color: rgba(226, 196, 143, 0.4);
+}
+body:not([data-eventid]) footer.page-footer img {
+  filter: brightness(0) invert(1);
+}
+
+/* ---------------------------------------------------------------------------
+ * 2. Hero: bannern hel på grönt, bågkanten under, namnet på papper
+ * ------------------------------------------------------------------------- */
+/* Arrangörens märke ligger absolut över heron; det finns redan i bannern */
+body:not([data-eventid]) main .organizer-logo-container {
+  display: none;
+}
+body:not([data-eventid]) section#top {
+  padding: 0 0 8px;
+}
+/* dagny hänger bilden i ett fast lager bakom hela sidan, beskär den och dimmar den till 70 %; här
+   är den en skylt i full bredd. Bilden är designad med egen text, så den visas hel (contain) på
+   bannerns egen grön. fadeBanner() skriver filter och transform inline vid scroll. */
+body:not([data-eventid]) section#top #background-container {
+  position: relative;
+  top: auto;
+  left: auto;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: min(56.25vw, 560px);
+  min-height: 0;
+  padding: 0;
+  background-color: var(--pzo-green-banner);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: none !important;
+  transform: none !important;
+}
+body:not([data-eventid]) section#top #background-container .obfuscator {
+  display: none;
+}
+/* Bågkanten under bannern: en rad gröna bågar, 30 x 22 px, som Säsongskort-sidan */
+body:not([data-eventid]) section#top #background-container::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 22px;
+  pointer-events: none;
+  background: radial-gradient(15px 22px at 50% 0, var(--pzo-green-banner) 96%, transparent 100%) repeat-x 0 0 / 30px
+    22px;
+}
+/* dagny ger #main-ribbon padding-top 35-75 % för bilden bakom */
+body:not([data-eventid]) section#top div#main-ribbon.container {
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+  width: min(900px, 100% - 2 * var(--pzo-pad));
+  max-width: none;
+  margin: 0 auto;
+  padding: 56px 0 0;
+  text-align: center;
+}
+/* Infochipsen är tomma på organisatörssidan */
+body:not([data-eventid]) div#main-ribbon .slider-wrapper {
+  display: none;
+}
+/* Stjärnan ur Parken Zoo-märket över namnet */
+body:not([data-eventid]) section#top div#main-ribbon > h1::before {
+  content: '★';
+  display: block;
+  margin-bottom: 10px;
+  color: var(--pzo-gold);
+  font-family: var(--pzo-font);
+  font-size: 22px;
+  line-height: 1;
+}
+body:not([data-eventid]) section#top div#main-ribbon > h1 {
+  margin: 0;
+  color: var(--pzo-ink);
+  font-family: var(--pzo-display);
+  font-weight: 400;
+  font-size: clamp(32px, 4.4vw, 54px);
+  line-height: 1.04;
+  letter-spacing: 0;
+  text-transform: none;
+  text-shadow: none;
+}
+body:not([data-eventid]) div#main-ribbon > h1 span {
+  vertical-align: baseline;
+}
+/* Beskrivningen, om arrangören lägger in en; dagny färgar <p> i #main-ribbon vitt med skugga */
+body:not([data-eventid]) section#top div.event-information,
+body:not([data-eventid]) section#top div.event-information:not(.minimized) {
+  max-width: 640px;
+  margin: 18px auto 0 !important;
+  padding: 0 !important;
+  background: none;
+  color: var(--pzo-ink);
+  font-family: var(--pzo-font);
+  font-size: 15.5px;
+  line-height: 1.6;
+}
+body:not([data-eventid]) div#main-ribbon div.event-information p,
+body:not([data-eventid]) section#top div.event-information > span#event-information-text span {
+  color: var(--pzo-ink) !important;
+  font-size: inherit;
+  text-shadow: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * 3. Eventen: etiketten "Biljetter" och raka kort med grön topplinje
+ * ------------------------------------------------------------------------- */
+body:not([data-eventid]) section#popular-events {
+  margin-top: 0;
+  padding: 44px 0 72px;
+  background-color: var(--pzo-paper);
+}
+body:not([data-eventid]) section#popular-events > .container {
+  width: min(1100px, 100% - 2 * var(--pzo-pad));
+  max-width: none;
+  margin: 0 auto;
+}
+/* Etiketten ovanför korten, som "Biljetter" på Säsongskort-sidan, mellan två guldlinjer */
+body:not([data-eventid]) section#popular-events > .container::before {
+  content: 'Biljetter';
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 auto 32px;
+  max-width: 420px;
+  color: var(--pzo-gold-dark);
+  font-family: var(--pzo-font);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background:
+    linear-gradient(var(--pzo-gold), var(--pzo-gold)) left center / calc(50% - 64px) 1px no-repeat,
+    linear-gradient(var(--pzo-gold), var(--pzo-gold)) right center / calc(50% - 64px) 1px no-repeat;
+  justify-content: center;
+}
+body:not([data-eventid]) section#popular-events > .container > .grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 360px));
+  justify-content: center;
+  gap: 32px 28px;
+}
+/* Kortet: vitt, rakt, grön topplinje; hover i guldton med guldlist som raderna på Säsongskort-sidan.
+   dagnys lutningseffekt (js-tilt) skriver transform inline och får vara kvar. */
+body:not([data-eventid]) section#popular-events .card.card-background-color {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid var(--pzo-line);
+  border-top: 3px solid var(--pzo-green);
+  border-radius: 0;
+  background-color: var(--pzo-white);
+  box-shadow: none;
+  color: var(--pzo-ink);
+  transition:
+    background-color var(--pzo-ease),
+    box-shadow var(--pzo-ease);
+}
+/* Bara med riktig hover: på telefon fastnar :hover efter ett tryck */
+@media (hover: hover) {
+  body:not([data-eventid]) section#popular-events .card.card-background-color:hover {
+    background-color: var(--pzo-tint);
+    box-shadow: inset 4px 0 0 var(--pzo-gold);
+  }
+  body:not([data-eventid]) section#popular-events .card.card-background-color:hover::before {
+    opacity: 1;
+  }
+}
+/* Ljusslingan: 3px guldprickar med 18px mellanrum under topplinjen när kortet är aktivt */
+body:not([data-eventid]) section#popular-events .card.card-background-color::before {
+  content: '';
+  position: absolute;
+  top: 7px;
+  left: 22px;
+  right: 22px;
+  height: 4px;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(circle, var(--pzo-gold) 1.5px, transparent 2px) 0 50% / 18px 4px repeat-x;
+  transition: opacity var(--pzo-ease);
+}
+body:not([data-eventid]) section#popular-events .card .card-header {
+  height: auto;
+  padding: 22px 22px 14px;
+  font-family: var(--pzo-font);
+}
+body:not([data-eventid]) section#popular-events .card .card-header h3 {
+  margin: 0;
+  color: var(--pzo-ink);
+  font-family: var(--pzo-display);
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: none;
+}
+body:not([data-eventid]) section#popular-events .card .card-image {
+  overflow: hidden;
+}
+body:not([data-eventid]) section#popular-events .card .card-image img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+body:not([data-eventid]) section#popular-events .card .card-content {
+  flex: 1 1 auto;
+  height: auto;
+  padding: 16px 22px 6px;
+  color: var(--pzo-ink);
+}
+body:not([data-eventid]) section#popular-events .card .card-content .place {
+  color: var(--pzo-gold-dark);
+  font-family: var(--pzo-font);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+body:not([data-eventid]) section#popular-events .card .card-content .time {
+  margin-top: 4px;
+  color: var(--pzo-ink);
+  font-family: var(--pzo-font);
+  font-size: 14.5px;
+  line-height: 1.4;
+}
+body:not([data-eventid]) section#popular-events .card p {
+  margin: 12px 0 0;
+  color: var(--pzo-ink);
+  font-family: var(--pzo-font);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+/* "Läs mer" som länken på Säsongskort-sidan: fet text med guldlinje */
+body:not([data-eventid]) section#popular-events .card .card-content .read-more-button {
+  height: auto;
+  margin-left: 2px;
+  padding: 0 0 2px;
+  border-bottom: 2px solid var(--pzo-gold);
+  background-color: transparent;
+  color: var(--pzo-ink);
+  font-family: var(--pzo-font);
+  font-weight: 700;
+  font-size: 13.5px;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+}
+body:not([data-eventid]) section#popular-events .card .card-content .read-more-button:hover {
+  color: var(--pzo-gold-dark);
+  filter: none;
+}
+body:not([data-eventid]) section#popular-events .card .card-action {
+  padding: 12px 22px 24px;
+  border-top: 0;
+  background-color: transparent;
+}
+/* "Gå till" som Säsongskort-sidans knappar: rund, parkgrön, mörkt guld vid hover */
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button {
+  height: 42px;
+  padding: 0 24px;
+  border-radius: 999px;
+  background-color: var(--pzo-green);
+  box-shadow: none;
+  color: var(--pzo-paper);
+  font-family: var(--pzo-font);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 42px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  transition: background-color var(--pzo-ease);
+}
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button:hover,
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button:focus {
+  background-color: var(--pzo-gold-dark);
+  color: var(--pzo-white);
+}
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button:focus-visible {
+  outline: 2px solid var(--pzo-gold-dark);
+  outline-offset: 2px;
+}
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button .waves-ripple {
+  display: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * 4. Mobil (dagnys brytpunkt)
+ * ------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  body:not([data-eventid]) {
+    --pzo-pad: 18px;
+  }
+  body:not([data-eventid]) section#top div#main-ribbon.container {
+    padding-top: 44px;
+  }
+  body:not([data-eventid]) section#popular-events {
+    padding: 36px 0 56px;
+  }
+  body:not([data-eventid]) section#popular-events > .container::before {
+    margin-bottom: 24px;
+  }
+  /* Footern: dagny låser den till 80px och länkarna till en rad, så de rinner ut till höger. Loggan
+     på egen rad, länkarna radbryts, ingen fast höjd. */
+  body:not([data-eventid]) footer.page-footer,
+  body:not([data-eventid]) footer.page-footer > .container > .row {
+    height: auto;
+  }
+  body:not([data-eventid]) footer.page-footer > .container > .row {
+    margin: 0;
+    padding: 26px 0 28px;
+  }
+  body:not([data-eventid]) footer.page-footer #left-column {
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    width: 100%;
+    padding: 0;
+    line-height: 1.4;
+  }
+  body:not([data-eventid]) footer.page-footer #left-column a#nortic-footer-link {
+    top: 0;
+    flex-basis: 100%;
+    height: auto;
+    line-height: 0;
+  }
+  body:not([data-eventid]) footer #divider {
+    display: none;
+  }
+  body:not([data-eventid]) footer.page-footer #left-column > a:not(#nortic-footer-link) {
+    height: auto;
+    margin-right: 0;
+    line-height: 1.4;
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body:not([data-eventid]) section#popular-events .card.card-background-color,
+  body:not([data-eventid]) section#popular-events .card.card-background-color::before,
+  body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button {
+    transition: none;
+  }
+}
