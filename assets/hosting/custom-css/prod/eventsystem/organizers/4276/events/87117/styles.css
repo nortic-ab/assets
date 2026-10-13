@@ -1,0 +1,751 @@
+/*
+ * Tosselilla Halloween (organizer 4276, 87117): event theme on top of the organizer theme
+ * (../../styles.css), which loads first.
+ *
+ * Built from "Tosselilla Styleguide Halloween" (säsongsvariant, oktober 2026): natthimmel som bas,
+ * skymning för kort, pumpa för knappar och rubriker med glöd, benvitt för text, Creepster för rubriker
+ * från 22px och Nunito för övrig text. Arrangörens Halloweenbild (pumporna och vampyranden) tonar
+ * ut i natthimlen, rubriken ligger över bildens mörka nederkant och säsongens regnbåge (pumpa, rött,
+ * ljuslåga, slem, häxlila) avslutar texten som i stilguiden. Biljettkategorierna är vouchrar: namn och
+ * text till vänster, en stubbe med pris och antal till höger bakom en perforering. Logotypen ligger
+ * på en benvit platta med pumpakant, eftersom dess mörka kontur försvinner mot natthimlen.
+ *
+ * Kassan är ljus (benvitt, papper, natthimmel som text): Klarnas ruta är alltid vit och skulle annars
+ * ligga som en vit lapp i en svart kassa.
+ *
+ * Organisatörstemat är byggt på variabler (--tl-*). Här får de Halloweenfärger, och bara de regler
+ * där en variabel används både som yta och som text skrivs om (footern, slutsålt, försäkringen,
+ * varukorgens rundlar, modalernas bakgrunder).
+ *
+ * Kontrast: benvitt #F4EBDD på natthimmel 15,7:1 och på skymning 14,3:1, pumpa #F2A23A på
+ * natthimmel 8,9:1 (länkar), mörk text på pumpa 8,0-8,9:1 (knappar), dämpad text #B9AD9C 7,6:1 på
+ * skymning. Tosse-röd klarar bara 3,2:1 som text på natthimmel; den används som yta med benvit text
+ * (4,9:1) för slutsålt, "Fåtal kvar" och nej i försäkringen. Ja i försäkringen är slem #8FD14F med
+ * mörk text (9,1:1).
+ *
+ * Bild och typsnitt i ../../assets/: tosselilla-halloween.webp (arrangörens bild) och
+ * creepster-latin.woff2 (Google Fonts, SIL OFL).
+ */
+/* Creepster har bara en vikt; deklarerad för hela viktskalan så att rubrikernas 800 i
+   organisatörstemat inte ger en syntetisk fetstil */
+@font-face {
+  font-family: 'TL Creepster';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../../assets/creepster-latin.woff2') format('woff2');
+}
+
+:root {
+  /* Halloweenpaletten */
+  --th-night: #15111c;
+  --th-dusk: #211a2b;
+  --th-pumpkin: #f2a23a;
+  --th-red: #c5201a;
+  /* Tosse-röd ljusare för röd text på mörkt: 5,4:1 på natthimmel */
+  --th-red-text: #ec5a4c;
+  --th-candle: #efc528;
+  --th-slime: #8fd14f;
+  --th-witch: #6b3fa0;
+  --th-bone: #f4ebdd;
+  --th-glow: rgba(242, 162, 58, 0.45);
+
+  /* Organisatörstemats variabler, översatta */
+  --tl-red: var(--th-pumpkin);
+  --tl-red-hover: #f6b65c;
+  --tl-red-edge: #b4691d;
+  --tl-orange: var(--th-red);
+  --tl-yellow: var(--th-candle);
+  --tl-green-ink: var(--th-slime);
+  --tl-ink: var(--th-bone);
+  --tl-deep: var(--th-pumpkin);
+  --tl-blue: var(--th-slime);
+  --tl-strand: var(--th-night);
+  --tl-sand: var(--th-witch);
+  --tl-white: var(--th-dusk);
+  --tl-hover: #2b2238;
+  --tl-line: #372d44;
+  --tl-line-strong: #54476a;
+  --tl-muted: #b9ad9c;
+  --tl-disabled: #372d44;
+  --tl-disabled-ink: #c9beb0;
+  --tl-display: 'TL Creepster', 'TL Baloo 2', cursive;
+  --tl-shadow: 0 1px 0 rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.35);
+  /* Bilden visas nästan hel (1795 x 1010); rubriken lägger sig så här långt upp över dess nederkant */
+  --tl-photo: min(56.25vw, 680px);
+  --th-overlap: clamp(36px, 8vw, 112px);
+  /* Säsongens regnbåge i stilguidens proportioner */
+  --tl-rainbow: linear-gradient(
+    90deg,
+    var(--th-pumpkin) 0 37.5%,
+    var(--th-red) 37.5% 50%,
+    var(--th-candle) 50% 62.5%,
+    var(--th-slime) 62.5% 75%,
+    var(--th-witch) 75%
+  );
+}
+
+/* ---------------------------------------------------------------------------
+ * 1. Header, footer och bakåtpilen
+ * ------------------------------------------------------------------------- */
+header#main-header {
+  background-color: var(--th-night);
+}
+/* Logotypen på en benvit platta med pumpakant och glöd, som i stilguiden */
+header#main-header::before {
+  box-sizing: border-box;
+  top: 8px;
+  width: 154px;
+  height: 48px;
+  border: 2px solid var(--th-pumpkin);
+  border-radius: 12px;
+  background: var(--th-bone) url('../../assets/tosselilla-logo.png') no-repeat center / 128px auto;
+  box-shadow: 0 0 16px var(--th-glow);
+}
+footer.page-footer {
+  background-color: #0d0a12;
+}
+footer.page-footer,
+footer.page-footer #left-column > a:not(#nortic-footer-link) {
+  color: var(--th-bone);
+}
+header#main-header a.back-to-organizer.fixed i.material-icons {
+  color: var(--th-night);
+}
+
+/* ---------------------------------------------------------------------------
+ * 2. Bilden och rubriken
+ * ------------------------------------------------------------------------- */
+section#top #background-container {
+  background-image: url('../../assets/tosselilla-halloween.webp') !important;
+  background-position: 50% 40%;
+}
+/* Bilden tonar ut i natthimlen i stället för organisatörstemats regnbågsband */
+section#top #background-container::after {
+  top: 0;
+  bottom: 0;
+  height: auto;
+  background: linear-gradient(to bottom, rgba(21, 17, 28, 0) 42%, rgba(21, 17, 28, 0.78) 80%, var(--th-night) 100%);
+}
+body section#top div#main-ribbon.container {
+  padding-top: calc(var(--tl-photo) - var(--th-overlap));
+}
+/* Etiketten över rubriken, stilguidens rubrikrad */
+div#main-ribbon::before {
+  content: 'Halloween på Tosselilla';
+  display: block;
+  margin-bottom: 4px;
+  color: var(--th-candle);
+  font-family: var(--tl-font);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+div#main-ribbon > h1 {
+  max-width: 15em;
+  /* jämna rader i stället för ett ensamt "2027" på andra raden */
+  text-wrap: balance;
+  color: var(--th-pumpkin);
+  font-family: var(--tl-display);
+  font-weight: 400;
+  /* "HALLOWEENERBJUDANDE" är ett ord på ~9 em i Creepster; 8,6vw håller det inom en 320px-skärm */
+  font-size: clamp(28px, 8.6vw, 72px);
+  line-height: 1.02;
+  overflow-wrap: break-word;
+  letter-spacing: 0.02em;
+  text-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.55),
+    0 0 26px var(--th-glow);
+}
+/* Beskrivningen är inklistrad ur Word (Aptos 12pt inline på varje span); samma Nunito som resten */
+section#top div.event-information > span#event-information-text,
+section#top div.event-information > span#event-information-text * {
+  font-family: var(--tl-font) !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+section#top div.event-information > span#event-information-text p {
+  color: inherit !important;
+}
+section#top div.event-information,
+section#top div.event-information:not(.minimized) {
+  max-width: 40em;
+  margin-top: 18px !important;
+  font-size: 18px;
+}
+/* Regnbågen som avdelare under texten, som under rubriken i stilguiden */
+div#main-ribbon::after {
+  content: '';
+  display: block;
+  height: 6px;
+  margin-top: 36px;
+  border-radius: 3px;
+  background: var(--tl-rainbow);
+}
+
+/* ---------------------------------------------------------------------------
+ * 3. Knappar med glöd
+ * ------------------------------------------------------------------------- */
+.btn,
+.btn-large,
+.btn:hover,
+.btn-large:hover,
+.btn:focus,
+.btn-large:focus {
+  box-shadow:
+    0 3px 0 var(--tl-red-edge),
+    0 0 18px var(--th-glow);
+}
+.btn.btn-flat,
+.btn-flat.btn-plain {
+  box-shadow: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * 4. Visningar och biljettkort
+ * ------------------------------------------------------------------------- */
+/* "Löpande föreställningar" är en systemrubrik, inte en Creepster-rubrik */
+section#active-events #show-listing .show-listing-month:not(.fake-month) .month-name {
+  color: var(--th-candle);
+  font-family: var(--tl-font);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.show-listing-show:hover .dateball,
+.show-listing-show.expanded .dateball {
+  background-color: var(--th-pumpkin);
+}
+.show-listing-show:hover .dateball span,
+.show-listing-show.expanded .dateball span,
+section#active-events .show-listing-show:hover .dateball .no-date-show,
+section#active-events .show-listing-show.expanded .dateball .no-date-show {
+  color: var(--th-night);
+}
+/* Slutsålt i Tosse-röd, som stilguiden säger */
+.sold-out-box {
+  background-color: var(--th-red) !important;
+  color: var(--th-bone) !important;
+}
+section#active-events .container .booking-contents.unnumbered-show .sold-out-banner-container .sold-out-banner {
+  background-color: var(--th-red);
+  color: var(--th-bone);
+}
+.unnumbered-show-container .show-category-row .show-category-container .show-category .sold-out-message {
+  color: var(--th-red-text);
+}
+/* Priset i Nunito: Creepster är för rubriker */
+section#active-events .list-price {
+  font-family: var(--tl-font);
+  font-weight: 800;
+}
+
+/* ---------------------------------------------------------------------------
+ * 4b. Biljettkategorierna som vouchrar
+ * ------------------------------------------------------------------------- */
+/* En kategori per rad i stället för dagnys vågräta rullrad med 240px-kort: namn och text till vänster,
+   en mörkare stubbe med pris och antal till höger bakom en streckad perforering med två hack. */
+section#active-events .container .booking-contents.unnumbered-show .show-category-row {
+  overflow: visible;
+}
+section#active-events .container .booking-contents.unnumbered-show .show-category-scoll-wrapper {
+  display: grid;
+  grid-template-columns: minmax(0, 720px);
+  gap: 24px;
+  float: none;
+  width: auto;
+  min-width: 0;
+  padding: 16px 0 8px;
+}
+.unnumbered-show-container .category-slider {
+  display: none;
+}
+section#active-events .container .booking-contents.unnumbered-show .show-category-container {
+  width: auto;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+}
+section#active-events .container .booking-contents.unnumbered-show .show-category-container .show-category {
+  --th-edge: var(--tl-line-strong);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 224px;
+  grid-template-rows: auto 1fr;
+  min-height: 0;
+  padding: 0;
+  border: 1px solid var(--th-edge);
+  border-radius: 18px;
+  background: var(--th-dusk);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+}
+/* Vald voucher (dagny tar bort .disabled från minus när kategorin har biljetter) */
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category:has(.amount-blob.minus:not(.disabled)) {
+  --th-edge: var(--th-pumpkin);
+  box-shadow:
+    0 0 0 1px var(--th-pumpkin),
+    0 0 28px var(--th-glow);
+}
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category:has(.sold-out-banner[style*='flex']) {
+  border-style: dashed;
+  background: var(--th-night);
+  box-shadow: none;
+}
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category
+  > .row.no-margin,
+section#active-events .container .booking-contents.unnumbered-show .show-category-container .show-category > .col {
+  float: none;
+  width: auto;
+  min-height: 0;
+  margin: 0;
+}
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category
+  > .row.no-margin {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  padding: 26px 28px 26px;
+}
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category
+  > .row.no-margin
+  > .col {
+  padding: 0;
+}
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category
+  > .col:has(.list-price),
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category
+  > .col:has(.amount-blob-container) {
+  position: relative;
+  grid-column: 2;
+  border-left: 2px dashed var(--th-edge);
+  background: var(--th-night);
+}
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category
+  > .col:has(.list-price) {
+  grid-row: 1;
+  padding: 26px 24px 0;
+  border-top-right-radius: 17px;
+}
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category
+  > .col:has(.amount-blob-container) {
+  display: flex;
+  align-items: flex-end;
+  grid-row: 2;
+  padding: 16px 24px 26px;
+  border-bottom-right-radius: 17px;
+}
+/* Hacken i perforeringen: halva cirklar i radens bakgrundsfärg med kortets kant */
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category
+  > .col:has(.list-price)::before,
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category
+  > .col:has(.amount-blob-container)::after {
+  content: '';
+  position: absolute;
+  left: -14px;
+  box-sizing: border-box;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--th-edge);
+  border-radius: 50%;
+  background: var(--tl-hover);
+  pointer-events: none;
+}
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category
+  > .col:has(.list-price)::before {
+  top: -14px;
+  clip-path: inset(50% 0 0 0);
+}
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category
+  > .col:has(.amount-blob-container)::after {
+  bottom: -14px;
+  clip-path: inset(0 0 50% 0);
+}
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category-name.list-title {
+  color: var(--th-bone);
+  font-family: var(--tl-display);
+  font-weight: 400;
+  font-size: clamp(26px, 2.6vw, 32px);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category-info.list-info {
+  min-height: 0;
+  margin-top: 10px;
+  color: var(--tl-muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category
+  > .col:has(.list-price)
+  .list-price {
+  margin: 0;
+  color: var(--th-pumpkin);
+  font-size: 30px;
+  line-height: 1.1;
+  text-shadow: 0 0 18px var(--th-glow);
+}
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category
+  > .col:has(.list-price)
+  .list-price:not(.sold-out-message)::before {
+  content: 'Pris';
+  display: block;
+  margin-bottom: 6px;
+  color: var(--tl-muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-shadow: none;
+}
+section#active-events
+  .container
+  .booking-contents.unnumbered-show
+  .show-category-container
+  .show-category
+  .amount-blob-container {
+  margin: 0;
+}
+/* Slutsålt: etiketten där stegarna satt, i stubben */
+section#active-events .container .booking-contents.unnumbered-show .sold-out-banner-container {
+  right: 24px;
+  bottom: 30px;
+  left: auto;
+}
+
+/* ---------------------------------------------------------------------------
+ * 5. Kassan: ljus, som Klarnas vita ruta
+ * ------------------------------------------------------------------------- */
+/* Klarnas kassa är en vit iframe som inte går att styla, och i en svart lista blir den en vit lapp.
+   Listan är därför ett ljust pergament (benvitt och papper med natthimmel som text) i en mörk
+   Halloweenram: natthimmel med bilden svagt bakom, säsongens regnbåge i listans överkant, pumpaglöd
+   och pumpafärgade Creepster-rubriker. Organisatörstemats regler använder variablerna, så det räcker
+   att ge dem ljusa värden på listan; ramen och kassans rubrikrad behåller de mörka. */
+section#booking.payment-page.klarna {
+  background-color: var(--th-night) !important;
+  background-image:
+    linear-gradient(rgba(21, 17, 28, 0.8), rgba(21, 17, 28, 0.94)), url('../../assets/tosselilla-halloween.webp') !important;
+  background-position: center;
+  background-size: cover;
+}
+section#booking .booking-contents .payment-list {
+  --tl-strand: var(--th-bone);
+  --tl-white: #fffaf2;
+  --tl-ink: var(--th-night);
+  /* 6,1:1 på benvitt, 7,0:1 på papper */
+  --tl-muted: #5c5650;
+  --tl-line: #e4d7c3;
+  --tl-line-strong: #cdbb9f;
+  --tl-hover: #efe3d0;
+  /* räknare, kryssrutor, radioknappar och grupprubriker i natthimmel */
+  --tl-red: var(--th-night);
+  --tl-red-hover: #2b2238;
+  --tl-red-edge: #000000;
+  /* länkar och ikoner i mörk pumpa (5,8:1 på benvitt), understrykningen i pumpa */
+  --tl-deep: #8a4b0b;
+  --tl-blue: var(--th-pumpkin);
+  /* ja i försäkringen: mörkgrön med papperstext, 5,2:1 */
+  --tl-green-ink: #1b7a48;
+  --tl-disabled: #e4d7c3;
+  --tl-disabled-ink: #5c5650;
+}
+section#booking .booking-contents .payment-list {
+  box-shadow:
+    0 0 0 1px rgba(242, 162, 58, 0.35),
+    0 0 60px rgba(242, 162, 58, 0.22);
+}
+section#booking .booking-contents .payment-list::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  height: 6px;
+  pointer-events: none;
+  background: var(--tl-rainbow);
+}
+/* Rubrikerna i pumpa, mörk nog för benvitt (3,9:1, stor text) */
+section#booking .booking-contents .payment-list header.payment-section-header h2 {
+  color: #b45f0e;
+}
+section#booking .booking-contents .payment-list header.payment-section-header p span:not(.spacer) {
+  background: var(--th-pumpkin);
+  color: var(--th-night);
+}
+section#booking.payment-page .btn,
+section#booking.payment-page .btn:hover,
+section#booking.payment-page .btn:focus {
+  box-shadow: none;
+}
+/* Klarnas kassa är en vit iframe */
+section#booking.payment-page .booking-contents .payment-list #klarna-box.list-box.list-box-background {
+  background-color: #ffffff;
+}
+/* Nej i försäkringen i Tosse-röd, som kunderna väntar sig (benvit text 4,9:1) */
+section#booking.payment-page.klarna
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container
+  .selection-row.not-selected,
+section#booking.payment-page.klarna
+  .booking-contents
+  .payment-list
+  #details
+  #details-list
+  .insurance-detail-container
+  .selection-row:has(.no [type='radio']:checked) {
+  background-color: var(--th-red);
+  color: var(--th-bone);
+}
+/* Tillvalsbandet är ljuslåga och behöver mörk text */
+section#booking.payment-page .booking-contents .payment-list #addons .card-container .banner {
+  color: var(--th-night);
+}
+section#booking.payment-page .payment-list .input-field input::placeholder,
+section#booking.payment-page .payment-list .input-field textarea::placeholder {
+  color: var(--tl-muted);
+}
+/* Kivras personnummerfält (dagny sätter allt med !important) */
+.kivra-dialog .kivra-input {
+  background-color: var(--tl-white) !important;
+  color: var(--tl-ink) !important;
+}
+.kivra-dialog .kivra-input::placeholder {
+  color: var(--tl-muted);
+}
+.kivra-dialog .kivra-error {
+  color: var(--th-red);
+}
+/* Villkorsmodalernas rubriker är långa ("Arrangörens integritetspolicy") och läses, inte skrikes:
+   Nunito i stället för Creepster */
+section#booking .modal .modal-content h1:not(i) {
+  font-family: var(--tl-font) !important;
+  font-weight: 800;
+  font-size: 20px;
+}
+/* Modalerna skiljs från sidan bakom med en tunn kant */
+.nortic-modal,
+.kivra-dialog,
+section#booking .modal,
+#cart-overview-modal.modal {
+  border: 1px solid var(--tl-line-strong);
+  border-top: 4px solid var(--th-pumpkin);
+}
+
+/* ---------------------------------------------------------------------------
+ * 6. Små modaler, varukorgen och overlays
+ * ------------------------------------------------------------------------- */
+.nortic-modal-overlay,
+.modal-overlay,
+div#basket-overlay {
+  background-color: #000000;
+}
+/* dagnys fält i kampanj- och kömodalen är en vit platta, så det man skriver måste vara mörkt */
+.nortic-modal .input-field.big-ass-input-field input[type='text'] {
+  color: var(--th-night);
+}
+.nortic-modal .input-field.big-ass-input-field input[type='text']::placeholder {
+  color: #5c5650;
+}
+/* Rundlarna i varukorgen benvita: ljuslåga flyter ihop med pumpan */
+div#basket .amount-blob,
+div#basket .proceed-arrow-blob,
+div#addons-basket .amount-blob,
+div#addons-basket .proceed-arrow-blob,
+div#basket-cart .amount-blob,
+div#basket-cart-go-to-payment .payment-blob,
+div#basket-cart .chip {
+  background-color: var(--th-bone);
+}
+div#basket .amount-blob .icon i.material-icons,
+div#basket .amount-blob .amount,
+div#addons-basket .amount-blob .amount,
+div#basket .proceed-arrow-blob .proceed-arrow,
+div#addons-basket .amount-blob i.material-icons,
+div#basket-cart .amount-blob .icon i.material-icons,
+div#basket-cart-go-to-payment .payment-blob i.material-icons,
+div#basket-cart .chip {
+  color: var(--th-night);
+}
+
+/* ---------------------------------------------------------------------------
+ * 7. Telefon
+ * ------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  /* Vouchern staplad: stubben under texten, perforeringen och hacken vågräta */
+  section#active-events .container .booking-contents.unnumbered-show .show-category-container .show-category {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+  }
+  section#active-events
+    .container
+    .booking-contents.unnumbered-show
+    .show-category-container
+    .show-category
+    > .row.no-margin {
+    grid-row: 1;
+    padding: 22px 22px 20px;
+  }
+  section#active-events
+    .container
+    .booking-contents.unnumbered-show
+    .show-category-container
+    .show-category
+    > .col:has(.list-price),
+  section#active-events
+    .container
+    .booking-contents.unnumbered-show
+    .show-category-container
+    .show-category
+    > .col:has(.amount-blob-container) {
+    grid-column: 1;
+    border-left: 0;
+  }
+  section#active-events
+    .container
+    .booking-contents.unnumbered-show
+    .show-category-container
+    .show-category
+    > .col:has(.list-price) {
+    grid-row: 2;
+    padding: 20px 22px 0;
+    border-top: 2px dashed var(--th-edge);
+    border-top-right-radius: 0;
+  }
+  section#active-events
+    .container
+    .booking-contents.unnumbered-show
+    .show-category-container
+    .show-category
+    > .col:has(.amount-blob-container) {
+    grid-row: 3;
+    padding: 14px 22px 22px;
+    border-bottom-left-radius: 17px;
+  }
+  section#active-events
+    .container
+    .booking-contents.unnumbered-show
+    .show-category-container
+    .show-category
+    > .col:has(.list-price)::before,
+  section#active-events
+    .container
+    .booking-contents.unnumbered-show
+    .show-category-container
+    .show-category
+    > .col:has(.list-price)::after {
+    content: '';
+    position: absolute;
+    top: -14px;
+    box-sizing: border-box;
+    width: 26px;
+    height: 26px;
+    border: 1px solid var(--th-edge);
+    border-radius: 50%;
+    background: var(--tl-hover);
+    pointer-events: none;
+  }
+  section#active-events
+    .container
+    .booking-contents.unnumbered-show
+    .show-category-container
+    .show-category
+    > .col:has(.list-price)::before {
+    left: -14px;
+    clip-path: inset(0 0 0 50%);
+  }
+  section#active-events
+    .container
+    .booking-contents.unnumbered-show
+    .show-category-container
+    .show-category
+    > .col:has(.list-price)::after {
+    right: -14px;
+    clip-path: inset(0 50% 0 0);
+  }
+  section#active-events
+    .container
+    .booking-contents.unnumbered-show
+    .show-category-container
+    .show-category
+    > .col:has(.amount-blob-container)::after {
+    display: none;
+  }
+  header#main-header::before {
+    top: 10px;
+    width: 136px;
+    height: 44px;
+    background-size: 112px auto;
+  }
+}
