@@ -71,6 +71,28 @@ const css = fs.readFileSync(`${dir}/styles.css`, 'utf8').replace(/url\('\.\.\/\.
 fs.writeFileSync(`${dir}/nortic-assets.web.app/longurls/<override-file-name>.css`, css)
 ```
 
+**Which file Chrome reads.** Chrome keeps one overrides folder at a time and stores a URL either under its plain path (`nortic-assets.web.app/custom-css/prod/…/styles.css`) or, when folder path + URL path get long (~200 characters), as `longurls/<file>-<hash><ext>`. The hash is DevTools' `hashCode` of the URL without `https://`:
+
+```js
+function hashCode(s) {
+  const p = (1 << 30) * 4 - 5
+  const z = 0x5033D967
+  const z2 = 0x59D2F15D
+  let h = 0
+  let zi = 1
+  for (let i = 0; i < s.length; i++) {
+    h = (h + zi * (s.charCodeAt(i) * z2)) % p
+    zi = (zi * z) % p
+  }
+  h = (h + zi * (p - 1)) % p
+  return Math.abs(h | 0)
+}
+// '3712fd0a'
+hashCode('nortic-assets.web.app/custom-css/prod/eventsystem/organizers/4276/events/87117/styles.css').toString(16)
+```
+
+Write every file under both names. An event theme that sits on an organizer theme which is not deployed either (Tosselilla 87117 on 4276) needs the organizer stylesheet in the same overrides folder, or the preview shows the event layer on bare dagny. Put the asset files themselves at their URL paths in the folder as well; then a stylesheet with relative URLs that the user copies in still loads them. When the user reports 404s on fonts or images in the Network tab, look at what is in each override file first: in Tosselilla's case the event CSS had been copied into the organizer's slot and the event slot held the server's 249-byte placeholder.
+
 The regex expects single quotes, which is what the repo's eslint formatting produces. Self-hosted fonts are inlined the same way (three Futura weights put Grand Stade's override at ~165 kB, which Chrome handles fine). A theme without assets (Parken Zoo 86041) can simply `cp styles.css` into the override. The user then reviews by screenshot, one detail at a time; each round is: fix, lint, rebuild the override, check the detail in Playwright on the host page, and report what you measured.
 
 ## Reaching the views
