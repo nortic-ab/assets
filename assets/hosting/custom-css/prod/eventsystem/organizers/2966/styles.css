@@ -2492,7 +2492,16 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .card
 }
 section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-action {
   position: static;
+  order: 2;
   margin-top: auto;
+}
+/* "Läs mer" på premiumkortet ligger absolut 35px från nederkanten i dagny och hamnar över "Ja, tack"
+   när kryssraden ligger i flödet; här ligger den mellan texten och kryssraden */
+section#booking.payment-page.klarna .booking-contents .payment-list .premium-ticket-detail-container .read-more-button {
+  position: static;
+  order: 1;
+  align-self: flex-start;
+  margin: 4px 24px 0;
 }
 /* Korten får växa här, så priset får gå ner på en egen rad när namnet inte ryms bredvid */
 section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-title.row {
