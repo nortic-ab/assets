@@ -1,0 +1,12 @@
+/*
+ * Kungl. Hovstaterna (organizer 5047), event 87981: trappan vid Kungliga slottets fasad (med
+ * riksbaneret och blå blommor) som bild i heron i stället för eventets egen bild.
+ * Organisatörstemat (../../styles.css) står för allt annat.
+ *
+ * Bilden i assets/kungliga-slottet-trappan.webp (1380 x 873, WebP 76). dagny sätter eventets bild i
+ * en <style> i topSection.jsp, med en egen telefonbild under 700px; !important vinner över båda.
+ */
+section#top #background-container {
+  background-image: url('../../assets/kungliga-slottet-trappan.webp') !important;
+  background-position: 50% 40%;
+}

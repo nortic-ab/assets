@@ -1,0 +1,12 @@
+/*
+ * Kungl. Hovstaterna (organizer 5047), event 87984: Kungliga slottet från vattnet som bild i heron i
+ * stället för eventets egen bild. Organisatörstemat (../../styles.css) står för allt annat.
+ *
+ * Foto: Raphael Stecksén, Kungliga slottet (assets/kungliga-slottet.webp, 1500 x 750). dagny sätter
+ * eventets bild i en <style> i topSection.jsp, med en egen telefonbild under 700px; !important vinner
+ * över båda.
+ */
+section#top #background-container {
+  background-image: url('../../assets/kungliga-slottet.webp') !important;
+  background-position: 50% 45%;
+}
