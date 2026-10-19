@@ -51,6 +51,8 @@
 
    **The event is public on prod** (Parken Zoo 86041, Grand Stade 85791): test on the event itself, with the same routing pointed at your own organizer and event (`~/.cache/pz-verify/pz-lib.js`: `open(browser, { width, org, event, theme, url })` serves `styles.css`, `script.js` and `assets/*` from this repo, and `dump(page, selector)` prints the rendered DOM with boxes). Clicking a show row navigates to `/ticket/show/<id>`, which opens the ticket cards directly. The same rule applies as for a host: no checkout, because it creates an order on the customer's real event.
 
+   **Nortic's own test organizer on prod, 538 "Nortic provzon", is the host for everything else**, including the checkout: it is Nortic's, so opening the payment page there is allowed (go no further than the Klarna box; never pay). Use it when the customer's organizer is locked or has no published events (Brännbollsyran 5044), and for every checkout check of an organizer-wide theme. Events: Säsongskort `84917` (unnumbered, 1 SEK: the checkout host), NorticAdmit Demo Event `7035` (calendar), HCP test `73377` (numbered seats); the organizer page is `/ticket/organizer/538`. With `pz-lib.js`: `open(browser, { org: '<yourOrg>', url: 'https://www.nortic.se/ticket/event/84917' })` serves your organizer's files for 538's requests (`orgTheme: false` leaves the organizer file out; `eventDir: '<id>'` serves `events/<id>/styles.css` from your organizer for whatever event the page is, to try an event layer on a 538 event).
+
 4. **Components the host does not have** (basket-cart buttons, "Din order" overview): copy their markup from the JSP (`priceBlobBasketCart.jsp`, `basketCartOverview.jsp` + `basketCartOverviewContent.jsp` + `klarna/ticketAndAddonsDetailBasketCart.jsp`) into a wrapper with an id of its own, add it with `insertAdjacentHTML`, and screenshot it. The page already holds hidden originals with the same ids, so scope every query and locator to your wrapper (`#so-test #basket-cart`, `#cart-overview-modal.open`).
 5. **Quick look without the flow**: append a `<link>` to `document.body` (a stylesheet appended to `<head>` with `addStyleTag` ends up before dagny's late sheets and loses).
 6. **A state you cannot reach locally** (not-released category, sold-out banner): inject the markup dagny would render (copy it from the JSP) and screenshot. Example: `container.insertAdjacentHTML('beforeend', '<div class="available-at"><i class="material-icons">schedule</i>Släpps <span>2027-06-24 19:00</span></div>')`.
@@ -90,6 +92,38 @@ function hashCode(s) {
 // '3712fd0a'
 hashCode('nortic-assets.web.app/custom-css/prod/eventsystem/organizers/4276/events/87117/styles.css').toString(16)
 ```
+
+For an organizer-wide theme the user makes the organizer folder the overrides root (`organizers/<org>/nortic-assets.web.app/custom-css/prod/eventsystem/organizers/<org>/styles.css`), and the override must also contain every event file under `events/<id>/`, or the user sees an event page without its layer (Brännbollsyran 87876). One builder for both levels, with `url('assets/…')` inlined in the organizer file and `url('../../assets/…')` in event files, and the asset files copied to their URL paths:
+
+```js
+// build-override-<org>.js — test only, never commit the output
+const fs = require('node:fs')
+const path = require('node:path')
+const ORG = '<org>'
+const org = `<repo>/assets/hosting/custom-css/prod/eventsystem/organizers/${ORG}`
+const root = `${org}/nortic-assets.web.app`
+const base = `nortic-assets.web.app/custom-css/prod/eventsystem/organizers/${ORG}`
+const types = { '.woff2': 'font/woff2', '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml' }
+function inline(css, prefix) {
+  return css.replace(new RegExp(`url\\('${prefix}assets/([^']+)'\\)`, 'g'), (m, f) =>
+    `url('data:${types[path.extname(f)]};base64,${fs.readFileSync(path.join(org, 'assets', f)).toString('base64')}')`)
+}
+function put(url, data) { // hashCode as above
+  for (const f of [`${root}/${url.slice('nortic-assets.web.app/'.length)}`, `${root}/longurls/${path.basename(url)}-${hashCode(url).toString(16)}${path.extname(url)}`]) {
+    fs.mkdirSync(path.dirname(f), { recursive: true })
+    fs.writeFileSync(f, data)
+  }
+}
+put(`${base}/styles.css`, inline(fs.readFileSync(`${org}/styles.css`, 'utf8'), ''))
+for (const id of fs.existsSync(`${org}/events`) ? fs.readdirSync(`${org}/events`) : []) {
+  if (fs.existsSync(`${org}/events/${id}/styles.css`))
+    put(`${base}/events/${id}/styles.css`, inline(fs.readFileSync(`${org}/events/${id}/styles.css`, 'utf8'), '\\.\\./\\.\\./'))
+}
+for (const f of fs.readdirSync(`${org}/assets`))
+  put(`${base}/assets/${f}`, fs.readFileSync(`${org}/assets/${f}`))
+```
+
+Throw if a relative `url('…assets/` is left after inlining: a URL in double quotes or without quotes slips past the regex and 404s in the preview. An `@import` of an external kit (Adobe Fonts) stays as it is.
 
 Write every file under both names. An event theme that sits on an organizer theme which is not deployed either (Tosselilla 87117 on 4276) needs the organizer stylesheet in the same overrides folder, or the preview shows the event layer on bare dagny. Put the asset files themselves at their URL paths in the folder as well; then a stylesheet with relative URLs that the user copies in still loads them. When the user reports 404s on fonts or images in the Network tab, look at what is in each override file first: in Tosselilla's case the event CSS had been copied into the organizer's slot and the event slot held the server's 249-byte placeholder.
 
@@ -149,6 +183,7 @@ The regex expects single quotes, which is what the repo's eslint formatting prod
       return (la + 0.05) / (lb + 0.05)
   ```
 
+- Asset URLs as they will be deployed ("se till att src till bilder är rätt", "kolla så url till images fungerar i prod"): open the customer's real organizer page and one event page, serve only the files that will be committed (route `…/organizers/<org>/…` to the repo, `abort` or 404 everything else under `custom-css`), and list every `custom-css` response with its status. All 200 means the relative paths resolve from both the organizer file and the event files. Then `document.fonts` for the fonts.
 - Emulator headers for fonts: `curl -sI http://localhost:5055/custom-css/staging/eventsystem/organizers/<org>/assets/<font>.woff2` must show `Access-Control-Allow-Origin: *`.
 
 ## When the user sends a screen recording
