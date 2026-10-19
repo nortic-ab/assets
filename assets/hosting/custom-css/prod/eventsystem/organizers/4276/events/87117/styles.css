@@ -130,19 +130,6 @@ section#top #background-container::after {
 body section#top div#main-ribbon.container {
   padding-top: calc(var(--tl-photo) - var(--th-overlap));
 }
-/* Etiketten över rubriken, stilguidens rubrikrad */
-div#main-ribbon::before {
-  content: 'Halloween på Tosselilla';
-  display: block;
-  margin-bottom: 4px;
-  color: var(--th-candle);
-  font-family: var(--tl-font);
-  font-weight: 800;
-  font-size: 13px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-}
 div#main-ribbon > h1 {
   max-width: 15em;
   /* jämna rader i stället för ett ensamt "2027" på andra raden */
@@ -206,7 +193,14 @@ div#main-ribbon::after {
 /* ---------------------------------------------------------------------------
  * 4. Visningar och biljettkort
  * ------------------------------------------------------------------------- */
-/* "Löpande föreställningar" är en systemrubrik, inte en Creepster-rubrik */
+/* Rubriken "Löpande föreställningar" ("Continuous shows") ovanför visningar utan datum döljs.
+   dagny ger den ingen egen klass; den känns igen på att nästa rad har ikonen för datumlös visning. */
+section#active-events
+  #show-listing
+  .show-listing-month:not(.fake-month):has(+ .show-listing-show .dateball .no-date-show) {
+  display: none !important;
+}
+/* Månadsrubriker, om eventet får visningar med datum */
 section#active-events #show-listing .show-listing-month:not(.fake-month) .month-name {
   color: var(--th-candle);
   font-family: var(--tl-font);
