@@ -1421,14 +1421,63 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card {
   box-shadow: none;
   color: var(--tl-ink);
 }
-/* dagny lägger namnet i en col s7 och priset i en col s5 med 10px luft i varje, så namnet får ~90px
-   och "Premiumbiljetter" delas mitt i ordet. Kortet har fast höjd (210px) och "Ja, tack" ligger
-   absolut i botten, så priset kan inte flytta till en egen rad. Som flexrad tar priset bara sin
-   bredd och namnet resten (~118px i ett 220px-kort, "Premiumbiljetter" i 14px är 107-112px). */
+/* dagny lägger namnet i en col s7 och priset i en col s5, så namnet får ~90px och "Premiumbiljetter"
+   delas mitt i ordet ("Premiumbiljette / r") så fort typsnittet eller textstorleken är lite större.
+   Kortet (210px) och omslagen runt det har fasta höjder med dold överfyllnad, och "Ja, tack" och
+   "Läs mer" ligger absolut i botten. Här följer hela kedjan innehållet: namnet ligger alltid helt på
+   en rad (bara ett ord som är bredare än kortet bryts), priset går ner på en egen rad när det inte
+   ryms bredvid, och kryssraden ligger sist i kortet. */
+section#booking.payment-page .payment-list #addons #addons-container,
+section#booking.payment-page .payment-list #addons #addons-container .content,
+section#booking.payment-page .payment-list #addons .list-box,
+section#booking.payment-page .payment-list #addons .horizontal-scroll-cards,
+section#booking.payment-page .payment-list #addons #card-slider-wrapper,
+section#booking.payment-page .payment-list #addons #card-slider-inner,
+section#booking.payment-page .payment-list #addons .row,
+section#booking.payment-page .payment-list #addons .card-container {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+section#booking.payment-page .payment-list #addons #card-slider-inner {
+  align-items: stretch;
+}
+section#booking.payment-page .payment-list #addons #card-slider-inner > .card-container {
+  display: flex;
+}
+section#booking.payment-page .payment-list #addons .horizontal-scroll-cards,
+section#booking.payment-page .payment-list #addons #card-slider-wrapper {
+  padding-bottom: 8px;
+}
+section#booking .booking-contents .payment-list #addons .card.simple-addon-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  height: auto;
+  min-height: 210px;
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-content {
+  flex: 1 1 auto;
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-action {
+  position: static;
+  order: 2;
+  margin-top: auto;
+}
+/* "Läs mer" på premiumkortet ligger absolut 35px från nederkanten i dagny och hamnar över "Ja, tack"
+   när kryssraden ligger i flödet; här ligger den mellan texten och kryssraden */
+section#booking.payment-page.klarna .booking-contents .payment-list .premium-ticket-detail-container .read-more-button {
+  position: static;
+  order: 1;
+  align-self: flex-start;
+  margin: 4px 24px 0;
+}
 section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-title.row {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: baseline;
+  row-gap: 2px;
 }
 section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-title.row::after {
   content: none;
@@ -1439,9 +1488,9 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .card
   margin-left: 0;
 }
 section#booking.payment-page .payment-list #addons .card.simple-addon-card .addon-name {
-  flex: 1 1 auto;
-  min-width: 0;
-  padding-right: 8px;
+  flex: 0 0 auto;
+  max-width: 100%;
+  padding-right: 12px;
   color: var(--tl-ink);
   font-family: var(--tl-font);
   font-weight: 800;
@@ -1450,9 +1499,11 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
   white-space: normal;
   overflow-wrap: break-word;
 }
+/* dagny ger namnet padding 25px 12px 0 26px och priset 25px 20px 0 0; under namnet behöver priset
+   namnets vänsterkant och bara lite luft upptill (på samma rad linjerar baslinjen dem ändå) */
 section#booking.payment-page .payment-list #addons .card.simple-addon-card .addon-price {
   flex: 0 0 auto;
-  padding-left: 0;
+  padding: 4px 20px 0 26px;
   color: var(--tl-ink);
   font-family: var(--tl-font);
   font-weight: 800;
