@@ -1773,9 +1773,32 @@ section#booking.payment-page,
   --bm-on-action: #f5f5f5;
   --bm-link: #141414;
 }
-/* Eventbilden i gråskala (standardtemat sätter filter: none !important mot fadeBanner()) */
+/* Black Month-bilden (apan bland löven) i stället för eventets egen bild, tonad i svartvitt och lite
+   mörkare (assets/black-month-apa.webp och -mobil.webp). dagny sätter eventets bild i en <style> i
+   topSection.jsp med en egen telefonbild under 700px; !important vinner över båda. Gråskalan står
+   kvar som filter (standardtemat sätter filter: none !important mot fadeBanner()). */
 section#top #background-container {
+  background-image: url('../../assets/black-month-apa.webp') !important;
+  background-position: 62% 0;
   filter: grayscale(1) !important;
+}
+@media (max-width: 700px) {
+  section#top #background-container {
+    background-image: url('../../assets/black-month-apa-mobil.webp') !important;
+    background-position: 50% 30%;
+  }
+}
+/* Standardtemats toning på telefon (55-94 % uppifrån och ned) gör den mörka bilden nästan svart;
+   lättare upptill så att apan syns, lika mörk under titeln */
+@media (max-width: 600px) {
+  section#top #background-container::after {
+    background: linear-gradient(
+      180deg,
+      rgba(var(--sk-scrim), 0.1) 0%,
+      rgba(var(--sk-scrim), 0.45) 50%,
+      rgba(var(--sk-scrim), 0.9) 100%
+    );
+  }
 }
 /* Standardtemats hårdkodade guld- och grönttoner */
 a.back-to-organizer {
