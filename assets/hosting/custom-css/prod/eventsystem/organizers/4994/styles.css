@@ -2369,7 +2369,9 @@ section#active-events #show-listing > #show-listing-body .show-listing-show.unnu
   background-color: var(--vk-white);
   box-shadow: var(--vk-shadow);
 }
+/* position: relative så att biljettdelen ritas över den öppna radens skugga ovanför */
 section#active-events .container .booking-contents.unnumbered-show {
+  position: relative;
   margin-bottom: 12px;
   padding: 16px clamp(14px, 2vw, 24px) 22px;
   border: 3px solid var(--vk-kalas);
@@ -3083,19 +3085,22 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
   color: var(--vk-text);
   font-weight: 500;
 }
+/* Grupperna, korten och stegarna delas med "Endast tillval"-vyn på eventsidan (#addon-content-container,
+   avsnitt 13): samma markup från dagny, och båda har en egen <style> efter temat. Stegarna heter
+   .addon-amount-blob i båda (bara tillvalssteget har även .amount-blob). */
 /* "Tillval" och grupperna (Arrangörstips, Mat, Boende …) som vita kort med 28px radie */
-#standalone-addon-container .container.addons {
+:is(#standalone-addon-container, #addon-content-container) .container.addons {
   width: 100%;
   max-width: none;
 }
-#standalone-addon-container .popupaddon-header {
+:is(#standalone-addon-container, #addon-content-container) .popupaddon-header {
   margin: 28px 4px 12px;
   color: var(--vk-kalas);
   font-family: var(--vk-display);
   font-weight: 400;
   font-size: clamp(26px, 3vw, 34px);
 }
-#standalone-addon-container .addon-group {
+:is(#standalone-addon-container, #addon-content-container) .addon-group {
   margin-bottom: 12px;
   overflow: hidden;
   border-radius: var(--vk-radius);
@@ -3104,56 +3109,56 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
     0 1px 2px rgba(31, 58, 158, 0.06),
     0 4px 14px rgba(31, 58, 158, 0.08);
 }
-#standalone-addon-container .collapsible {
+:is(#standalone-addon-container, #addon-content-container) .collapsible {
   margin: 0;
   border: 0;
   box-shadow: none;
 }
-#standalone-addon-container .collapsible-header {
+:is(#standalone-addon-container, #addon-content-container) .collapsible-header {
   padding: 16px 20px;
   border-bottom: 1px solid var(--vk-ice);
   background-color: var(--vk-white);
   color: var(--vk-text);
 }
-#standalone-addon-container .collapsible-body {
+:is(#standalone-addon-container, #addon-content-container) .collapsible-body {
   border-bottom: 0;
   background-color: var(--vk-white);
 }
-#standalone-addon-container .addon-card-header p {
+:is(#standalone-addon-container, #addon-content-container) .addon-card-header p {
   color: var(--vk-text);
   font-family: var(--vk-font);
   font-weight: 800 !important;
   font-size: 15px !important;
   text-transform: uppercase;
 }
-#standalone-addon-container .addon-type-icon {
+:is(#standalone-addon-container, #addon-content-container) .addon-type-icon {
   width: 36px !important;
   height: 36px !important;
   background: var(--vk-kalas) !important;
 }
-#standalone-addon-container .addon-arrow {
+:is(#standalone-addon-container, #addon-content-container) .addon-arrow {
   color: var(--vk-kalas) !important;
 }
 /* Tillvalet i gruppen ("Hotelldeals") och dess datum */
-#standalone-addon-container .addon-show-header {
+:is(#standalone-addon-container, #addon-content-container) .addon-show-header {
   color: var(--vk-text);
   font-family: var(--vk-font);
   font-weight: 800;
   font-size: 20px;
   line-height: 1.25;
 }
-#standalone-addon-container .addon-show-date,
-#standalone-addon-container .addon-show-information,
-#standalone-addon-container .category-info {
+:is(#standalone-addon-container, #addon-content-container) .addon-show-date,
+:is(#standalone-addon-container, #addon-content-container) .addon-show-information,
+:is(#standalone-addon-container, #addon-content-container) .category-info {
   color: var(--vk-muted);
   font-weight: 500;
 }
-#standalone-addon-container .addon-show-date {
+:is(#standalone-addon-container, #addon-content-container) .addon-show-date {
   display: block;
   margin-top: 4px;
   font-size: 14px;
 }
-#standalone-addon-container .addon-chip {
+:is(#standalone-addon-container, #addon-content-container) .addon-chip {
   margin-right: 8px;
   padding: 3px 10px;
   border-radius: 999px;
@@ -3166,34 +3171,34 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
 }
 /* Korten: ljust isblå med 22px radie, som biljettkorten; namnet i versaler, priset i Shrikhand */
 /* Vyns <style> ger kortet min-height 320px och innehållet 120px; korten följer innehållet här */
-#standalone-addon-container .new-addon-row-wrapper {
+:is(#standalone-addon-container, #addon-content-container) .new-addon-row-wrapper {
   min-height: 0;
   overflow: hidden;
   border-radius: var(--vk-card-radius);
   background: var(--vk-card);
   box-shadow: none;
 }
-#standalone-addon-container .the-body {
+:is(#standalone-addon-container, #addon-content-container) .the-body {
   gap: 14px;
   min-height: 0;
 }
-#standalone-addon-container .price-info {
+:is(#standalone-addon-container, #addon-content-container) .price-info {
   margin: 6px 0 0;
 }
-#standalone-addon-container .placeholder-image-container {
+:is(#standalone-addon-container, #addon-content-container) .placeholder-image-container {
   border-radius: var(--vk-card-radius) var(--vk-card-radius) 0 0;
   background-color: var(--vk-ice);
 }
-#standalone-addon-container .new-addon-the-header,
-#standalone-addon-container .new-addon-the-header p {
+:is(#standalone-addon-container, #addon-content-container) .new-addon-the-header,
+:is(#standalone-addon-container, #addon-content-container) .new-addon-the-header p {
   margin: 0;
   color: var(--vk-text);
   font-weight: 800;
   font-size: 16px;
   text-transform: uppercase;
 }
-#standalone-addon-container .price-info,
-#standalone-addon-container .price-info b {
+:is(#standalone-addon-container, #addon-content-container) .price-info,
+:is(#standalone-addon-container, #addon-content-container) .price-info b {
   color: var(--vk-kalas);
   font-family: var(--vk-display);
   font-weight: 400;
@@ -3203,7 +3208,7 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
 }
 /* Stegaren som ett vitt piller: isblått minus, antalet och kalasblått plus (vyns <style> gör dem
    runda, 2em, med vitt antal och grå inaktiv) */
-#standalone-addon-container .addon-amount-blob-container {
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob-container {
   gap: 2px;
   width: fit-content;
   padding: 4px;
@@ -3211,8 +3216,8 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
   background-color: var(--vk-white);
   box-shadow: inset 0 0 0 1px var(--vk-ice);
 }
-#standalone-addon-container .amount-blob.plus,
-#standalone-addon-container .amount-blob.minus {
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.plus,
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.minus {
   width: 34px;
   height: 34px;
   margin: 0;
@@ -3223,18 +3228,18 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
   font-size: 19px;
   line-height: 34px;
 }
-#standalone-addon-container .amount-blob.plus {
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.plus {
   background-color: var(--vk-kalas) !important;
   color: var(--vk-white) !important;
 }
-#standalone-addon-container .amount-blob.minus {
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.minus {
   background-color: var(--vk-ice) !important;
   color: var(--vk-kalas-ink) !important;
 }
-#standalone-addon-container .amount-blob.minus.disabled {
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.minus.disabled {
   color: #8fa2dd !important;
 }
-#standalone-addon-container .amount-blob.amount {
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.amount {
   width: 30px;
   height: 34px;
   margin: 0;
@@ -3245,15 +3250,16 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
   font-size: 16px;
   opacity: 1;
 }
-#standalone-addon-container .amount-blob.amount.zero {
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.amount.zero {
   color: var(--vk-muted);
 }
 /* Kort med antal > 0: isblått med ring, som biljettkorten */
-#standalone-addon-container .new-addon-row-wrapper:has(.amount-blob.minus:not(.disabled)) {
+:is(#standalone-addon-container, #addon-content-container)
+  .new-addon-row-wrapper:has(.addon-amount-blob.minus:not(.disabled)) {
   background: var(--vk-ice);
   box-shadow: inset 0 0 0 2px var(--vk-kalas);
 }
-#standalone-addon-container .addon-btn-container .btn.addon-btn {
+:is(#standalone-addon-container, #addon-content-container) .addon-btn-container .btn.addon-btn {
   height: 48px;
   padding: 0 28px;
   border-radius: 999px;
@@ -3261,10 +3267,60 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
   color: var(--vk-white);
   line-height: 48px;
 }
-#standalone-addon-container .addon-btn-container .btn.addon-btn:hover {
+:is(#standalone-addon-container, #addon-content-container) .addon-btn-container .btn.addon-btn:hover {
   background-color: var(--vk-text);
 }
-#standalone-addon-container .addon-btn-container .btn.addon-btn:disabled {
+:is(#standalone-addon-container, #addon-content-container) .addon-btn-container .btn.addon-btn:disabled {
   background-color: var(--vk-disabled) !important;
   color: var(--vk-disabled-ink) !important;
+}
+
+/* ---------------------------------------------------------------------------
+ * 13. "Endast tillval" på eventsidan (#addon-content-container, addonContent.jsp)
+ *
+ * Knappen "Endast tillval" (a.btn.open-addons) under biljettkorten byter biljettdelen i den öppnade
+ * visningsraden mot den här vyn: "Avbryt tillvalsköp", rubriken "Tillval" och samma grupper och kort
+ * som tillvalssteget i kassan (avsnitt 12 täcker dem). Vyns egen <style> lägger en grå platta bakom
+ * och gör stegarna runda med arrangörens orange (.yellow-background); rubriken har inline 20px/400.
+ * ------------------------------------------------------------------------- */
+#addon-content-container .new-top-addon-container {
+  padding: 8px 0 4px;
+  background-color: transparent;
+}
+/* dagnys mobilregel ger varje .container i section#active-events margin 0 20px */
+#addon-content-container .container.new-addons {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+/* "Avbryt tillvalsköp" som textlänk med pil, som "Läs mer" */
+#addon-content-container .addon-back-button.btn-flat {
+  height: 40px;
+  padding: 0 4px !important;
+  color: var(--vk-text) !important;
+  font-family: var(--vk-font);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+#addon-content-container .addon-back-button.btn-flat i.material-icons {
+  color: var(--vk-kalas);
+  font-size: 20px;
+}
+#addon-content-container .addon-back-button.btn-flat:hover {
+  background-color: transparent;
+  color: var(--vk-kalas) !important;
+}
+#addon-content-container .new-addons > div > p {
+  margin: 4px 4px 12px;
+  color: var(--vk-kalas);
+  font-family: var(--vk-display);
+  font-weight: 400 !important;
+  font-size: clamp(26px, 3vw, 34px) !important;
+  line-height: 1.15;
+}
+/* I biljettdelens vita kort är grupperna ljust isblå i stället för vita med skugga */
+#addon-content-container .addon-group {
+  box-shadow: inset 0 0 0 1px var(--vk-ice);
 }
