@@ -3683,3 +3683,10 @@ section#top div.event-information:not(.minimized) + a.event-information-button,
 #flex-info-wrapper div.event-information:not(.minimized) + a.event-information-button {
   margin-top: 10px;
 }
+
+/* Sidfotslänkarna: basens hoverfärg (--sw-ice) är mörk ek här; mässing som på sajten */
+@media (hover: hover) {
+  footer.page-footer #left-column > a:not(#nortic-footer-link):hover {
+    color: var(--sw-brass);
+  }
+}
