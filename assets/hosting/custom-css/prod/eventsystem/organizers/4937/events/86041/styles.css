@@ -2028,7 +2028,7 @@ section#active-events .container .booking-contents.unnumbered-show .title-row a.
 .booking-contents .amount-blob.minus {
   background-color: transparent;
   border-color: var(--sk-line-strong);
-  color: var(--bm-on-dark);
+  color: var(--sk-ink);
 }
 .booking-contents .amount-blob.minus:hover {
   border-color: var(--bm-action);
@@ -2037,6 +2037,14 @@ section#active-events .container .booking-contents.unnumbered-show .title-row a.
   background-color: transparent !important;
   border-color: var(--sk-line);
   color: var(--sk-line-strong);
+}
+/* Tillvalssteget i kassan (popupAddonModals.jsp): minus har Materializes .white-text (color: #fff
+   !important) och blir vitt på det ljusa kortet */
+.booking-contents .amount-blob.minus.white-text {
+  color: var(--sk-ink) !important;
+}
+.booking-contents .amount-blob.minus.white-text.disabled {
+  color: var(--sk-line-strong) !important;
 }
 
 /* Varukorgen: vitt piller med svarta rundlar */
