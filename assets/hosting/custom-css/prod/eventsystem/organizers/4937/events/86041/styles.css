@@ -2,6 +2,10 @@
 /*
  * Parken Zoo Säsongskort 2027 (organizer 4937, event 86041): event theme for the dagny event page.
  *
+ * BLACK MONTH: den här filen är standardtemat plus Black Month-lagret i avsnitt 10 längst ned.
+ * Standardtemat ligger orört i styles.standard.css (som inte länkas av sidan). Efter kampanjen:
+ *   cp styles.standard.css styles.css
+ *
  * Built from the design spec "parkenzoo_desktop-mobile.pdf" (CSS-förbättringar för design) and its
  * handoff: logoguld #C9A46A, ljust guld #E2C48F (text på grönt), mörkt guld #7D5F2A (text på papper),
  * parkgrön #15322A (ram och handling), papper #F6F1E7, text #1D2A24. DM Serif Display (bara vikt 400)
@@ -1711,4 +1715,383 @@ div#basket .price-container {
     line-height: 1.4;
     white-space: normal;
   }
+}
+
+/* ---------------------------------------------------------------------------
+ * 10. Black Month: bara svart, vitt och grått, även fotot; ljus kassa
+ *
+ * Bygger på variablerna ovan. Sidan får mörka värden (papper blir svart, text blir vit), och kassan
+ * och de små modalerna får ljusa, neutrala värden. Guldet och parkgrönt ersätts av vitt, grått och
+ * svart, och eventbilden visas i gråskala. Klarnas ruta är en iframe med egna färger som vi inte kan
+ * styla, så kassan förblir ljus. Reglerna nedan rättar de ställen där en variabel används både som
+ * yta och som text, och de hårdkodade färgtoner standardtemat har.
+ * Kontrast: vit text 17,8:1 på sidan, dämpad text 8,5:1, svart på vita knappar 17,8:1; i kassan
+ * text 16,8:1, dämpad text 6,8:1.
+ * ------------------------------------------------------------------------- */
+:root {
+  --bm-black: #0d0d0d;
+  --bm-night: #000000;
+  --bm-on-dark: #f5f5f5;
+  --bm-action: #f5f5f5;
+  --bm-action-hover: #c8c8c8;
+  --bm-on-action: #0d0d0d;
+  --bm-link: #ffffff;
+  --bm-disabled: #2e2e2e;
+  --bm-disabled-ink: #8c8c8c;
+  --sk-gold: #f5f5f5;
+  --sk-gold-light: #e0e0e0;
+  --sk-gold-dark: #e0e0e0;
+  --sk-green: var(--bm-night);
+  --sk-green-hover: #1a1a1a;
+  --sk-paper: var(--bm-black);
+  --sk-ink: var(--bm-on-dark);
+  --sk-muted: #ababab;
+  --sk-tint: #1c1c1c;
+  --sk-line: #2e2e2e;
+  --sk-line-strong: #4d4d4d;
+  --sk-yes: #141414;
+  --sk-no: #5c5c5c;
+  --sk-scrim: 0, 0, 0;
+}
+/* Kassan, kassans modaler och de små modalerna: ljusa och neutrala, svart för handling */
+.modal__content,
+section#booking.payment-page,
+.nortic-modal {
+  --sk-gold: #141414;
+  --sk-gold-light: #e3e3e3;
+  --sk-gold-dark: #4a4a4a;
+  --sk-green: #141414;
+  --sk-green-hover: #000000;
+  --sk-paper: #f4f4f4;
+  --sk-ink: #141414;
+  --sk-muted: #555555;
+  --sk-tint: #e8e8e8;
+  --sk-line: #dcdcdc;
+  --sk-line-strong: #bdbdbd;
+  --bm-action: #141414;
+  --bm-action-hover: #4a4a4a;
+  --bm-on-action: #f5f5f5;
+  --bm-link: #141414;
+}
+/* Black Month-bilden (apan bland löven) i stället för eventets egen bild, tonad i svartvitt och lite
+   mörkare (assets/black-month-apa.webp och -mobil.webp). dagny sätter eventets bild i en <style> i
+   topSection.jsp med en egen telefonbild under 700px; !important vinner över båda. Gråskalan står
+   kvar som filter (standardtemat sätter filter: none !important mot fadeBanner()). */
+section#top #background-container {
+  background-image: url('../../assets/black-month-apa.webp') !important;
+  background-position: 62% 0;
+  filter: grayscale(1) !important;
+}
+@media (max-width: 700px) {
+  section#top #background-container {
+    background-image: url('../../assets/black-month-apa-mobil.webp') !important;
+    background-position: 50% 30%;
+  }
+}
+/* Standardtemats toning på telefon (55-94 % uppifrån och ned) gör den mörka bilden nästan svart;
+   lättare upptill så att apan syns, lika mörk under titeln */
+@media (max-width: 600px) {
+  section#top #background-container::after {
+    background: linear-gradient(
+      180deg,
+      rgba(var(--sk-scrim), 0.1) 0%,
+      rgba(var(--sk-scrim), 0.45) 50%,
+      rgba(var(--sk-scrim), 0.9) 100%
+    );
+  }
+}
+/* Standardtemats hårdkodade guld- och grönttoner */
+a.back-to-organizer {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+footer #divider {
+  border-right-color: rgba(255, 255, 255, 0.3);
+}
+section#booking.payment-page .booking-contents .payment-list img.payment-icon {
+  filter: brightness(0);
+}
+.big-ass-input-field div.flat-button.disabled {
+  background-color: #e3e3e3;
+}
+/* dagnys ::before tonar kassans bakgrund till 70 % (för dess blå foto); på papper blir det grått med
+   vit titel och vitt kryss */
+section#booking.payment-page.klarna::before {
+  display: none;
+}
+section#booking.payment-page header.booking-header,
+section#booking.payment-page header.booking-header h1,
+section#booking.payment-page header.booking-header p,
+section#booking.payment-page header.booking-header i.material-icons {
+  color: var(--sk-ink);
+}
+
+/* Text som stod i papper på grönt står nu i papper på svart */
+footer.page-footer,
+footer.page-footer #left-column > a:not(#nortic-footer-link),
+header#main-header i.material-icons,
+a.back-to-organizer,
+a.back-to-organizer.fixed,
+a.back-to-organizer.fixed:hover,
+section#top div#main-ribbon > h1 {
+  color: var(--bm-on-dark);
+}
+.theme-text-color-override {
+  color: var(--bm-on-dark) !important;
+}
+footer.page-footer {
+  border-top: 1px solid var(--sk-line);
+}
+.spinner-color-secondary {
+  border-color: var(--bm-action);
+}
+
+/* Länkar vita på svart (i kassan svarta via variabeln) */
+a,
+section#top div.event-information a,
+.btn.btn-flat,
+.btn-flat.btn-plain,
+.theme-color,
+.theme-secondary-color {
+  color: var(--bm-link);
+}
+.theme-color,
+.theme-secondary-color {
+  fill: var(--bm-link);
+}
+
+/* Black Month-märket: en rund "sale"-etikett snett över fotots högra hörn. Texten runt kanten är en
+   SVG (bilder får bara systemtypsnitt) som roterar långsamt; mitten är DM Serif Display. */
+section#top::before,
+section#top::after {
+  content: '';
+  position: absolute;
+  top: clamp(84px, 9vw, 120px);
+  right: max(var(--sk-pad), (100% - var(--sk-content)) / 2);
+  z-index: 3;
+  width: clamp(112px, 13vw, 168px);
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+section#top::before {
+  border-radius: 50%;
+  background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"%3E%3Cdefs%3E%3Cpath id="r" d="M100,100 m-76,0 a76,76 0 1,1 152,0 a76,76 0 1,1 -152,0"/%3E%3C/defs%3E%3Ccircle cx="100" cy="100" r="96" fill="%23f5f5f5"/%3E%3Ccircle cx="100" cy="100" r="90" fill="none" stroke="%230d0d0d" stroke-width="1.5"/%3E%3Ccircle cx="100" cy="100" r="60" fill="none" stroke="%230d0d0d" stroke-width="1.5"/%3E%3Ctext font-family="Helvetica Neue,Arial,sans-serif" font-weight="700" font-size="15" letter-spacing="2" fill="%230d0d0d"%3E%3CtextPath href="%23r" textLength="472" lengthAdjust="spacing"%3EBLACK MONTH %E2%9C%A6 BLACK MONTH %E2%9C%A6 BLACK MONTH %E2%9C%A6 %3C/textPath%3E%3C/text%3E%3C/svg%3E')
+    center / contain no-repeat;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+  animation: bm-badge-spin 24s linear infinite;
+}
+section#top::after {
+  content: 'Black\A Month';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-12deg);
+  color: #0d0d0d;
+  font-family: var(--sk-display);
+  font-weight: 400;
+  font-size: clamp(17px, 2vw, 25px);
+  line-height: 0.95;
+  text-align: center;
+  white-space: pre;
+}
+@keyframes bm-badge-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  section#top::before {
+    animation: none;
+    transform: rotate(-12deg);
+  }
+}
+/* På telefon får fotoraden mer luft upptill, och märket står där ovanför etiketterna och titeln */
+@media (max-width: 600px) {
+  section#top {
+    grid-template-rows:
+      [photo-start] 124px
+      [chips] auto
+      [title] auto
+      [title-end] 30px
+      [photo-end fringe] 22px
+      [desc] auto
+      [more] auto;
+  }
+  section#top::before,
+  section#top::after {
+    top: 18px;
+    width: 96px;
+  }
+  section#top::after {
+    font-size: 15px;
+  }
+}
+/* Premiumkortets band i grått; dagny ritar dess vikta hörn blå (#303d9b) */
+section#booking.payment-page.klarna .booking-contents .payment-list .premium-ticket-detail-wrapper > div.left-end,
+section#booking.payment-page.klarna .booking-contents .payment-list .premium-ticket-detail-wrapper > div.right-end {
+  background-color: var(--sk-line-strong);
+}
+/* Bågkanten under fotot i vitt: sidans enda starka element */
+section#top #background-container::before {
+  background: radial-gradient(15px 22px at 50% 0, var(--bm-action) 96%, transparent 100%) repeat-x 0 0 / 30px 22px;
+}
+
+/* Knappar och temaklasser: vita med svart text */
+.btn,
+.btn-large,
+.theme-background-color,
+.theme-secondary-background-color,
+.theme-secondary-background-color:hover,
+div#add-to-basket-cart .btn,
+div#add-to-basket-cart .valign-wrapper,
+#extend-time-button {
+  background-color: var(--bm-action);
+  color: var(--bm-on-action);
+}
+.btn:hover,
+.btn-large:hover,
+.btn:focus,
+.btn-large:focus,
+.theme-background-color-on-hover:hover,
+div#add-to-basket-cart:hover .btn {
+  background-color: var(--bm-action-hover);
+  color: var(--bm-on-action);
+}
+.btn.btn-flat,
+.btn-flat.btn-plain {
+  background-color: transparent;
+}
+.theme-background-color-override {
+  background-color: var(--bm-action) !important;
+}
+.unnumbered-show-container a.btn.open-addons {
+  background-color: var(--bm-action) !important;
+  color: var(--bm-on-action) !important;
+}
+.btn.disabled,
+.btn-large.disabled,
+.btn:disabled,
+.btn-large:disabled {
+  background-color: var(--bm-disabled) !important;
+  color: var(--bm-disabled-ink) !important;
+}
+section#booking.payment-page .btn.disabled,
+section#booking.payment-page .btn:disabled {
+  background-color: #e3e3e3 !important;
+  color: #555555 !important;
+}
+
+/* Visningsraden: vit linje överst, vit rundel med svart stjärna, vit knapp */
+section#active-events #show-listing > #show-listing-body .show-listing-show {
+  border-top-color: var(--bm-action);
+}
+section#active-events #show-listing .show-listing-show .dateball,
+section#active-events #show-listing .show-listing-show:hover .dateball,
+section#active-events #show-listing .show-listing-show.expanded .dateball {
+  background-color: var(--bm-action);
+}
+section#active-events #show-listing .show-listing-show .dateball:has(.no-date-show)::before {
+  color: var(--bm-on-action);
+}
+section#active-events #show-listing .show-listing-show .show-listing-arrow .btn:not(.display-none) {
+  background-color: var(--bm-action);
+}
+section#active-events #show-listing .show-listing-arrow .btn i.material-icons {
+  color: var(--bm-on-action);
+}
+section#active-events #show-listing .show-listing-show:hover .show-listing-arrow .btn {
+  background-color: var(--bm-action-hover);
+}
+section#active-events #show-listing .show-listing-show:hover .show-listing-arrow .btn i.material-icons {
+  color: var(--bm-on-action);
+}
+
+/* Kategorierna: vitt plus, minus och inaktiva som konturer på svart */
+section#active-events .container .booking-contents.unnumbered-show .title-row a.campaign-code-button.btn {
+  border-color: var(--bm-action);
+  background-color: transparent;
+  color: var(--bm-link);
+}
+section#active-events .container .booking-contents.unnumbered-show .title-row a.campaign-code-button.btn:hover {
+  border-color: var(--bm-action);
+  background-color: var(--bm-action);
+  color: var(--bm-on-action);
+}
+.booking-contents .amount-blob.plus {
+  background-color: var(--bm-action);
+  border-color: var(--bm-action);
+  color: var(--bm-on-action);
+}
+.booking-contents .amount-blob.plus:hover {
+  background-color: var(--bm-action-hover);
+  border-color: var(--bm-action-hover);
+}
+.booking-contents .amount-blob.minus {
+  background-color: transparent;
+  border-color: var(--sk-line-strong);
+  color: var(--sk-ink);
+}
+.booking-contents .amount-blob.minus:hover {
+  border-color: var(--bm-action);
+}
+.booking-contents .amount-blob.disabled {
+  background-color: transparent !important;
+  border-color: var(--sk-line);
+  color: var(--sk-line-strong);
+}
+/* Tillvalssteget i kassan (popupAddonModals.jsp): minus har Materializes .white-text (color: #fff
+   !important) och blir vitt på det ljusa kortet */
+.booking-contents .amount-blob.minus.white-text {
+  color: var(--sk-ink) !important;
+}
+.booking-contents .amount-blob.minus.white-text.disabled {
+  color: var(--sk-line-strong) !important;
+}
+
+/* Varukorgen: vitt piller med svarta rundlar */
+div#basket,
+div#basket-cart,
+div#basket-cart-go-to-payment,
+div#addons-basket {
+  background-color: var(--bm-action);
+  color: var(--bm-on-action);
+}
+div#basket .price,
+div#addons-basket .price,
+div#basket-cart .title-container,
+div#basket-cart-go-to-payment .text-wrapper {
+  color: var(--bm-on-action);
+}
+div#basket .amount-blob,
+div#basket .proceed-arrow-blob,
+div#addons-basket .amount-blob,
+div#addons-basket .proceed-arrow-blob,
+div#basket-cart .amount-blob,
+div#basket-cart-go-to-payment .payment-blob {
+  background-color: var(--bm-black);
+}
+div#basket .amount-blob .icon i.material-icons,
+div#basket .amount-blob .amount,
+div#addons-basket .amount-blob .amount,
+div#basket .proceed-arrow-blob .proceed-arrow,
+div#addons-basket .amount-blob i.material-icons,
+div#basket-cart .amount-blob .icon i.material-icons,
+div#basket-cart-go-to-payment .payment-blob i.material-icons {
+  color: var(--bm-action-hover);
+}
+div#basket-cart .chip {
+  background-color: var(--bm-black);
+  color: var(--bm-action-hover);
+}
+div#basket:hover,
+div#basket-cart:hover,
+div#basket-cart-go-to-payment:hover {
+  background-color: var(--bm-action-hover);
+}
+div#basket.disabled,
+div#addons-basket.disabled {
+  background-color: var(--bm-disabled);
+}
+div#basket.disabled .price,
+div#addons-basket.disabled .price {
+  color: var(--bm-disabled-ink);
 }
