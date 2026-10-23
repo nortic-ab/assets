@@ -185,6 +185,43 @@ The regex expects single quotes, which is what the repo's eslint formatting prod
       return (la + 0.05) / (lb + 0.05)
   ```
 
+- Hover contrast: hover every visible link and button with text and measure the text colour against the nearest opaque background, before and during hover. Report everything below 4.5:1 during hover that hover made worse, or that is below 3:1. Measure the element that carries the text (an icon inside a link often has a colour of its own). A ready helper is `~/.cache/pz-verify/hover-audit.js <org> <event|-> [url] [width]` (with `-` it serves the organizer file only; a `url` such as 538's `84917` reaches the checkout's light scope). Known false alarms: backgrounds drawn in `::before`/`::after` (the calendar's day circles) and gradients (`grad: true` in the output), plus disabled controls. The core of it:
+
+  ```js
+  const sel = 'a, button, .btn, .amount-blob, [role=button]'
+  for (let i = 0, n = await page.locator(sel).count(); i < n; i++) {
+    const loc = page.locator(sel).nth(i)
+    if (!(await loc.isVisible()) || !(await loc.textContent()).trim())
+      continue
+    const measure = () => loc.evaluate((el0) => {
+      const own = e => [...e.childNodes].some(c => c.nodeType === 3 && c.textContent.trim())
+      const el = own(el0) ? el0 : [...el0.querySelectorAll('*')].find(own) || el0
+      const rgb = s => s.match(/[\d.]+/g).map(Number)
+      const chan = v => (v / 255 <= 0.03928 ? v / 255 / 12.92 : ((v / 255 + 0.055) / 1.055) ** 2.4)
+      const lum = c => 0.2126 * chan(c[0]) + 0.7152 * chan(c[1]) + 0.0722 * chan(c[2])
+      let bg = [255, 255, 255]
+      for (let e = el; e; e = e.parentElement) {
+        const c = rgb(getComputedStyle(e).backgroundColor)
+        if ((c[3] ?? 1) > 0.5) {
+          bg = c
+          break
+        }
+      }
+      const [a, b] = [lum(rgb(getComputedStyle(el).color)), lum(bg)]
+      return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
+    })
+    const before = await measure()
+    await loc.hover({ force: true })
+    await page.waitForTimeout(450) // let transitions finish
+    const after = await measure()
+    if (after < 4.5 && (after < before || after < 3))
+      console.log(await loc.textContent(), before, after)
+    await page.mouse.move(1, 1)
+  }
+  ```
+
+  A screenshot taken right after scrolling can catch a link mid-transition and look like a contrast problem; move the mouse away and wait before you judge it.
+
 - Asset URLs as they will be deployed ("se till att src till bilder är rätt", "kolla så url till images fungerar i prod"): open the customer's real organizer page and one event page, serve only the files that will be committed (route `…/organizers/<org>/…` to the repo, `abort` or 404 everything else under `custom-css`), and list every `custom-css` response with its status. All 200 means the relative paths resolve from both the organizer file and the event files. Then `document.fonts` for the fonts.
 - Emulator headers for fonts: `curl -sI http://localhost:5055/custom-css/staging/eventsystem/organizers/<org>/assets/<font>.woff2` must show `Access-Control-Allow-Origin: *`.
 
