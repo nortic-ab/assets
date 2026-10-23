@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
 /*
  * Karlskrona Skärgårdsfest (organizer 542): organizer stylesheet for every dagny page of the organizer,
  * the organizer page and all event and show pages. An event theme under events/<id>/ loads after this
@@ -14,10 +13,10 @@
  * Typsnitt: Colaborate Regular (Ralph du Carrois) som karlskronaskargardsfest.se själv hostar, i
  * assets/colaborate-regular.woff2 under eget familjenamn; licensen bör bekräftas för biljettsidan.
  * Förslaget sätter brödtexten i Colaborate Medium; sajten hostar bara Regular, så font-synthesis är av
- * och vikten bärs av rubriktypsnittet. Förslagets rubriker är Denton (Peregrin Studio: Medium, Black
- * och Regular Italic), som är licensierat och inte finns att hämta; DM Serif Display (Google Fonts,
- * SIL OFL, en vikt och kursiv) ligger närmast Denton Black med sin höga kontrast och står i dess ställe
- * tills KSF har en webblicens för Denton.
+ * och vikten bärs av rubriktypsnittet. Rubrikerna är Denton Black (900) och datumraderna Denton Regular
+ * Italic (Peregrin Studio), som karlskronaskargardsfest.se också hostar själv, i assets/denton-black.woff2
+ * och denton-regular-italic.woff2 under eget familjenamn; som på sajten med -0,015em spärrning. Denton är
+ * licensierat (© PeregrinStudio): KSF:s webblicens bör bekräftas för biljettsidan.
  *
  * Kontrast: marinblå text 13,2:1 på krämvitt och 16,1:1 på vitt, djupblå knappar med vit text 6,7:1,
  * rosa varukorg med marinblå text 7,1:1, vit text på rubrikpanelens djupblå mönster minst 6,7:1, dämpad
@@ -37,6 +36,20 @@
   font-weight: 400;
   font-display: swap;
   src: url('assets/colaborate-regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'KSF Denton';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('assets/denton-black.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'KSF Denton';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/denton-regular-italic.woff2') format('woff2');
 }
 
 :root {
@@ -78,7 +91,7 @@
   --kf-accent: var(--kf-blue);
   --kf-disabled: #dfe4e7;
   --kf-disabled-ink: #45576a;
-  --kf-display: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+  --kf-display: 'KSF Denton', Georgia, 'Times New Roman', serif;
   --kf-font: 'KSF Colaborate', 'Helvetica Neue', Arial, sans-serif;
   --kf-pad: clamp(20px, 3.4vw, 48px);
   --kf-max: 1240px;
@@ -300,10 +313,10 @@ div#main-ribbon > h1 {
   margin: 0;
   color: var(--kf-ink);
   font-family: var(--kf-display);
-  font-weight: 400;
+  font-weight: 900;
   font-size: clamp(34px, 4.4vw, 48px);
   line-height: 1.08;
-  letter-spacing: 0;
+  letter-spacing: -0.015em;
   text-transform: none;
   text-shadow: none;
 }
@@ -463,7 +476,8 @@ body:not([data-eventid]) section#popular-events > .container:has(.card)::before 
   margin: 0 0 20px;
   color: var(--kf-ink);
   font-family: var(--kf-display);
-  font-weight: 400;
+  letter-spacing: -0.015em;
+  font-weight: 900;
   font-size: clamp(28px, 2.8vw, 32px);
   line-height: 1.2;
 }
@@ -498,7 +512,7 @@ body:not([data-eventid]) section#popular-events .card .card-header h3 {
   margin: 0;
   color: var(--kf-ink);
   font-family: var(--kf-display);
-  font-weight: 400;
+  font-weight: 900;
   font-size: 26px;
   line-height: 1.15;
   letter-spacing: 0;
@@ -697,7 +711,8 @@ section#active-events > .container {
 .filter-calender-base .calendar-header .current-date {
   color: var(--kf-ink);
   font-family: var(--kf-display);
-  font-weight: 400;
+  letter-spacing: 0;
+  font-weight: 900;
   font-size: 24px;
   /* dagny skriver månaden med gemen */
   text-transform: capitalize;
@@ -799,7 +814,7 @@ section#active-events #show-listing {
 section#active-events #show-listing .month-name {
   color: var(--kf-ink);
   font-family: var(--kf-display);
-  font-weight: 400;
+  font-weight: 900;
   font-size: 26px;
   letter-spacing: 0;
   text-transform: capitalize;
@@ -935,7 +950,8 @@ section#active-events .show-category-container .show-category-name.list-title {
 section#active-events .list-price {
   color: var(--kf-ink);
   font-family: var(--kf-display);
-  font-weight: 400;
+  letter-spacing: 0;
+  font-weight: 900;
   font-size: 22px;
   line-height: 1.2;
 }
@@ -1201,7 +1217,7 @@ section#booking .booking-contents .payment-list {
 section#booking .booking-contents .payment-list header.payment-section-header h2 {
   color: var(--kf-ink);
   font-family: var(--kf-display);
-  font-weight: 400;
+  font-weight: 900;
   font-size: 24px;
   letter-spacing: 0;
   text-transform: none;
@@ -1537,7 +1553,8 @@ section#booking.payment-page
   > h1 {
   color: var(--kf-ink);
   font-family: var(--kf-display);
-  font-weight: 400;
+  letter-spacing: 0;
+  font-weight: 900;
   font-size: 26px;
   text-transform: none;
 }
@@ -1613,7 +1630,8 @@ section#booking .modal .modal-content h1 {
   margin: 0 0 16px;
   color: var(--kf-ink);
   font-family: var(--kf-display);
-  font-weight: 400;
+  letter-spacing: 0;
+  font-weight: 900;
   font-size: 24px;
   line-height: 1.25;
   text-transform: none;
@@ -1648,6 +1666,7 @@ section#booking .modal .modal-content *:not(i) {
 }
 section#booking .modal .modal-content h1:not(i) {
   font-family: var(--kf-display) !important;
+  letter-spacing: 0;
 }
 /* Sista stycket i försäkringsvillkoren har inline color: black på sin länk */
 section#booking .modal .modal-content a {
@@ -1679,7 +1698,8 @@ section#booking .modal .modal-content a {
 .kivra-dialog .kivra-dialog-title {
   color: var(--kf-ink) !important;
   font-family: var(--kf-display);
-  font-weight: 400;
+  letter-spacing: 0;
+  font-weight: 900;
   font-size: 24px;
   line-height: 1.25;
 }
@@ -1744,7 +1764,8 @@ section#booking .modal .modal-content a {
   margin-bottom: 24px;
   color: var(--kf-ink);
   font-family: var(--kf-display);
-  font-weight: 400;
+  letter-spacing: 0;
+  font-weight: 900;
   font-size: 26px;
   text-transform: none;
 }
@@ -1906,7 +1927,8 @@ div#basket .price-container {
 #cart-overview-modal .shopping-cart-overview-section-header > .col:first-child {
   color: var(--kf-ink);
   font-family: var(--kf-display);
-  font-weight: 400;
+  letter-spacing: 0;
+  font-weight: 900;
   font-size: 26px;
 }
 #cart-overview-modal .shopping-cart-overview-section-header p {
@@ -2112,7 +2134,7 @@ div#basket .price-container {
    korta sidor, syns html i footerns färg. */
 html {
   background-color: var(--kf-navy);
-  /* Colaborate och DM Serif Display finns bara i en vikt: ingen syntetisk fetstil */
+  /* Colaborate och Denton finns bara i en vikt var (Denton Black, och kursiv Regular): ingen syntetisk fetstil */
   font-synthesis: none;
 }
 body {
@@ -2246,13 +2268,13 @@ div#main-ribbon a.n-chip.theme-background-color {
   background-color: var(--kf-cream);
   color: var(--kf-navy);
 }
-/* Titeln i DM Serif Display (i stället för Denton Black) i vitt på mönstret, tätt satt som "Mia Lavina"
+/* Titeln i Denton Black i vitt på mönstret, tätt satt som "Mia Lavina"
    i förslaget */
 div#main-ribbon > h1 {
   max-width: 12em;
   color: var(--kf-white);
   font-family: var(--kf-display);
-  font-weight: 400;
+  font-weight: 900;
   font-size: clamp(44px, 6vw, 104px);
   line-height: 0.92;
   letter-spacing: -0.02em;
@@ -2313,7 +2335,7 @@ div#add-to-basket-cart .btn,
   box-shadow: none;
 }
 
-/* Kalendern: vitt kort med 28px radie, månaden i DM Serif Display, festivaldagar ljusblå, vald dag blå */
+/* Kalendern: vitt kort med 28px radie, månaden i Denton Black, festivaldagar ljusblå, vald dag blå */
 .filter-calender-base #calendar-wrapper > div {
   padding: 0 20px 14px;
   border: 0;
@@ -2323,7 +2345,8 @@ div#add-to-basket-cart .btn,
 .filter-calender-base .calendar-header .current-date {
   color: var(--kf-blue);
   font-family: var(--kf-display);
-  font-weight: 400;
+  letter-spacing: 0;
+  font-weight: 900;
   font-size: 26px;
 }
 .filter-calender-base .calendar-header .icons span {
@@ -2364,7 +2387,7 @@ div#add-to-basket-cart .btn,
   box-shadow: inset 0 0 0 2px var(--kf-blue);
 }
 
-/* Visningarna: månaden som stor DM Serif Display-rubrik, raderna som fristående vita kort med 28px radie */
+/* Visningarna: månaden som stor Denton-rubrik, raderna som fristående vita kort med 28px radie */
 section#active-events #show-listing,
 body #organizer-calendar #show-listing {
   overflow: visible;
@@ -2377,9 +2400,9 @@ body #organizer-calendar #show-listing {
 section#active-events #show-listing .month-name {
   color: var(--kf-blue);
   font-family: var(--kf-display);
-  font-weight: 400;
+  font-weight: 900;
   font-size: clamp(30px, 3.2vw, 40px);
-  letter-spacing: 0;
+  letter-spacing: -0.015em;
   text-transform: capitalize;
 }
 section#active-events #show-listing .show-listing-month:not(.fake-month) > .col {
@@ -2447,7 +2470,7 @@ section#active-events .container .booking-contents.unnumbered-show {
 section#active-events .container .booking-contents.unnumbered-show hr {
   display: none;
 }
-/* Datumsiffran i DM Serif Display i stället för dagnys grå boll */
+/* Datumsiffran i Denton Black i stället för dagnys grå boll */
 .dateball,
 .show-listing-show:hover .dateball,
 .show-listing-show.expanded .dateball {
@@ -2463,7 +2486,8 @@ section#active-events .container .booking-contents.unnumbered-show hr {
 .dateball span {
   color: var(--kf-blue);
   font-family: var(--kf-display);
-  font-weight: 400;
+  letter-spacing: -0.015em;
+  font-weight: 900;
   font-size: 34px;
   line-height: 1;
 }
@@ -2688,11 +2712,12 @@ section#active-events .show-category-container .show-category-name.list-title {
   color: var(--kf-muted);
   font-weight: 500;
 }
-/* Priset i DM Serif Display, blått */
+/* Priset i Denton Black, blått */
 section#active-events .list-price {
   color: var(--kf-blue);
   font-family: var(--kf-display);
-  font-weight: 400;
+  letter-spacing: -0.015em;
+  font-weight: 900;
   font-size: 30px;
   line-height: 1.1;
   white-space: nowrap;
@@ -2831,7 +2856,7 @@ footer.page-footer #left-column > a:not(#nortic-footer-link) {
   }
 }
 
-/* Organisatörssidan: namnet i DM Serif Display på himlen, eventkorten vita med 28px radie */
+/* Organisatörssidan: namnet i Denton Black på himlen, eventkorten vita med 28px radie */
 body:not([data-eventid]) section#popular-events > .container:has(.card)::before {
   color: var(--kf-blue);
   font-weight: 400;
@@ -2907,9 +2932,9 @@ body:not([data-eventid]) section#popular-events .card .no-information-available 
 section#booking .booking-contents .payment-list header.payment-section-header h2 {
   color: var(--kf-blue);
   font-family: var(--kf-display);
-  font-weight: 400;
+  font-weight: 900;
   font-size: 28px;
-  letter-spacing: 0;
+  letter-spacing: -0.015em;
   text-transform: none;
 }
 section#booking .booking-contents .payment-list header.payment-section-header p {
@@ -2937,7 +2962,10 @@ section#booking.payment-page .booking-contents .payment-list .summary-ticket-pri
 section#booking.payment-page .booking-contents .payment-list .summary-details-price {
   color: var(--kf-blue);
   font-family: var(--kf-display);
-  font-weight: 400;
+  letter-spacing: 0;
+  /* Denton Black har ett smalt ordmellanrum; "1 SEK" läses annars som ett ord i små storlekar */
+  word-spacing: 0.14em;
+  font-weight: 900;
 }
 /* Försäkringen: ja i blått (vit text 5,2:1), nej i mörk rosa (5,1:1) */
 section#booking.payment-page.klarna
@@ -3085,7 +3113,7 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
 #standalone-addon-container .hero-wrapper h1 {
   color: var(--kf-blue);
   font-family: var(--kf-display);
-  font-weight: 400;
+  font-weight: 900;
   font-size: clamp(34px, 5vw, 64px);
   line-height: 0.95;
   letter-spacing: -0.01em;
@@ -3106,7 +3134,7 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
   font-size: 18px;
   text-shadow: none;
 }
-/* Månaden som rubrik i DM Serif Display, som visningslistans månader */
+/* Månaden som rubrik i Denton Black, som visningslistans månader */
 #standalone-addon-container .addon-wrapper-header {
   height: auto;
   padding: 28px 4px 12px;
@@ -3116,9 +3144,9 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
   margin-left: 0;
   color: var(--kf-blue);
   font-family: var(--kf-display);
-  font-weight: 400;
+  font-weight: 900;
   font-size: clamp(26px, 3vw, 34px);
-  letter-spacing: 0;
+  letter-spacing: -0.015em;
   text-transform: capitalize;
 }
 /* Visningsraden överst: ett vitt kort som visningsraderna på eventsidan */
@@ -3143,7 +3171,8 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
 #standalone-addon-container .addon-dateball.white-text {
   color: var(--kf-blue) !important;
   font-family: var(--kf-display);
-  font-weight: 400;
+  letter-spacing: -0.015em;
+  font-weight: 900;
   font-size: 34px;
   line-height: 1;
 }
@@ -3185,7 +3214,8 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
   margin: 28px 4px 12px;
   color: var(--kf-blue);
   font-family: var(--kf-display);
-  font-weight: 400;
+  letter-spacing: -0.015em;
+  font-weight: 900;
   font-size: clamp(26px, 3vw, 34px);
 }
 :is(#standalone-addon-container, #addon-content-container) .addon-group {
@@ -3257,7 +3287,7 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
-/* Korten: ljust ljusblå med 22px radie, som biljettkorten; namnet i versaler, priset i DM Serif Display */
+/* Korten: ljust ljusblå med 22px radie, som biljettkorten; namnet i versaler, priset i Denton Black */
 /* Vyns <style> ger kortet min-height 320px och innehållet 120px; korten följer innehållet här */
 :is(#standalone-addon-container, #addon-content-container) .new-addon-row-wrapper {
   min-height: 0;
@@ -3289,7 +3319,8 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
 :is(#standalone-addon-container, #addon-content-container) .price-info b {
   color: var(--kf-blue);
   font-family: var(--kf-display);
-  font-weight: 400;
+  letter-spacing: 0;
+  font-weight: 900;
   font-size: 26px;
   line-height: 1.1;
   white-space: nowrap;
@@ -3404,7 +3435,8 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
   margin: 4px 4px 12px;
   color: var(--kf-blue);
   font-family: var(--kf-display);
-  font-weight: 400 !important;
+  letter-spacing: -0.015em;
+  font-weight: 900 !important;
   font-size: clamp(26px, 3vw, 34px) !important;
   line-height: 1.15;
 }
@@ -3583,8 +3615,8 @@ div#main-ribbon .slider-wrapper {
 /* ---------------------------------------------------------------------------
  * 15. Stilguiden (KSF2027_Förslag): linjer, Denton-rubriker, kursiva datum, affischytor
  *
- * Förslagets affischer ramar in innehållet med tunna linjer, sätter namn och rubriker i Denton (här
- * DM Serif Display) utan versaler, datum i kursiv Denton ("3–8 augusti 2027"), vinjetter i små
+ * Förslagets affischer ramar in innehållet med tunna linjer, sätter namn och rubriker i Denton Black
+ * utan versaler, datum i kursiv Denton ("3–8 augusti 2027"), vinjetter i små
  * versaler i Colaborate, och lägger de stora ytorna på grundmönstret i två blå toner med vit text.
  * ------------------------------------------------------------------------- */
 /* Heron: datumspannet i kursiv serif som på affischerna */
@@ -3642,7 +3674,7 @@ section#active-events #show-listing #show-listing-body .show-listing-show.unnumb
 section#active-events #show-listing > #show-listing-body .show-listing-show .show-name,
 section#active-events #show-listing .show-listing-show .combined-name-and-info .show-name {
   font-family: var(--kf-display);
-  font-weight: 400;
+  font-weight: 900;
   font-size: clamp(20px, 1.9vw, 24px);
   line-height: 1.15;
   letter-spacing: 0;
@@ -3688,7 +3720,7 @@ section#active-events .container .booking-contents.unnumbered-show .title-row a.
 /* Biljettkorten: kategorinamnet i Denton utan versaler, en tunn linje mellan namn och pris */
 section#active-events .show-category-container .show-category-name.list-title {
   font-family: var(--kf-display);
-  font-weight: 400;
+  font-weight: 900;
   font-size: 22px;
   line-height: 1.15;
   letter-spacing: 0;
