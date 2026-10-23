@@ -24,6 +24,9 @@
   if (!hero)
     return
 
+  // Temporarily off (October 2026): the stylesheet shows the KSF 2027 still instead of the film for a
+  // few days. Set to true (and remove the stylesheet's "Tillfälligt" block) to bring the film back.
+  const SHOW_VIDEO = false
   const VIDEO_ID = 'ksf-festival-video'
   const SRC = new URL('assets/ksf-festival.mp4', document.currentScript.src).href
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -72,7 +75,7 @@
   }
 
   function mount() {
-    if (reducedMotion.matches || !wide.matches || saveData) {
+    if (!SHOW_VIDEO || reducedMotion.matches || !wide.matches || saveData) {
       unmount()
       return
     }

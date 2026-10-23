@@ -2187,6 +2187,19 @@ section#top > .kf-hero-media > video {
 section#top > .kf-hero-media > video.is-playing {
   opacity: 1;
 }
+/* Tillfälligt (oktober 2026): KSF 2027-bilden (Stortorget i varumärkets blå form) i stället för filmen
+   i några dagar; script.js monterar ingen video så länge SHOW_VIDEO är false. Tillbaka till filmen:
+   ta bort det här blocket och sätt SHOW_VIDEO till true. Bildens ram är --kf-blue. */
+section#top > .kf-hero-media {
+  background: var(--kf-blue) url('assets/ksf-2027-bild.webp') center / cover no-repeat;
+}
+@media (max-width: 600px) {
+  section#top > .kf-hero-media {
+    background-image: url('assets/ksf-2027-bild-mobil.webp');
+    /* den stående bilden: scenen och publiken, inte himlen */
+    background-position: 50% 35%;
+  }
+}
 /* Eventets bild visas inte: filmen bär heron */
 section#top #background-container {
   display: none;
