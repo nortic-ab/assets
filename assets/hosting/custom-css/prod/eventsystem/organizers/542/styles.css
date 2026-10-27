@@ -3690,6 +3690,26 @@ section#active-events #show-listing > #show-listing-body .show-listing-show .lar
   font-style: normal;
   letter-spacing: 0.1em;
 }
+/* Visningar utan datum ("Tisdagsbiljett Fas 1"): dagny lämnar datumkolumnen tom, så namnet hamnar långt
+   från ikonen. Namnet tar över datumkolumnens plats (två col-m3), så att pris, plats och knapp står kvar
+   i linje med de daterade raderna. På telefon slår dagny redan ihop raden. */
+@media (min-width: 601px) {
+  section#active-events
+    #show-listing
+    > #show-listing-body
+    .show-listing-show:has(.dateball .no-date-show)
+    .large-screen-date {
+    display: none;
+  }
+  section#active-events
+    #show-listing
+    > #show-listing-body
+    .show-listing-show:has(.dateball .no-date-show)
+    .show-name-container {
+    width: 50%;
+    padding-left: clamp(12px, 1.6vw, 22px);
+  }
+}
 /* Den öppna visningens biljettdel som affischen "Stora Artister": grundmönstret i djupblått med vit
    text (minst 6,7:1), vita biljettkort ovanpå */
 section#active-events .container .booking-contents.unnumbered-show {
