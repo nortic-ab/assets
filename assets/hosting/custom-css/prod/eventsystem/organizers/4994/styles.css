@@ -2231,10 +2231,13 @@ section#top #background-container {
 section#top #background-container::after {
   content: none;
 }
-/* I ramen står bara ordmärket, stort på sajtens snövita botten, i stället för eventbilden (den inline
+/* I stället för eventbilden står bara ordmärket, stort och utan ram, direkt på fjällen (den inline
    bakgrundsbilden från bild-API:t kräver !important) */
 body[data-eventid] section#top #background-container {
-  background: var(--vk-snow) url('assets/varvinterkalaset-ordmarke-bla.png') center / 82% auto no-repeat !important;
+  border: 0;
+  border-radius: 0;
+  background: url('assets/varvinterkalaset-ordmarke-bla.png') center / contain no-repeat transparent !important;
+  box-shadow: none;
 }
 /* Brevet: vitt med en kalasblå linje, vit kant och orange linje utanför */
 body section#top div#main-ribbon.container {
@@ -3195,6 +3198,86 @@ div#basket-overlay {
 }
 .nortic-modal p {
   line-height: 1.6;
+}
+
+/* Statusmeddelandena (Materialize.toast: "Varukorgen uppdaterad", fel om platser och kampanjkoder) som
+   snövita lappar med orange linje och en snöflinga; fel i stämpelrött, varningar och info med egen
+   linje och tecken. Materialize gör dem helbreda och raka på telefon. */
+#toast-container .toast {
+  justify-content: flex-start;
+  gap: 12px;
+  width: auto;
+  min-height: 0;
+  padding: 12px 22px 12px 14px;
+  border-radius: 16px;
+  background-color: var(--vk-snow);
+  box-shadow:
+    0 0 0 3px var(--vk-sun),
+    0 12px 30px rgba(31, 58, 158, 0.28);
+  color: var(--vk-text);
+  font-family: var(--vk-font);
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+#toast-container .toast::before {
+  content: '\2744\FE0E';
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--vk-kalas);
+  color: var(--vk-white);
+  font-size: 15px;
+  line-height: 1;
+}
+#toast-container .toast.error-toast {
+  box-shadow:
+    0 0 0 3px var(--vk-stamp),
+    0 12px 30px rgba(31, 58, 158, 0.28);
+  color: var(--vk-stamp);
+}
+#toast-container .toast.warning-toast {
+  color: var(--vk-sun-ink);
+}
+#toast-container .toast.info-toast {
+  box-shadow:
+    0 0 0 3px var(--vk-kalas),
+    0 12px 30px rgba(31, 58, 158, 0.28);
+}
+#toast-container .toast:is(.error-toast, .warning-toast)::before {
+  content: '!';
+  font-weight: 800;
+  font-size: 16px;
+}
+#toast-container .toast.error-toast::before {
+  background-color: var(--vk-stamp);
+}
+#toast-container .toast.warning-toast::before {
+  background-color: var(--vk-sun);
+  color: var(--vk-sun-text);
+}
+#toast-container .toast.info-toast::before {
+  content: 'i';
+  font-weight: 800;
+  font-size: 16px;
+}
+#toast-container .toast a,
+#toast-container .toast i.material-icons {
+  color: var(--vk-kalas);
+}
+@media (max-width: 600px) {
+  #toast-container {
+    bottom: 14px;
+  }
+  #toast-container .toast {
+    margin: 10px 14px 0;
+  }
 }
 
 /* Footern i textblått med snö som text */
