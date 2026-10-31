@@ -3187,8 +3187,27 @@ div#basket .proceed-arrow-blob .proceed-arrow,
 div#addons-basket .amount-blob i.material-icons {
   color: var(--vk-sun-text);
 }
+/* Övergången till kassan: dagny låter en rund yta växa ut från varukorgsknappen (scale(5) på 1,5 s,
+   storleken sätts inline från JS). Här täcker ytan skärmen direkt och tonar in. */
 div#basket-overlay {
   background-color: var(--vk-kalas);
+  transition: none;
+}
+div#basket-overlay.overlay-visible {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0;
+  transform: none;
+  animation: vk-overlay-in 0.25s ease both;
+}
+@keyframes vk-overlay-in {
+  from {
+    opacity: 0;
+  }
 }
 
 /* Små modaler (åldersgränsen, kö, kampanjkod) i samma ram som brevet */
@@ -3487,6 +3506,14 @@ body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-bu
 }
 
 @media (max-width: 600px) {
+  /* dagny ger rutorna full bredd och 50px sidopadding på telefon; här 16px från kanterna, så ramen
+     syns, och mer plats för texten */
+  .nortic-modal {
+    right: 16px;
+    left: 16px;
+    width: auto;
+    padding: 20px 22px 26px;
+  }
   :root {
     --vk-pad: 16px;
     --vk-frame-r: 16px;
