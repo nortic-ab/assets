@@ -2701,6 +2701,31 @@ section#active-events #show-listing .show-listing-show .supply-blobs .supply-blo
 section#active-events #show-listing .show-listing-show .supply-blobs .supply-blob.supply-left {
   background-color: var(--vk-kalas) !important;
 }
+/* "Fåtal kvar!" på raden: dagny lägger lappen i mätaren, som har line-height 0 för strecken, så den
+   klämdes till 2px. Samma solorange lapp som på biljettkorten. */
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit {
+  display: inline-block;
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 3px 11px;
+  border: 1.5px solid var(--vk-sun-text);
+  border-radius: 999px;
+  background: var(--vk-sun);
+  box-shadow: none;
+  color: var(--vk-sun-text);
+  font-family: var(--vk-font);
+  font-weight: 800;
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit > i {
+  display: none;
+}
 section#active-events #show-listing > #show-listing-body .show-listing-show .price-range {
   color: var(--vk-text);
   font-weight: 800;
