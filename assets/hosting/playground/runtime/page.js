@@ -249,6 +249,18 @@
     updateBasket()
   }
 
+  // addFreetextFilterListeners (organizerPage.js): the search field hides cards whose name, place or
+  // tags do not contain the text
+  document.addEventListener('input', (e) => {
+    if (!(e.target instanceof HTMLInputElement) || e.target.id !== 'freetext-filter' || !e.target.closest('#popular-events'))
+      return
+    const term = e.target.value.toLowerCase()
+    document.querySelectorAll('#popular-events .grid-item').forEach((item) => {
+      const tags = (item.dataset.filtertags || '').split('||').map(t => t.toLowerCase())
+      item.classList.toggle('hidden-by-freetext-filter', !tags.some(t => t.includes(term)))
+    })
+  })
+
   document.addEventListener('click', (e) => {
     const target = e.target
     if (!(target instanceof Element))
@@ -273,6 +285,19 @@
       const section = document.querySelector('section#order-confirmation')
       if (section)
         section.style.display = 'none'
+      return
+    }
+    // addTagsListeners (organizerPage.js): a tag chip toggles .disabled; with every chip off all cards
+    // show, otherwise only cards with an active tag
+    const chip = target.closest('#popular-events .n-chip')
+    if (chip) {
+      e.preventDefault()
+      chip.classList.toggle('disabled')
+      const active = [...document.querySelectorAll('#popular-events .n-chip:not(.disabled)')].map(c => c.dataset.value.toLowerCase())
+      document.querySelectorAll('#popular-events .grid-item').forEach((item) => {
+        const tags = [...item.querySelectorAll('input.tag-value')].map(i => i.value.toLowerCase())
+        item.classList.toggle('hidden-by-tag', active.length > 0 && !tags.some(t => active.includes(t)))
+      })
       return
     }
     if (target.closest('.campaign-code-button')) {
