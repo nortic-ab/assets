@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="sv" data-pg-kind="event">
+<head>
+<title>Endast tillval (eventsidan) – dagny playground</title>
+<!-- #include head -->
+<script type="application/json" id="pg-actions">[{"name": "toast::Varukorgen uppdaterad", "label": "Toast"}, {"name": "toast:error-toast:Kampanjkoden är redan aktiverad.", "label": "Toast: fel"}, {"name": "toast:warning-toast:Bara ett fåtal biljetter kvar", "label": "Toast: varning"}, {"name": "toast:info-toast:Kunde inte ladda platstillgång, försök igen om en liten stund.", "label": "Toast: info"}, {"name": "modal:event-message", "label": "Meddelande: åldersgräns"}, {"name": "modal:event-warning", "label": "Meddelande: varning"}, {"name": "modal:category-info", "label": "Läs mer om kategori"}, {"name": "modal:campaign", "label": "Kampanjkod"}, {"name": "modal:access-code", "label": "Försläppskod"}, {"name": "modal:waitlist", "label": "Väntelista"}, {"name": "materialize:#share-modal", "label": "Dela"}, {"name": "materialize:#basket-cart-warning-modal", "label": "Varukorg: varning"}, {"name": "loading-payment", "label": "Till kassan (laddning)"}, {"name": "basket-overlay", "label": "Övergång till kassan"}, {"name": "basket-cart-loading", "label": "Lägger till i varukorg"}, {"name": "close", "label": "Stäng allt"}]</script>
+</head>
+<body id="st-container" data-eventid="100001" data-organizerid="100" data-currency="SEK" data-organizercart="false" data-basketcartorganizerid="" data-usewaitlist="true" data-organizerusewaitlist="true" class="event-page">
+<!-- "Endast tillval" (addonContent.jsp): vyn ersätter biljettdelen i den öppnade raden. Vyns egen <style>
+     ligger efter temat, precis som i dagny. -->
+<!-- #include event-chrome-top -->
+<!-- #include material-modal -->
+<!-- #include event-chrome-bottom -->
+<main>
+<div class="message-default" style="display:none">
+    <p>Köp dina biljetter direkt på webben hos Nortic</p>
+</div>
+<div class="change-browser-plz" style="display: none;">
+    <h5>Gammal webbläsare</h5>
+    <p>Webbläsaren du använder har inte stöd för alla våra funktioner. För att kunna använda Nortic
+        behövs en nyare webbläsare. Vi rekommenderar Google Chrome.</p>
+</div>
+<div class="container">
+</div>
+<section id="top">
+    <div id="background-container">
+        <div class="obfuscator"></div>
+    </div>
+    <div id="main-ribbon" class="container">
+        <div class="slider-wrapper" id="event-info-slider-wrapper">
+                    <div class="slider-inner no-select">
+                            <span class="event-info slider-item"><i class="material-icons">style</i><span class="event-info-label">1 Ort</span></span>
+                            <span class="event-info slider-item"><i class="material-icons">date_range</i> <span class="event-info-label">18 juni 2027</span></span>
+                    </div>
+        </div>
+                <h1>
+                    <span>
+                    Sommarkvällar på Slottet 2027
+                    </span>
+                </h1>
+                <input type="hidden" id="orgid-input" value="100">
+                <a id="read-more"></a>
+                            <div class="event-information minimized">
+                                <span id="event-information-text"><p>Sommarkvällar på Slottet är tre veckor av konserter, teater och allsång i <b>Slottsparken</b>. Ta med picknickfilten, köp något gott i matområdet och njut av långa ljusa kvällar vid vattnet. Grindarna öppnar en timme före varje föreställning.</p>
+<p>Alla föreställningar sker utomhus och genomförs i nästan alla väder. Barn under 7 år går gratis i vuxens sällskap men behöver en egen biljett. Läs mer om tillgänglighet, parkering och mat på vår webbplats.</p></span>
+                            </div>
+                    <a class="btn waves-effect theme-background-color uppercase event-information-button" style="" data-expanded="false" data-organizerid="100" data-text-default="Läs mer" data-text-triggered="DÖLJ INFO">Läs mer</a>
+    </div>
+</section>
+<style>
+    #background-container {
+        background-image: url("/playground/media/event.jpg");
+    }
+</style>
+<section id="active-events">
+    <div class="container">
+        <div class="spinner-container display-none" id="show-calendar-loader-container">
+            <div class="preloader-wrapper big active" id="show-calendar-loader">
+                <div class="spinner-layer spinner-color-secondary">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div><div class="gap-patch">
+                    <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="show-listing">
+            <div id="show-listing-body">
+                <div class="row">
+                    <div class="col s12">
+                                        <div class="show-listing-month valign-wrapper row no-margin">
+                                            <div class="col s12">
+                                                <span class="uppercase bold month-name">
+                                                        juni 2027</span>
+                                            </div>
+                                        </div>
+                                <div style="position: relative;" class="show-listing-show pointer sd2027-06-18 unnumbered-show expanded" data-showtype="unnumbered-show" data-fab="booking-fab" data-showid="8001" data-arenatype="unnumbered-show" data-modal="#material-modal">
+                                    <div class="row no-margin valign-wrapper">
+                                            <div class="col m1 center-align dateball-container">
+                                                <span class="dateball theme-background-color">
+                                                            <span>18</span>
+                                                </span>
+                                            </div>
+                                        <div class="col s3 m3 l3 hide-on-small-and-down large-screen-date">
+                                                    <span class="capitalize bold">
+                                                                fredag
+                                                    </span>
+                                                    <br>
+                                                            18 juni 19:00
+                                        </div>
+                                        <div class="col s3 m3 hide-on-small-and-down left-align show-name-container">
+                                            <div class="bold show-name">Midsommarkonsert med Kalmar Kammarorkester</div>
+                                                    <div class="supply-blobs"><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob"></span></div>
+                                        </div>
+                                        <div class="col s2 m2 hide-on-small-and-down price-range">
+                                            från 295 SEK
+                                        </div>
+                                        <div class="col s3 m2 hide-on-small-and-down location-med-and-up right-align">
+                                                <span>
+                                                                    <a target="_blank" class="cancel-trigger arenaLocationLink" href="http://www.google.se/maps/place/56.66,16.36">Slottsparken</a><br><span class="bold">Kalmar</span>
+                                                </span>
+                                        </div>
+                                        <div class="col s10 hide-on-med-and-up left-align combined-name-and-info">
+                                            <span class="bold show-name">Midsommarkonsert med Kalmar Kammarorkester</span>
+                                                    <div class="supply-blobs"><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob"></span></div>
+                                            <br>
+                                            <div class="hide-on-med-and-up price-range">
+                                                        från 295 SEK
+                                            </div>
+                                                <div class="show-info-small">
+                                                    <span class="capitalize">fredag</span>
+                                                    <br>
+                                                    18 juni 19:00
+                                                    <br>
+                                                        <span class="small-arena">
+                                                            <span class="bold">
+                                                                Slottsparken
+                                                            </span><br>
+                                                            Kalmar
+                                                        </span>
+                                            </div>
+                                        </div>
+                                        <div class="row hide-on-med-and-up showcalander-btn-wrapper">
+                                            <div class="m2 center-align show-listing-arrow">
+                                                    <a class="btn waves-effect waves-light theme-background-color"><i class="material-icons right">expand_more</i><span>Biljetter</span></a>
+                                                <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                <div class="addon-href-contianer center-align addon-hidden-unless-soldout">
+                                                    <a class="addon-href-style open-addons" data-showid="8001">
+                                                                Endast tillval
+                                                    </a>
+                                                </div>
+                                        </div>
+                                            <div class="addon-href-contianer center-align hide-on-small-and-down addon-hidden-unless-soldout">
+                                                <a class="addon-href-style open-addons" data-showid="8001">
+                                                            Endast tillval
+                                                </a>
+                                            </div>
+                                        <div class="col s2 m2 center-align show-listing-arrow hide-on-small-and-down">
+                                                <a class="btn waves-effect waves-light theme-background-color"><i class="material-icons right">expand_more</i><span>Biljetter</span></a>
+                                            <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+<div class="booking-contents unnumbered-show show-8001" data-showid="8001" data-maxperbooking="30" style="display: block;">
+<div id="addon-content-container" style="display: flex; flex-direction: column"><div class="new-top-addon-container"><div class="container new-addons">
+<div style="display:flex; align-items:center; gap:0.5em; margin-bottom:1em;"><button class="addon-back-button btn-flat" style="padding-left:10px; padding-right:10px; color:#333;"><i class="material-icons" style="vertical-align:middle;">arrow_back</i><span style="vertical-align:middle;">Avbryt tillvalsköp</span></button></div>
+<div style="margin-top: 15px"><p style="font-weight: 400; font-size: 20px;">Tillval</p></div>
+<div id="show-connection-groups-list"><div class="addon-group"><ul class="collapsible"><li class="active"><div class="collapsible-header show-connection-header active"><div class="addon-card-header" style="display: flex; align-items: center; width: 100%; justify-content: space-between;"><div style="display: flex; align-items: center; gap: 0.75em;"><div class="addon-type-icon" style="width: 32px; height: 32px; border-radius: 50%; background-color: #f5c542; display: flex; align-items: center; justify-content: center;"><i class="material-icons" style="color: white; font-size: 20px; margin-right: 0">lightbulb</i></div><p style="font-size:16px; font-weight:500; margin:0;">Arrangörstips</p></div><i class="material-icons right addon-arrow" style="transition: transform 0.2s ease; color: #555;">chevron_right</i></div></div>
+<div class="collapsible-body" style="padding:1.5em; display:block;"><ul class="addon-show-list"><li class="addon-show-item"><div class="addon-show-header">Paket och tillval <span class="addon-show-date">2027-06-18 19:00</span></div><ul class="addon-list"><li class="new-addon-row-wrapper minimal-shade"><div class="placeholder-image-container"><img class="placeholder-image" src="/playground/media/addon-room.jpg"></div><div class="addon-card-body-wrapper"><div class="new-addon-the-header"><p>Hotell, enkelrum</p></div><div class="the-body"><p class="price-info"><b>1 195&nbsp;SEK</b></p><div class="price-amount-selection-wrapper"><div class="pull-left addon-amount-blob-container valign-wrapper"><div class="addon-amount-blob minus no-select white-text pointer yellow-background match-text disabled">–</div><div class="addon-amount-blob no-select amount zero"><div class="amount-indicator">0</div></div><div class="addon-amount-blob no-select plus white-text pointer yellow-background match-text ">+</div></div></div></div></div></li><li class="new-addon-row-wrapper minimal-shade"><div class="placeholder-image-container"><img class="placeholder-image" src="/playground/media/addon-food.jpg"></div><div class="addon-card-body-wrapper"><div class="new-addon-the-header"><p>Middag i Slottsköket</p></div><div class="the-body"><p class="price-info"><b>345&nbsp;SEK</b></p><div class="price-amount-selection-wrapper"><div class="pull-left addon-amount-blob-container valign-wrapper"><div class="addon-amount-blob minus no-select white-text pointer yellow-background match-text ">–</div><div class="addon-amount-blob no-select amount "><div class="amount-indicator">1</div></div><div class="addon-amount-blob no-select plus white-text pointer yellow-background match-text ">+</div></div></div></div></div></li><li class="new-addon-row-wrapper minimal-shade"><div class="placeholder-image-container"><img class="placeholder-image" src="/playground/media/addon-parking.jpg"></div><div class="addon-card-body-wrapper"><div class="new-addon-the-header"><p>Parkering hela kvällen</p></div><div class="the-body"><p class="price-info"><b>120&nbsp;SEK</b></p><div class="price-amount-selection-wrapper"><div class="pull-left addon-amount-blob-container valign-wrapper"><div class="addon-amount-blob minus no-select white-text pointer yellow-background match-text disabled">–</div><div class="addon-amount-blob no-select amount zero"><div class="amount-indicator">0</div></div><div class="addon-amount-blob no-select plus white-text pointer yellow-background match-text ">+</div></div></div></div></div></li></ul></li></ul></div></li></ul></div></div>
+</div><div class="addon-btn-container"><button type="button" class="btn addon-btn" style="visibility: hidden" id="addon-modal-continue">Gå vidare</button></div></div></div><style>
+    .addon-row-wrapper.active .addon-arrow {
+        transform: rotate(90deg);
+    }
+
+    .new-top-addon-container {
+        background-color: #f5f5f5
+    }
+    .new-addons {
+        width: 90%;
+    }
+    .new-addon-row-wrapper {
+        background: #fff;
+        min-height: 320px;
+        width: 100%;
+        max-width: 400px;
+        border-radius: 15px;
+    }
+    .addon-card-body-wrapper { padding: 20px; }
+    .placeholder-image-container {
+        width: 100%;
+        height: 130px;
+        overflow: hidden;
+        border-radius: 15px 15px 0px 0px;
+    }
+    .placeholder-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+    }
+    .addon-group{
+        background-color: white;
+    }
+    .addon-type-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .addon-arrow { transition: transform 0.2s ease; }
+    .collapsible-header.active .addon-arrow { transform: rotate(90deg); }
+    .new-addon-the-header { font-size: 16px; font-weight: 600; }
+    .addon-amount-blob-container { justify-content: flex-start; }
+    .addon-amount-blob { display: inline-flex; align-items: center; justify-content: center; font-weight: 500; font-size: 14px; border-radius: 100%; width: 2em; height: 2em; }
+    .addon-amount-blob.amount { background-color: #fff; margin: 0 7px; border: 1px solid #e3e3e3; height: 40px; width: 40px;}
+    .addon-amount-blob.zero { opacity: .4; height: 40px; width: 40px; }
+    .addon-amount-blob.disabled { background-color: #e3e3e3 !important; color: #fff; cursor: not-allowed; }
+    .the-body {  display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 120px;
+        height: 100%; }
+    .price-amount-selection-wrapper { height: 100%; display: flex; flex-direction: column; justify-content: space-between; margin-top: auto; }
+    .price-info{
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+</style>
+
+</div>
+
+                    </div>
+                </div>
+                <div class="display-none fake-month show-listing-month row">
+                    <div class="col s12">
+                            <span class="uppercase bold month-name" style="margin-left: 30px">
+                              Välj datum i kalender för att se tillgång
+                            </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</main>
+<!-- #include footer -->
+</body>
+</html>

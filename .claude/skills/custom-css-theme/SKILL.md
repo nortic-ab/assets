@@ -163,6 +163,8 @@ Some dagny defects show in every theme, whatever the palette, and customers repo
 
 ## Verify before you hand over
 
+**Start in the playground** (`assets/hosting/playground`, `pnpm playground`, http://localhost:5178/playground/): static copies of every dagny page with mock data and every state below, with the theme linked the way `head.jsp` links it, popups and toasts behind buttons, and a reload whenever a file is saved. Check the theme on all its pages at 1280 and 390 px there first (Playwright can open `pages/<page>.html?env=prod&org=<org>&event=<event>` directly), compare with **Jämför med dagny**, and add a page or state there when the theme needs one the playground lacks (`assets/hosting/playground/README.md`). Then confirm on the real pages, which is still needed for the organizer's real content (long names, their event image, their categories).
+
 Follow `references/verification.md` for the mechanics (local EventSystem + Firebase emulator, Playwright with system Chrome, network swap for events that do not exist locally, a public prod page as host when the local EventSystem is down or the event is an unpublished draft, how to reach the payment modal). Look at each of these, desktop 1280 px and mobile 390 px (and 320 px for the footer):
 
 1. Hero: logo, title, info chips (no stray scrollbar under them), background layer. If blocks are meant to line up (title block and calendar), measure their `getBoundingClientRect()` instead of judging a screenshot.

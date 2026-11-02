@@ -1,0 +1,263 @@
+<script>PG.body()</script>
+<div id="basket-cart-loading-overlay" class="display-none">
+    <div class="spinner-container display-none">
+        <div class="preloader-wrapper active" style="width: 100px; height: 100px;">
+            <div class="spinner-layer blue-spinner">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+        <div class="basket-cart-loading-overlay-text-wrapper">
+            <span class="basket-cart-loading-overlay-text">
+            </span>
+        </div>
+    </div>
+</div>
+<div id="event-page-loading-overlay-basket" class="display-none" style="width: 100%;
+    height: 100%;
+    z-index: 5000;
+    background-color: rgb(23 18 44 / 84%);
+    position: fixed;">
+    <div class="spinner-container display-none" style="display: flex; height: 100%; align-items: center; justify-content: center; align-content: center; flex-direction: column">
+        <div class="preloader-wrapper active" style="width: 100px; height: 100px;">
+            <div class="spinner-layer spinner-blue">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+            <div class="spinner-layer spinner-red">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+            <div class="spinner-layer spinner-yellow">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+            <div class="spinner-layer spinner-green">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 2em">
+            <span style="font-weight: 500; font-size: 36px; color: #fff; text-shadow: 0px -1px 8px black;">
+            Lägger till i varukorg
+            </span>
+        </div>
+    </div>
+</div>
+<div id="event-page-loading-overlay" class="display-none"></div>
+<div id="force-open-modal-loading-overlay" class="display-none">
+<div class="preloader-wrapper big active">
+    <div class="spinner-layer spinner-blue">
+        <div class="circle-clipper left">
+            <div class="circle"></div>
+        </div><div class="gap-patch">
+        <div class="circle"></div>
+    </div><div class="circle-clipper right">
+        <div class="circle"></div>
+    </div>
+    </div>
+    <div class="spinner-layer spinner-red">
+        <div class="circle-clipper left">
+            <div class="circle"></div>
+        </div><div class="gap-patch">
+        <div class="circle"></div>
+    </div><div class="circle-clipper right">
+        <div class="circle"></div>
+    </div>
+    </div>
+    <div class="spinner-layer spinner-yellow">
+        <div class="circle-clipper left">
+            <div class="circle"></div>
+        </div><div class="gap-patch">
+        <div class="circle"></div>
+    </div><div class="circle-clipper right">
+        <div class="circle"></div>
+    </div>
+    </div>
+    <div class="spinner-layer spinner-green">
+        <div class="circle-clipper left">
+            <div class="circle"></div>
+        </div><div class="gap-patch">
+        <div class="circle"></div>
+    </div><div class="circle-clipper right">
+        <div class="circle"></div>
+    </div>
+    </div>
+</div>
+</div>
+<div id="basket-overlay" class="overlay-hidden event-page-overlay"></div>
+<div id="share-modal" class="modal" style="z-index: 1003;">
+    <div class="modal-content">
+        <h5>Dela</h5>
+        <div class="row">
+            <div class="col s12" id="social-share-buttons-row">
+                <a class="social-share-button" href="javascript:;">
+                    <img src="https://cloud.nortic.se/images/dagny/icons/facebook.svg" alt="Dela på Facebook" class="tooltipped" data-tooltip="Dela på Facebook" onerror="this.onerror=null;this.src='/images/dagny/icons/facebook.svg';">
+                </a>
+                <a class="social-share-button" href="javascript:;">
+                    <img src="https://cloud.nortic.se/images/dagny/icons/twitter.svg" alt="Dela på Twitter" class="tooltipped" data-tooltip="Dela på Twitter" onerror="this.onerror=null;this.src='/images/dagny/icons/twitter.svg';">
+                </a>
+                <a class="social-share-button" href="javascript:;">
+                    <img src="https://cloud.nortic.se/images/dagny/icons/linkedin.svg" alt="Dela på LinkedIn" class="tooltipped" data-tooltip="Dela på LinkedIn" onerror="this.onerror=null;this.src='/images/dagny/icons/linkedin.svg';">
+                </a>
+            </div>
+        </div>
+        <div class="row gray-background" id="share-url-row">
+            <div class="col s12">
+                <input type="text" readonly="" class="materialize-textarea" id="share-url" value="https://tickets.nortic.se/ticket/event/100001">
+            </div>
+            <div class="col s12" id="button-row">
+                <a class="btn" id="copy-link-button">Kopiera länk</a>
+                <a href="mailto:?subject=Sommarkvällar på Slottet 2027&amp;body=Boka biljetter till Sommarkvällar på Slottet 2027 på https://tickets.nortic.se/ticket/event/100001" class="btn btn-flat">Dela via e-post</a>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="st-menu st-effect-2" id="menu-2"></nav>
+<div class="st-pusher">
+    <div class="st-content">
+        <div class="st-content-inner"><!-- extra div for emulating position:fixed of the menu -->
+<div class="floating-buttons">
+    <div id="basket" class="pointer display-none z-depth-2">
+        <div class="amount-blob valign-wrapper">
+            <span class="icon"><i class="material-icons">shopping_cart</i></span>
+            <span class="amount">0</span>
+        </div>
+        <div class="price-container  valign-wrapper">
+                <div class="price">0</div>
+        </div>
+        <div class="proceed-arrow-blob valign-wrapper">
+            <span class="proceed-arrow"><i class="material-icons">keyboard_arrow_right</i></span>
+        </div>
+       <div class="discount display-none">
+               <div class="discount-wrapper">
+                   <p class="discount-name" style="color: white;"></p>
+                   <p class="discount-price" style="color: red;"></p>
+               </div>
+       </div>
+    </div>
+    <div id="addons-basket" class="pointer display-none z-depth-2">
+        <div class="amount-blob valign-wrapper">
+            <div class="preloader-wrapper small active">
+                <div class="spinner-layer yellow-spinner">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <span class="icon">
+               <i class="material-icons addon-icon">star</i>
+            </span>
+            <span class="amount">0</span>
+        </div>
+        <div class="price-container  valign-wrapper">
+            <div class="price">0</div>
+        </div>
+        <div class="proceed-arrow-blob valign-wrapper">
+            <span class="proceed-arrow"><i class="material-icons">keyboard_arrow_right</i></span>
+        </div>
+    </div>
+    <div class="fixed-action-btn " id="main-fab">
+        <a class="display-none btn-floating btn-large theme-secondary-background-color waves-effect">
+            <i class="large material-icons">more_vert</i>
+        </a>
+        <ul class="items">
+        </ul>
+    </div>
+    </div>
+<div id="cart-overview-modal" class="modal" style="z-index: 1005;">
+    <div class="modal-content">
+        <div class="detail-container">
+        </div>
+        <div class="shopping-cart-overview-buttons">
+            <button id="basket-cart-overview-go-to-payment" type="button" class="btn waves-effect theme-background-color uppercase goto-button modal-action modal-close" style="float: right; margin-left: 1em;">
+                Till kassan
+            </button>
+            <button id="basket-cart-overview-clear" type="button" class="btn waves-effect theme-secondary-background-color uppercase goto-button modal-action" style="float: right">
+                Töm varukorg
+            </button>
+        </div>
+    </div>
+</div>
+<header id="main-header">
+    <div class="row no-margin valign-wrapper">
+        <div class="col s2 m1 valign" id="main-menu-button-container" style="pointer-events: initial">
+                        <a href="/ticket/organizer/100" class="back-to-organizer fixed"><i class="material-icons pointer">arrow_back</i></a>
+        </div>
+        <div class="col s2 m1 valign right-align hide-on-small-and-down" id="cart">
+        </div>
+        <div class="col s2 m1 valign right-align" id="dropdown-button-container" style="pointer-events: initial">
+<i class="material-icons  dropdown-button pointer" data-beloworigin="true" data-activates="help-menu">more_vert</i><ul id="help-menu" class="dropdown-content">
+    <li><a href="javascript:;" id="help-button">Hjälp</a></li>
+    <li><a id="share-modal-button" href="#share-modal" data-modalid="#share-modal" class="modal-trigger">Dela</a></li>
+    <li class="divider"></li>
+    <li class="no-hover">
+        <div id="flag-row" class="row">
+            <div class="col s6 valign-wrapper" onclick="window.location.href = window.location.pathname + '?language=sv'">
+                <span class="valign center-block">
+                    <img src="https://cloud.nortic.se/images/dagny/icons/swe.svg" alt="Svenska" class="active-flag" onerror="this.onerror=null;this.src='/images/dagny/icons/swe.svg';">
+                </span>
+            </div>
+            <div class="col s6 valign-wrapper" onclick="window.location.href = window.location.pathname + '?language=en'">
+                <span class="valign center-block">
+                    <img src="https://cloud.nortic.se/images/dagny/icons/eng.svg" alt="English" class="" onerror="this.onerror=null;this.src='/images/dagny/icons/eng.svg';">
+                </span>
+            </div>
+            <div class="col s6 valign-wrapper" onclick="window.location.href = window.location.pathname + '?language=de'">
+                <span class="valign center-block">
+                    <img src="https://cloud.nortic.se/images/dagny/icons/ger.svg" alt="Deutsch" class="" onerror="this.onerror=null;this.src='/images/dagny/icons/ger.svg';">
+                </span>
+            </div>
+            <div class="col s6 valign-wrapper" onclick="window.location.href = window.location.pathname + '?language=fi'">
+                <span class="valign center-block">
+                    <img src="https://cloud.nortic.se/images/dagny/icons/fi.svg" alt="Suomalainen" style="width:24px;height:16px
+" class="" onerror="this.onerror=null;this.src='/images/dagny/icons/fi.svg';">
+                </span>
+            </div>
+        </div>
+    </li>
+</ul>
+        </div>
+    </div>
+</header>

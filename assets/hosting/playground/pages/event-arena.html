@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="sv" data-pg-kind="event">
+<head>
+<title>Numrerade platser (arenasidan) – dagny playground</title>
+<!-- #include head -->
+<script type="application/json" id="pg-actions">[{"name": "toast::Varukorgen uppdaterad", "label": "Toast"}, {"name": "toast:error-toast:Kampanjkoden är redan aktiverad.", "label": "Toast: fel"}, {"name": "toast:warning-toast:Bara ett fåtal biljetter kvar", "label": "Toast: varning"}, {"name": "toast:info-toast:Kunde inte ladda platstillgång, försök igen om en liten stund.", "label": "Toast: info"}, {"name": "close", "label": "Stäng allt"}]</script>
+</head>
+<body id="st-container" data-eventid="100001" data-organizerid="100" data-currency="SEK" data-organizercart="false" data-basketcartorganizerid="" data-usewaitlist="true" data-organizerusewaitlist="true" class="event-page" style="overflow: hidden;">
+<!-- Numrerade platser: arenasidan (#material-modal.arena-page) med sektionslistan och kategorivalet. Platskartan
+     ritas av dagnys JS och finns inte här. -->
+<!-- #include event-chrome-top -->
+<div id="material-modal" class="material-modal modal__bg arena-page modal--active" role="dialog">
+    <div class="modal__dialog large-size">
+        <div class="modal__content z-depth-4 modal__content--active">
+<section id="booking" data-showid="301939" data-organizerid="538" data-currency="SEK" data-showname="Operagala (numrerade platser)" data-maxperbooking="30">
+    <div id="loading-overlay" class="arena display-none">
+    <div class="spinner-container display-none" style="display: none;">
+        <div id="preloader-wrapper" class="preloader-wrapper active">
+            <div class="spinner-layer blue-spinner">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="loading-what" style="display: none;">
+        <div class="show-name">Operagala (numrerade platser)</div>
+        <div class="details">Laddar arena</div>
+    </div>
+    <div id="centered-content" style="display: none;">
+        <img src="https://cloud.nortic.se/images/dagny/predefined/n_black.svg" alt="Nortic" class="black-logo logo" onerror="this.onerror=null;this.src='/images/dagny/predefined/n_black.svg';">
+        <img src="https://cloud.nortic.se/images/dagny/predefined/n_white.svg" alt="Nortic" class="white-logo logo" onerror="this.onerror=null;this.src='/images/dagny/predefined/n_white.svg';">
+    </div>
+    <div id="captcha-div" active="false" style="display: block;"></div>
+</div>
+    <input type="hidden" id="allowhandicap" name="allowhandicap" value="false">
+    <input type="hidden" id="handicapOnlineInformation" name="handicapOnlineInformation" value="">
+    <input type="hidden" id="arena-name-string" value="&lt;div class='booking-indicator-title'&gt;Operagala (numrerade platser)&lt;/div&gt;&lt;div class='booking-indicator-subtitle'&gt;2027-06-25 19:30&lt;/div&gt;">
+<header id="ordinary-booking-header" class="booking-header  ">
+    <div class="row no-margin valign-wrapper main-content-row">
+        <div class="col s9  valign-wrapper">
+            <span class="small-header-item action-icon valign-wrapper modal__close" id="close-modal-icon"><i class="material-icons modal__close close-icon">close</i></span>
+            <span class="small-header-item action-icon display-none pointer valign-wrapper" id="back-to-section-icon"><i class="material-icons">arrow_back</i></span>
+            <span class="small-header-item action-icon display-none pointer valign-wrapper" id="back-to-section-overview-icon"><i class="material-icons">arrow_back</i></span>
+            <div class="booking-page-indicator">
+                <div class="booking-indicator-title uppercase">
+                    Operagala (numrerade platser)
+                </div>
+                                    <div class="booking-indicator-subtitle hide-on-small-and-down">
+                                        19:30 - fredag 25 juni 2027 / Slottsteatern - Kalmar
+                                    </div>
+                                    <div class="booking-indicator-subtitle hide-on-med-and-up">
+                                        19:30 25-06-2027&nbsp;Kalmar
+                                    </div>
+            </div>
+        </div>
+        <div class="col s3 right-align">
+                <span class="small-header-item right-side pointer"><i class="toggle-info material-icons">info_outline</i></span>
+        </div>
+    </div>
+    <div class="expandable-content" style="display: none;">
+        <div class="row no-margin">
+            <div class="col s12">
+                <span class="seat-type-description"><span class="seat unavailable"></span> <span class="info">Otillgänglig</span></span>
+                <span class="seat-type-description"><span class="seat marked"></span> <span class="info">Tillgänglig</span></span>
+                <span class="seat-type-description"><span class="seat selected"></span> <span class="info">Vald</span></span>
+            </div>
+        </div>
+    </div>
+</header>
+    <div class="booking-contents">
+        <div id="basket-overlay" class="overlay-hidden arena-page-overlay"></div>
+        <div class="arena-select-seat-overlay display-none"></div>
+        <div class="arena-container">
+            <nav class="control-panel">
+                <div class="stage-orientation" style="opacity: 1;">
+                    <div class="stage-orientation-container">
+                        <span class="label uppercase">Scen</span>
+                        <span class="icon"><i id="stageDirection" class="material-icons" style="transform: rotate(0deg);">arrow_upward</i></span>
+                    </div>
+                    <canvas width="200" height="200" id="arenaHudView" style="pointer-events: none; user-select: none; display: none;"></canvas>
+                </div>
+                <div class="control-buttons">
+                    <div class="button valign-wrapper zoom-in hide-on-med-and-down">
+                        <svg class="center-block valign" xmlns="http://www.w3.org/2000/svg" width="14px" height="14px">
+                            <path fill-rule="evenodd" fill="rgb(0, 0, 0)" d="M14.000,8.000 L8.000,8.000 L8.000,14.000 L6.000,14.000 L6.000,8.000 L-0.000,8.000 L-0.000,6.000 L6.000,6.000 L6.000,-0.000 L8.000,-0.000 L8.000,6.000 L14.000,6.000 L14.000,8.000 Z"></path>
+                        </svg>
+                    </div>
+                    <div class="button valign-wrapper zoom-out hide-on-med-and-down">
+                        <svg class="center-block valign" xmlns="http://www.w3.org/2000/svg" width="14px" height="2px">
+                            <path fill-rule="evenodd" fill="rgb(0, 0, 0)" d="M-0.000,-0.000 L14.000,-0.000 L14.000,2.000 L-0.000,2.000 L-0.000,-0.000 Z"></path>
+                        </svg>
+                    </div>
+                    <div class="button valign-wrapper home">
+                        <svg class="center-block valign" xmlns="http://www.w3.org/2000/svg" width="22px" height="28px">
+                            <g style="fill-opacity:1;stroke:none;stroke-width:0.5;stroke-opacity:1;fill-rule:nonzero;fill:#000000;">
+                                <g style="fill:none;">
+                                    <path d="M0 0h24v24H0V0z"></path>
+                                </g>
+                                <g style="">
+                                    <path d="M12 5.69l5 4.5V18h-2v-6H9v6H7v-7.81l5-4.5M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"></path>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </nav>
+            <div id="html5Container" style="width: 100%; height:100%;"><canvas width="1280" height="900" style="position: absolute; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; left: 0px; top: 0px; pointer-events: none; user-select: none;"></canvas><canvas width="1280" height="900" style="position: absolute; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; left: 0px; top: 0px; pointer-events: none; user-select: none;"></canvas><div id="jarenaTooltip" style="position: absolute; box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 4px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); padding: 6px; font-size: 16px; pointer-events: none; display: none;"></div><div id="jarena-infotip" style="position: absolute; box-shadow: rgba(0, 0, 0, 0.15) 3px 3px 3px; color: rgb(52, 152, 219); background-color: rgb(240, 247, 251); border-left: 4px solid rgb(52, 152, 219); padding: 15px 60px; font-size: 20px; pointer-events: none; margin-right: -50%; transform: translate(-50%, -300%); display: none;"></div></div>
+            <div class="standing-section-information display-none">Ståplatser. Ingen översikt tillgänglig.</div>
+            <div class="standing-section-background display-none"></div>
+        </div>
+        <div class="category-selection-modal display-none">
+    <header class="row valign-wrapper no-margin header-row">
+        <div class="col s2 seat-icon-container"><i class="material-icons opaque-4 type-icon">event_seat</i></div>
+        <div class="col s8"><div class="seat-info uppercase"></div><div class="list-info seat-sub-info">Ordinarie</div></div>
+        <div class="col s2 right-align close pointer"><i class="material-icons">close</i></div>
+    </header>
+    <div class="row valign-wrapper">
+        <div class="col s6 no-padding">
+            <h2>Välj kategori</h2>
+        </div>
+        <div class="col s6 right-align no-padding">
+            <span class="seats-left ">100 platser</span>
+        </div>
+    </div>
+    <div class="categories">
+    </div>
+    <div class="fasching-attention">
+        <b>Fasching-medlem?</b><p>Rabatterat biljettalternativ dyker upp <b>ovan</b> när du angett ditt medlems-ID.</p>
+    </div>
+    <div class="attention">
+        <i class="material-icons">new_releases</i>
+        <div>Vid val av denna plats krävs att man i nästa steg även väljer tillvalet av typen&nbsp;"<span id="addon-name">Parkering</span>".</div>
+    </div>
+    <div class="campaign-attention fasching">
+        <i class="material-icons">arrow_upward</i>
+                Ange eventuell kampanjkod för att få tillgång till rabatterade kategorier!
+    </div>
+    <div class="used-myclub-codes display-none">
+        <h2>Använda medlemsnummer:</h2> <span class="codes"></span>
+    </div>
+</div>
+        <div class="section-list">
+            <div class="section-list-header pointer">
+                <img src="https://cloud.nortic.se/images/dagny/icons/updownline.svg" class="draghandle" onerror="this.onerror=null;this.src='/images/dagny/icons/updownline.svg';">
+                <div class="section-list-header-title center-align pointer" data-default-text="Platsguide - Hitta lediga platser" data-sections-text="Välj sektion">
+                    Välj sektion
+                </div>
+                <button class="section-list-header-button center-align " type="button" data-default-text="Visa sektioner" data-suggestions-text="Visa platsguide" style="display: none;">
+                    Visa platsguide
+                </button>
+                <div class="section-list-header-sub-title center-align"></div>
+            </div>
+            <div class="fake-tab-contents display-none" id="selected-seats-scroll-div">
+                <div class="seat-container">
+                    <div class="seat">Alfa</div>
+                </div>
+                <div class="seat-container">
+                    <div class="seat">Omega</div>
+                </div>
+            </div>
+            <div class="fake-tab-contents" id="section-list-scroll-div">
+            <div class="section-container">
+                        <div data-sectioncolor="rgba(255, 0, 0, 1)" style="margin-top: -2px; margin-bottom: -2px; animation-duration: 0.3s;" class="section pointer" data-sectionid="354478" data-sectionname="Parkett - Främre">
+                            <div class="section-color" style="border-color: rgb(255, 0, 0); background-color: rgb(255, 0, 0);"></div>
+                            <div class="section-primary-content no-margin">
+                                <div class="campaign-available-text uppercase" style="display:none;">kampanj</div>
+                                <div class="section-name">Parkett - Främre</div>
+                                <div class="section-prio-info hidden"></div>
+                                <div class="seats-available">
+                                        <span class="seats-available-text right-align"><span class="amount">99+</span> <span class="suffix uppercase">lediga</span></span>
+                                </div>
+                                <div class="section-price-range">100 - 200 SEK</div>
+                            </div>
+                        </div>
+                    </div><div class="section-container">
+                        <div data-sectioncolor="rgba(0, 196, 0, 1)" style="margin-top: -2px; margin-bottom: -2px; animation-duration: 0.3s;" class="section pointer" data-sectionid="354479" data-sectionname="Parkett - Mitten">
+                            <div class="section-color" style="border-color: rgb(0, 196, 0); background-color: rgb(0, 196, 0);"></div>
+                            <div class="section-primary-content no-margin">
+                                <div class="campaign-available-text uppercase" style="display:none;">kampanj</div>
+                                <div class="section-name">Parkett - Mitten</div>
+                                <div class="section-prio-info hidden"></div>
+                                <div class="seats-available">
+                                        <span class="seats-available-text right-align"><span class="amount">99+</span> <span class="suffix uppercase">lediga</span></span>
+                                </div>
+                                <div class="section-price-range">100 - 200 SEK</div>
+                            </div>
+                        </div>
+                    </div><div class="section-container">
+                        <div data-sectioncolor="rgba(50, 50, 255, 1)" style="margin-top: -2px; margin-bottom: -2px; animation-duration: 0.3s;" class="section pointer" data-sectionid="354480" data-sectionname="Parkett - Bakre">
+                            <div class="section-color" style="border-color: rgb(50, 50, 255); background-color: rgb(50, 50, 255);"></div>
+                            <div class="section-primary-content no-margin">
+                                <div class="campaign-available-text uppercase" style="display:none;">kampanj</div>
+                                <div class="section-name">Parkett - Bakre</div>
+                                <div class="section-prio-info hidden"></div>
+                                <div class="seats-available">
+                                        <span class="seats-available-text right-align"><span class="amount">99+</span> <span class="suffix uppercase">lediga</span></span>
+                                </div>
+                                <div class="section-price-range">100 - 200 SEK</div>
+                            </div>
+                        </div>
+                    </div></div>
+            <div class="filters display-none">
+                <div class="filter-group">
+                    <div class="filter-group-caption">Platser</div>
+                    <div class="filter" data-filter-value="1">1 plats</div>
+                    <div class="filter" data-filter-value="2">2 platser</div>
+                    <div class="filter" data-filter-value="3">3 platser</div>
+                    <div class="filter" data-filter-value="4">4 plats</div>
+                    <div class="filter" data-filter-value="5">5+ plats</div>
+                </div>
+            </div>
+            <div class="fake-tab-contents display-none" id="suggestion-list-scroll-div"></div>
+            <div id="category-list-container" class="display-none"></div>
+        </div>
+    </div>
+</section>
+</div>
+    </div>
+</div>
+
+<!-- #include event-chrome-bottom -->
+<main>
+<div class="message-default" style="display:none">
+    <p>Köp dina biljetter direkt på webben hos Nortic</p>
+</div>
+<div class="change-browser-plz" style="display: none;">
+    <h5>Gammal webbläsare</h5>
+    <p>Webbläsaren du använder har inte stöd för alla våra funktioner. För att kunna använda Nortic
+        behövs en nyare webbläsare. Vi rekommenderar Google Chrome.</p>
+</div>
+<div class="container">
+</div>
+<section id="top">
+    <div id="background-container">
+        <div class="obfuscator"></div>
+    </div>
+    <div id="main-ribbon" class="container">
+        <div class="slider-wrapper" id="event-info-slider-wrapper">
+                    <div class="slider-inner no-select">
+                            <span class="event-info slider-item"><i class="material-icons">style</i><span class="event-info-label">1 Ort</span></span>
+                            <span class="event-info slider-item"><i class="material-icons">date_range</i> <span class="event-info-label">25 juni 2027</span></span>
+                    </div>
+        </div>
+                <h1>
+                    <span>
+                    Sommarkvällar på Slottet 2027
+                    </span>
+                </h1>
+                <input type="hidden" id="orgid-input" value="100">
+                <a id="read-more"></a>
+    </div>
+</section>
+<style>
+    #background-container {
+        background-image: url("/playground/media/event.jpg");
+    }
+</style>
+<section id="active-events">
+    <div class="container">
+        <div class="spinner-container display-none" id="show-calendar-loader-container">
+            <div class="preloader-wrapper big active" id="show-calendar-loader">
+                <div class="spinner-layer spinner-color-secondary">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div><div class="gap-patch">
+                    <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="show-listing">
+            <div id="show-listing-body">
+                <div class="row">
+                    <div class="col s12">
+                                        <div class="show-listing-month valign-wrapper row no-margin">
+                                            <div class="col s12">
+                                                <span class="uppercase bold month-name">
+                                                        juni 2027</span>
+                                            </div>
+                                        </div>
+                                <div style="position: relative;" class="show-listing-show pointer sd2027-06-18 unnumbered-show expanded" data-showtype="unnumbered-show" data-fab="booking-fab" data-showid="5001" data-arenatype="unnumbered-show" data-event-message-type="0" data-event-message-title="Åldersgräns" data-event-message-message="Evenemanget har en åldersgräns på 18 år. Legitimation kontrolleras vid entrén." data-modal="#material-modal">
+                                    <div class="row no-margin valign-wrapper">
+                                            <div class="col m1 center-align dateball-container">
+                                                <span class="dateball theme-background-color">
+                                                            <span>18</span>
+                                                </span>
+                                            </div>
+                                        <div class="col s3 m3 l3 hide-on-small-and-down large-screen-date">
+                                                    <span class="capitalize bold">
+                                                                fredag
+                                                    </span>
+                                                    <br>
+                                                            18 juni 19:00
+                                                    <div class="release-date">
+                                                        Insläpp 18:00
+                                                    </div>
+                                        </div>
+                                        <div class="col s3 m3 hide-on-small-and-down left-align show-name-container">
+                                            <div class="bold show-name">Midsommarkonsert med Kalmar Kammarorkester</div>
+                                                    <div class="supply-blobs"><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob"></span></div>
+                                        </div>
+                                        <div class="col s2 m2 hide-on-small-and-down price-range">
+                                            från 0 SEK
+                                        </div>
+                                        <div class="col s3 m2 hide-on-small-and-down location-med-and-up right-align">
+                                                <span>
+                                                                    <a target="_blank" class="cancel-trigger arenaLocationLink" href="http://www.google.se/maps/place/56.66,16.36">Slottsparken</a><br><span class="bold">Kalmar</span>
+                                                </span>
+                                        </div>
+                                        <div class="col s10 hide-on-med-and-up left-align combined-name-and-info">
+                                            <span class="bold show-name">Midsommarkonsert med Kalmar Kammarorkester</span>
+                                                    <div class="supply-blobs"><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob"></span></div>
+                                            <br>
+                                            <div class="hide-on-med-and-up price-range">
+                                                        från 0 SEK
+                                            </div>
+                                                <div class="show-info-small">
+                                                    <span class="capitalize">fredag</span>
+                                                    <br>
+                                                    18 juni 19:00
+                                                    <br>
+                                                        <span class="small-arena">
+                                                            <span class="bold">
+                                                                Slottsparken
+                                                            </span><br>
+                                                            Kalmar
+                                                        </span>
+                                                    <div class="release-date">
+                                                        Insläpp 18:00
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        <div class="row hide-on-med-and-up showcalander-btn-wrapper">
+                                            <div class="m2 center-align show-listing-arrow">
+                                                    <a class="btn waves-effect waves-light theme-background-color"><i class="material-icons right">expand_more</i><span>Biljetter</span></a>
+                                                <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col s2 m2 center-align show-listing-arrow hide-on-small-and-down">
+                                                <a class="btn waves-effect waves-light theme-background-color"><i class="material-icons right">expand_more</i><span>Biljetter</span></a>
+                                            <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+<div class="booking-contents unnumbered-show show-5001" data-showid="5001" data-maxperbooking="30" style="display: block;">
+<div class="unnumbered-show-container" data-usecampaigncode="true">
+    <hr>
+    <div class="row title-row">
+        <div class="col s12 m7 no-padding">
+                <h2>Välj antal biljetter och kategori</h2>
+            <div class="supply-info list-info ">
+                <span class="amount">128</span> biljetter kvar</div>
+        </div>
+        <div class="col s12 m5 no-padding right-align-medium-and-up">
+                <a data-showid="5001" class="campaign-code-button theme-background-color btn">Använd kampanjkod</a>
+        </div>
+    </div>
+    <div style="position: relative;">
+        <div class="show-category-row">
+            <div class="show-category-scoll-wrapper">
+                        <div class="show-category-container">
+                            <div class="show-category minimal-shade">
+                                <div class="sold-out-banner-container">
+                                    <div class="sold-out-banner">Slutsåld</div>
+                                </div>
+                                <div class="row no-margin">
+                                    <div class="col s12 m12 show-category-name list-title">
+                                        Vuxen
+                                    </div>
+                                    <div class="col s12 m12 show-category-info list-info">
+                                        Från 16 år
+                                    </div>
+                                </div>
+                                <div class="col s12 m12">
+                                    <div class="show-category-price list-price">
+                                                395&nbsp;
+                                                SEK
+                                    </div>
+                                    <div style="display:none" class="show-category-price list-price sold-out-message">
+                                    </div>
+                                    <div style="display:none;" class="indicator-limit absolute-right">
+                                        <i class="material-icons">new_releases</i>
+                                        Fåtal kvar!
+                                    </div>
+                                </div>
+                                <div class="col s12 m12">
+                                    <div class="amount-blob-container" data-showname="Sommarkvällar på Slottet 2027" data-showcategoryid="9001" data-showcategoryname="Vuxen" data-showstarttime="2027-06-18 19:00" data-price="395">
+                                        <div class="amount-blob minus no-select pointer theme-secondary-background-color theme-secondary-color match-text disabled">
+                                            –
+                                        </div>
+                                        <div class="amount-blob no-select amount">
+                                            <div class="amount-indicator supply-left-for-9001" data-amount="0" data-minamount="0" data-maxamount="10">
+                                                0
+                                            </div>
+                                        </div>
+                                        <div class="amount-blob no-select plus pointer theme-secondary-background-color match-text">
+                                            +
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="show-category-container">
+                            <div class="show-category minimal-shade">
+                                <div class="sold-out-banner-container">
+                                    <div class="sold-out-banner">Slutsåld</div>
+                                </div>
+                                <div class="row no-margin">
+                                    <div class="col s12 m12 show-category-name list-title">
+                                        Barn 7–15 år
+                                    </div>
+                                    <div class="col s12 m12 show-category-info list-info">
+                                        I vuxens sällskap
+                                    </div>
+                                </div>
+                                <div class="col s12 m12">
+                                    <div class="show-category-price list-price">
+                                                195&nbsp;
+                                                SEK
+                                    </div>
+                                    <div style="display:none" class="show-category-price list-price sold-out-message">
+                                    </div>
+                                    <div style="display:none;" class="indicator-limit absolute-right">
+                                        <i class="material-icons">new_releases</i>
+                                        Fåtal kvar!
+                                    </div>
+                                </div>
+                                <div class="col s12 m12">
+                                    <div class="amount-blob-container" data-showname="Sommarkvällar på Slottet 2027" data-showcategoryid="9002" data-showcategoryname="Barn 7–15 år" data-showstarttime="2027-06-18 19:00" data-price="195">
+                                        <div class="amount-blob minus no-select pointer theme-secondary-background-color theme-secondary-color match-text">
+                                            –
+                                        </div>
+                                        <div class="amount-blob no-select amount">
+                                            <div class="amount-indicator supply-left-for-9002" data-amount="2" data-minamount="0" data-maxamount="10">
+                                                2
+                                            </div>
+                                        </div>
+                                        <div class="amount-blob no-select plus pointer theme-secondary-background-color match-text">
+                                            +
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="show-category-container">
+                            <div class="show-category minimal-shade">
+                                <div class="sold-out-banner-container">
+                                    <div class="sold-out-banner">Slutsåld</div>
+                                </div>
+                                <div class="row no-margin">
+                                    <div class="col s12 m12 show-category-name list-title">
+                                        Helgpass
+                                    </div>
+                                    <div class="col s12 m12 show-category-info list-info">
+                                        Gäller fredag och lördag – upplev hela helgen med fri entré till alla scene..
+                                            <a class="read-more-info-link bold pointer uppercase">
+                                                Läs mer
+                                            </a>
+                                            <span class="full-category-info">Gäller fredag och lördag – upplev hela helgen med fri entré till alla scener, matområdet och en garderobsbiljett. Ordinarie pris 1 295 kr.</span>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12">
+                                    <div class="show-category-price list-price">
+                                                1 295&nbsp;
+                                                SEK
+                                    </div>
+                                    <div style="display:none" class="show-category-price list-price sold-out-message">
+                                    </div>
+                                    <div style="display:block;" class="indicator-limit absolute-right">
+                                        <i class="material-icons">new_releases</i>
+                                        Fåtal kvar!
+                                    </div>
+                                </div>
+                                <div class="col s12 m12">
+                                    <div class="amount-blob-container" data-showname="Sommarkvällar på Slottet 2027" data-showcategoryid="9003" data-showcategoryname="Helgpass" data-showstarttime="2027-06-18 19:00" data-price="1295">
+                                        <div class="amount-blob minus no-select pointer theme-secondary-background-color theme-secondary-color match-text disabled">
+                                            –
+                                        </div>
+                                        <div class="amount-blob no-select amount">
+                                            <div class="amount-indicator supply-left-for-9003" data-amount="0" data-minamount="0" data-maxamount="10">
+                                                0
+                                            </div>
+                                        </div>
+                                        <div class="amount-blob no-select plus pointer theme-secondary-background-color match-text">
+                                            +
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="show-category-container">
+                            <div class="show-category minimal-shade">
+                                <div class="sold-out-banner-container">
+                                    <div class="sold-out-banner" style="display: flex;">Slutsåld</div>
+                                </div>
+                                <div class="row no-margin">
+                                    <div class="col s12 m12 show-category-name list-title">
+                                        Early bird
+                                    </div>
+                                    <div class="col s12 m12 show-category-info list-info">
+                                        Begränsat antal till introduktionspris
+                                    </div>
+                                </div>
+                                <div class="col s12 m12">
+                                    <div class="show-category-price list-price">
+                                                295&nbsp;
+                                                SEK
+                                    </div>
+                                    <div style="display:block" class="show-category-price list-price sold-out-message">
+                                    </div>
+                                    <div style="display:none;" class="indicator-limit absolute-right">
+                                        <i class="material-icons">new_releases</i>
+                                        Fåtal kvar!
+                                    </div>
+                                </div>
+                                <div class="col s12 m12">
+                                    <div class="amount-blob-container" data-showname="Sommarkvällar på Slottet 2027" data-showcategoryid="9004" data-showcategoryname="Early bird" data-showstarttime="2027-06-18 19:00" data-price="295">
+                                        <div class="amount-blob minus no-select pointer theme-secondary-background-color theme-secondary-color match-text disabled">
+                                            –
+                                        </div>
+                                        <div class="amount-blob no-select amount">
+                                            <div class="amount-indicator supply-left-for-9004" data-amount="0" data-minamount="0" data-maxamount="0">
+                                                0
+                                            </div>
+                                        </div>
+                                        <div class="amount-blob no-select plus pointer theme-secondary-background-color match-text disabled">
+                                            +
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="show-category-container">
+                            <div class="show-category minimal-shade">
+                                <div class="sold-out-banner-container">
+                                    <div class="sold-out-banner">Slutsåld</div>
+                                </div>
+                                <div class="row no-margin">
+                                    <div class="col s12 m12 show-category-name list-title">
+                                        Familjebiljett 2 vuxna + 2 barn
+                                    </div>
+                                    <div class="col s12 m12 show-category-info list-info">
+                                        
+                                    </div>
+                                </div>
+                                <div class="col s12 m12">
+                                    <div class="show-category-price list-price">
+                                                995&nbsp;
+                                                SEK
+                                    </div>
+                                    <div style="display:none" class="show-category-price list-price sold-out-message">
+                                    </div>
+                                    <div style="display:none;" class="indicator-limit absolute-right">
+                                        <i class="material-icons">new_releases</i>
+                                        Fåtal kvar!
+                                    </div>
+                                </div>
+                                <div class="col s12 m12">
+                                    <div class="amount-blob-container" data-showname="Sommarkvällar på Slottet 2027" data-showcategoryid="9005" data-showcategoryname="Familjebiljett 2 vuxna + 2 barn" data-showstarttime="2027-06-18 19:00" data-price="995">
+                                        <div class="amount-blob minus no-select pointer theme-secondary-background-color theme-secondary-color match-text disabled">
+                                            –
+                                        </div>
+                                        <div class="amount-blob no-select amount">
+                                            <div class="amount-indicator supply-left-for-9005" data-amount="0" data-minamount="0" data-maxamount="0">
+                                                0
+                                            </div>
+                                        </div>
+                                        <div class="amount-blob no-select plus pointer theme-secondary-background-color match-text disabled">
+                                            +
+                                        </div>
+                                        <div class="available-at">
+                                            <i class="material-icons">schedule</i>Släpps  <span>2027-05-01 10:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="show-category-container">
+                            <div class="show-category minimal-shade">
+                                <div class="sold-out-banner-container">
+                                    <div class="sold-out-banner">Slutsåld</div>
+                                </div>
+                                <div class="row no-margin">
+                                    <div class="col s12 m12 show-category-name list-title">
+                                        Student
+                                    </div>
+                                    <div class="col s12 m12 show-category-info list-info">
+                                        Gratis med giltigt studentkort
+                                    </div>
+                                </div>
+                                <div class="col s12 m12">
+                                    <div class="show-category-price list-price">
+                                                0&nbsp;
+                                                SEK
+                                    </div>
+                                    <div style="display:none" class="show-category-price list-price sold-out-message">
+                                    </div>
+                                    <div style="display:none;" class="indicator-limit absolute-right">
+                                        <i class="material-icons">new_releases</i>
+                                        Fåtal kvar!
+                                    </div>
+                                </div>
+                                <div class="col s12 m12">
+                                    <div class="amount-blob-container" data-showname="Sommarkvällar på Slottet 2027" data-showcategoryid="9006" data-showcategoryname="Student" data-showstarttime="2027-06-18 19:00" data-price="0">
+                                        <div class="amount-blob minus no-select pointer theme-secondary-background-color theme-secondary-color match-text disabled">
+                                            –
+                                        </div>
+                                        <div class="amount-blob no-select amount">
+                                            <div class="amount-indicator supply-left-for-9006" data-amount="0" data-minamount="0" data-maxamount="10">
+                                                0
+                                            </div>
+                                        </div>
+                                        <div class="amount-blob no-select plus pointer theme-secondary-background-color match-text">
+                                            +
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="show-category-container generated-by-campaign-code">
+                            <div class="show-category minimal-shade">
+                                <div class="sold-out-banner-container">
+                                    <div class="sold-out-banner">Slutsåld</div>
+                                </div>
+        <div class="campaign">Kampanj</div>
+                                <div class="row no-margin">
+                                    <div class="col s12 m12 show-category-name list-title campaign-code">
+                                        Medlem – Vänföreningen
+                                    </div>
+                                    <div class="col s12 m12 show-category-info list-info">
+                                        Rabatterad kategori som låses upp med en kampanjkod
+                                    </div>
+                                </div>
+                                <div class="col s12 m12">
+                                    <div class="show-category-price list-price">
+                                                295&nbsp;
+                                                SEK
+                                    </div>
+                                    <div style="display:none" class="show-category-price list-price sold-out-message">
+                                    </div>
+                                    <div style="display:none;" class="indicator-limit absolute-right">
+                                        <i class="material-icons">new_releases</i>
+                                        Fåtal kvar!
+                                    </div>
+                                </div>
+                                <div class="col s12 m12">
+                                    <div class="amount-blob-container" data-showname="Sommarkvällar på Slottet 2027" data-showcategoryid="9007" data-showcategoryname="Medlem – Vänföreningen" data-showstarttime="2027-06-18 19:00" data-price="295">
+                                        <div class="amount-blob minus no-select pointer theme-secondary-background-color theme-secondary-color match-text disabled">
+                                            –
+                                        </div>
+                                        <div class="amount-blob no-select amount">
+                                            <div class="amount-indicator supply-left-for-9007" data-amount="0" data-minamount="0" data-maxamount="10">
+                                                0
+                                            </div>
+                                        </div>
+                                        <div class="amount-blob no-select plus pointer theme-secondary-background-color match-text">
+                                            +
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="show-category-container">
+                            <div class="show-category minimal-shade">
+                                <div class="sold-out-banner-container">
+                                    <div class="sold-out-banner">Slutsåld</div>
+                                </div>
+                                <div class="row no-margin">
+                                    <div class="col s12 m12 show-category-name list-title">
+                                        VIP inklusive middag, dryckespaket och reserverad sittplats nära scenen
+                                    </div>
+                                    <div class="col s12 m12 show-category-info list-info">
+                                        Begränsat antal
+                                    </div>
+                                </div>
+                                <div class="col s12 m12">
+                                    <div class="show-category-price list-price">
+                                                2 450&nbsp;
+                                                SEK
+                                    </div>
+                                    <div style="display:none" class="show-category-price list-price sold-out-message">
+                                    </div>
+                                    <div style="display:none;" class="indicator-limit absolute-right">
+                                        <i class="material-icons">new_releases</i>
+                                        Fåtal kvar!
+                                    </div>
+                                </div>
+                                <div class="col s12 m12">
+                                    <div class="amount-blob-container" data-showname="Sommarkvällar på Slottet 2027" data-showcategoryid="9008" data-showcategoryname="VIP inklusive middag, dryckespaket och reserverad sittplats nära scenen" data-showstarttime="2027-06-18 19:00" data-price="2450">
+                                        <div class="amount-blob minus no-select pointer theme-secondary-background-color theme-secondary-color match-text disabled">
+                                            –
+                                        </div>
+                                        <div class="amount-blob no-select amount">
+                                            <div class="amount-indicator supply-left-for-9008" data-amount="0" data-minamount="0" data-maxamount="10">
+                                                0
+                                            </div>
+                                        </div>
+                                        <div class="amount-blob no-select plus pointer theme-secondary-background-color match-text">
+                                            +
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div data-showid="5001" class="unnumbered-campaign-attention-wrapper">
+                        <div class="unnumbered-campaign-attention">
+                                    <i class="material-icons theme-color">new_releases</i>
+                                    <div>Ange eventuell kampanjkod för att få tillgång till rabatterade kategorier!</div>
+                        </div>
+                    </div>
+            </div>
+                <div class="addon-button left-align" style="margin-top: 8px; margin-left: 10px">
+                    <a href="#" class="btn white-text waves-effect waves-light open-addons" data-showid="5001" style="display: inline-flex; align-items: center; gap: 6px; background-color: black">
+                                Köp endast tillval
+                        <i class="material-icons right">chevron_right</i>
+                    </a>
+                </div>
+        </div>
+        <div id="card-scroll-action-right" class="category-slider hide-on-large-only">
+            <a class="btn-floating white addons-slider slideright">
+                <i class="large material-icons">keyboard_arrow_right</i>
+            </a>
+        </div>
+        <div id="card-scroll-action-left" class="category-slider hide-on-large-only">
+            <a class="btn-floating white addons-slider slideleft animated fadeOut" style="animation-duration: 0.3s;">
+                <i class="large material-icons">keyboard_arrow_left</i>
+            </a>
+        </div>
+    </div>
+</div>
+</div>
+
+                                <div style="position: relative;" class="show-listing-show pointer sd2027-06-19 unnumbered-show" data-showtype="unnumbered-show" data-fab="booking-fab" data-showid="5002" data-arenatype="unnumbered-show" data-modal="#material-modal">
+                                    <div class="row no-margin valign-wrapper">
+                                            <div class="col m1 center-align dateball-container">
+                                                <span class="dateball default-color">
+                                                            <span>19</span>
+                                                </span>
+                                            </div>
+                                        <div class="col s3 m3 l3 hide-on-small-and-down large-screen-date">
+                                                    <span class="capitalize bold">
+                                                                lördag
+                                                    </span>
+                                                    <br>
+                                                            19 juni 14:00
+                                        </div>
+                                        <div class="col s3 m3 hide-on-small-and-down left-align show-name-container">
+                                            <div class="bold show-name">Familjeföreställning: Trollkarlen i parken</div>
+                                                    <div class="show-info">Passar barn från 4 år</div>
+                                                    <div class="supply-blobs"><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob"></span><span class="supply-blob"></span><span class="supply-blob"></span></div>
+                                        </div>
+                                        <div class="col s2 m2 hide-on-small-and-down price-range">
+                                            från 145 SEK
+                                        </div>
+                                        <div class="col s3 m2 hide-on-small-and-down location-med-and-up right-align">
+                                                <span>
+                                                                    <a target="_blank" class="cancel-trigger arenaLocationLink" href="http://www.google.se/maps/place/56.66,16.36">Slottsparken</a><br><span class="bold">Kalmar</span>
+                                                </span>
+                                        </div>
+                                        <div class="col s10 hide-on-med-and-up left-align combined-name-and-info">
+                                            <span class="bold show-name">Familjeföreställning: Trollkarlen i parken</span>
+                                                    <div class="show-info">Passar barn från 4 år</div>
+                                                    <div class="supply-blobs"><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob"></span><span class="supply-blob"></span><span class="supply-blob"></span></div>
+                                            <br>
+                                            <div class="hide-on-med-and-up price-range">
+                                                        från 145 SEK
+                                            </div>
+                                                <div class="show-info-small">
+                                                    <span class="capitalize">lördag</span>
+                                                    <br>
+                                                    19 juni 14:00
+                                                    <br>
+                                                        <span class="small-arena">
+                                                            <span class="bold">
+                                                                Slottsparken
+                                                            </span><br>
+                                                            Kalmar
+                                                        </span>
+                                            </div>
+                                        </div>
+                                        <div class="row hide-on-med-and-up showcalander-btn-wrapper">
+                                            <div class="m2 center-align show-listing-arrow">
+                                                    <a class="btn waves-effect waves-light theme-background-color"><i class="material-icons right">expand_more</i><span>Biljetter</span></a>
+                                                <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col s2 m2 center-align show-listing-arrow hide-on-small-and-down">
+                                                <a class="btn waves-effect waves-light theme-background-color"><i class="material-icons right">expand_more</i><span>Biljetter</span></a>
+                                            <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="booking-contents unnumbered-show display-none show-5002" data-showid="5002" data-maxperbooking="30">
+                                    <div id="captcha-div-5002" class="recaptcha-container">
+                                    </div>
+                                </div>
+
+                                <div style="position: relative;" class="show-listing-show pointer sd2027-06-19 unnumbered-show" data-showtype="unnumbered-show" data-fab="booking-fab" data-showid="5003" data-arenatype="unnumbered-show" data-modal="#material-modal">
+                                    <div class="row no-margin valign-wrapper">
+                                            <div class="col m1 center-align dateball-container">
+                                                <span class="dateball default-color">
+                                                            <span>19</span>
+                                                </span>
+                                            </div>
+                                        <div class="col s3 m3 l3 hide-on-small-and-down large-screen-date">
+                                                    <span class="capitalize bold">
+                                                                lördag
+                                                    </span>
+                                                    <br>
+                                                            19 juni 19:00
+                                        </div>
+                                        <div class="col s3 m3 hide-on-small-and-down left-align show-name-container">
+                                            <div class="bold show-name">Midsommarkonsert med Kalmar Kammarorkester</div>
+                                                    <div class="supply-blobs"><div class="indicator-limit"><i class="material-icons">new_releases</i>Fåtal kvar!</div></div>
+                                        </div>
+                                        <div class="col s2 m2 hide-on-small-and-down price-range">
+                                            från 295 SEK
+                                        </div>
+                                        <div class="col s3 m2 hide-on-small-and-down location-med-and-up right-align">
+                                                <span>
+                                                                    <a target="_blank" class="cancel-trigger arenaLocationLink" href="http://www.google.se/maps/place/56.66,16.36">Slottsparken</a><br><span class="bold">Kalmar</span>
+                                                </span>
+                                        </div>
+                                        <div class="col s10 hide-on-med-and-up left-align combined-name-and-info">
+                                            <span class="bold show-name">Midsommarkonsert med Kalmar Kammarorkester</span>
+                                                    <div class="supply-blobs"><div class="indicator-limit"><i class="material-icons">new_releases</i>Fåtal kvar!</div></div>
+                                            <br>
+                                            <div class="hide-on-med-and-up price-range">
+                                                        från 295 SEK
+                                            </div>
+                                                <div class="show-info-small">
+                                                    <span class="capitalize">lördag</span>
+                                                    <br>
+                                                    19 juni 19:00
+                                                    <br>
+                                                        <span class="small-arena">
+                                                            <span class="bold">
+                                                                Slottsparken
+                                                            </span><br>
+                                                            Kalmar
+                                                        </span>
+                                            </div>
+                                        </div>
+                                        <div class="row hide-on-med-and-up showcalander-btn-wrapper">
+                                            <div class="m2 center-align show-listing-arrow">
+                                                    <a class="btn waves-effect waves-light theme-background-color"><i class="material-icons right">expand_more</i><span>Biljetter</span></a>
+                                                <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col s2 m2 center-align show-listing-arrow hide-on-small-and-down">
+                                                <a class="btn waves-effect waves-light theme-background-color"><i class="material-icons right">expand_more</i><span>Biljetter</span></a>
+                                            <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="booking-contents unnumbered-show display-none show-5003" data-showid="5003" data-maxperbooking="30">
+                                    <div id="captcha-div-5003" class="recaptcha-container">
+                                    </div>
+                                </div>
+
+                                <div style="position: relative;" class="show-listing-show pointer sd2027-06-20 sold-out" data-showtype="sold-out" data-fab="booking-fab" data-showid="5004" data-arenatype="unnumbered-show" data-modal="#material-modal">
+                                    <div class="row no-margin valign-wrapper">
+                                            <div class="col m1 center-align dateball-container">
+                                                <span class="dateball default-color">
+                                                            <span>20</span>
+                                                </span>
+                                            </div>
+                                        <div class="col s3 m3 l3 hide-on-small-and-down large-screen-date">
+                                                    <span class="capitalize bold">
+                                                                söndag
+                                                    </span>
+                                                    <br>
+                                                            20 juni 19:00
+                                        </div>
+                                        <div class="col s3 m3 hide-on-small-and-down left-align show-name-container">
+                                            <div class="bold show-name">Midsommarkonsert med Kalmar Kammarorkester</div>
+                                                    <div class="supply-blobs"><div class="waitlist-sold-out-wrapper" style="display: inline-block"> <div class="sold-out-box theme-background-color">Slutsåld</div><div class="btn-wrapper" style="display: flex"> <div style="width: 100%"> <button data-tooltip="Skriv upp dig på väntelistan" data-position="bottom" class="sold-out-email-list-button btn waves-effect waves-light" style="margin-top: 10px; font-size: 10px; width:100%" data-pg-action="modal:waitlist">Väntelista<i class="material-icons right">send</i> </button> </div> </div></div></div>
+                                        </div>
+                                        <div class="col s2 m2 hide-on-small-and-down price-range">
+                                            från 295 SEK
+                                        </div>
+                                        <div class="col s3 m2 hide-on-small-and-down location-med-and-up center-align">
+                                                <span>
+                                                                    <a target="_blank" class="cancel-trigger arenaLocationLink" href="http://www.google.se/maps/place/56.66,16.36">Slottsparken</a><br><span class="bold">Kalmar</span>
+                                                </span>
+                                        </div>
+                                        <div class="col s10 hide-on-med-and-up left-align combined-name-and-info">
+                                            <span class="bold show-name">Midsommarkonsert med Kalmar Kammarorkester</span>
+                                                    <div class="supply-blobs"><div class="waitlist-sold-out-wrapper" style="display: inline-block"> <div class="sold-out-box theme-background-color">Slutsåld</div><div class="btn-wrapper" style="display: flex"> <div style="width: 100%"> <button data-tooltip="Skriv upp dig på väntelistan" data-position="bottom" class="sold-out-email-list-button btn waves-effect waves-light" style="margin-top: 10px; font-size: 10px; width:100%" data-pg-action="modal:waitlist">Väntelista<i class="material-icons right">send</i> </button> </div> </div></div></div>
+                                            <br>
+                                            <div class="hide-on-med-and-up price-range">
+                                                        från 295 SEK
+                                            </div>
+                                                <div class="show-info-small">
+                                                    <span class="capitalize">söndag</span>
+                                                    <br>
+                                                    20 juni 19:00
+                                                    <br>
+                                                        <span class="small-arena">
+                                                            <span class="bold">
+                                                                Slottsparken
+                                                            </span><br>
+                                                            Kalmar
+                                                        </span>
+                                            </div>
+                                        </div>
+                                        <div class="row hide-on-med-and-up showcalander-btn-wrapper">
+                                            <div class="m2 center-align show-listing-arrow">
+                                                    <a class="btn waves-effect waves-light theme-background-color sold-out disabled"><i class="material-icons right">done_all</i><span></span></a>
+                                                <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                <div class="addon-href-contianer center-align">
+                                                    <a class="addon-href-style open-addons" data-showid="5004">
+                                                                Endast tillval
+                                                    </a>
+                                                </div>
+                                        </div>
+                                            <div class="addon-href-contianer center-align hide-on-small-and-down" style="display: block;">
+                                                <a class="addon-href-style open-addons" data-showid="5004">
+                                                            Endast tillval
+                                                </a>
+                                            </div>
+                                        <div class="col s2 m2 center-align show-listing-arrow hide-on-small-and-down">
+                                                <a class="btn waves-effect waves-light theme-background-color sold-out disabled"><i class="material-icons right">done_all</i><span></span></a>
+                                            <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="booking-contents unnumbered-show display-none show-5004" data-showid="5004" data-maxperbooking="30">
+                                    <div id="captcha-div-5004" class="recaptcha-container">
+                                    </div>
+                                </div>
+
+                                <div style="position: relative;" class="show-listing-show pointer sd2027-06-24 not-released" data-showtype="not-released" data-fab="booking-fab" data-showid="5005" data-arenatype="unnumbered-show" data-releasedate="2027-05-01 10:00" data-prereleaseaccesscode="true" data-modal="#material-modal">
+                                    <div class="row no-margin valign-wrapper">
+                                            <div class="col m1 center-align dateball-container">
+                                                <span class="dateball default-color">
+                                                            <span>24</span>
+                                                </span>
+                                            </div>
+                                        <div class="col s3 m3 l3 hide-on-small-and-down large-screen-date">
+                                                    <span class="capitalize bold">
+                                                                torsdag
+                                                    </span>
+                                                    <br>
+                                                            24 juni 19:00
+                                                    <div class="release-date">
+                                                        Släpps 2027-05-01 10:00
+                                                    </div>
+                                        </div>
+                                        <div class="col s3 m3 hide-on-small-and-down left-align show-name-container">
+                                            <div class="bold show-name">Allsång vid vattnet – förhandsvisning</div>
+                                                    <div class="supply-blobs"></div>
+                                        </div>
+                                        <div class="col s2 m2 hide-on-small-and-down price-range">
+                                            från 195 SEK
+                                        </div>
+                                        <div class="col s3 m2 hide-on-small-and-down location-med-and-up right-align">
+                                                <span>
+                                                                    <a target="_blank" class="cancel-trigger arenaLocationLink" href="http://www.google.se/maps/place/56.66,16.36">Slottsparken</a><br><span class="bold">Kalmar</span>
+                                                </span>
+                                        </div>
+                                        <div class="col s10 hide-on-med-and-up left-align combined-name-and-info">
+                                            <span class="bold show-name">Allsång vid vattnet – förhandsvisning</span>
+                                                    <div class="supply-blobs"></div>
+                                            <br>
+                                            <div class="hide-on-med-and-up price-range">
+                                                        från 195 SEK
+                                            </div>
+                                                <div class="show-info-small">
+                                                    <span class="capitalize">torsdag</span>
+                                                    <br>
+                                                    24 juni 19:00
+                                                    <br>
+                                                        <span class="small-arena">
+                                                            <span class="bold">
+                                                                Slottsparken
+                                                            </span><br>
+                                                            Kalmar
+                                                        </span>
+                                                    <div class="release-date">
+                                                        Släpps 2027-05-01 10:00
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        <div class="row hide-on-med-and-up showcalander-btn-wrapper">
+                                            <div class="m2 center-align show-listing-arrow">
+                                                    <i class="material-icons theme-color">lock</i>
+                                                <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col s2 m2 center-align show-listing-arrow hide-on-small-and-down">
+                                                <i class="material-icons theme-color">lock</i>
+                                            <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="booking-contents unnumbered-show display-none show-5005" data-showid="5005" data-maxperbooking="30">
+                                    <div id="captcha-div-5005" class="recaptcha-container">
+                                    </div>
+                                </div>
+
+                                <div style="position: relative;" class="show-listing-show pointer sd2027-06-25 numbered-show modal__trigger" data-showtype="numbered-show" data-fab="booking-fab" data-showid="5006" data-arenatype="numbered-show" data-modal="#material-modal">
+                                    <div class="row no-margin valign-wrapper">
+                                            <div class="col m1 center-align dateball-container">
+                                                <span class="dateball default-color">
+                                                            <span>25</span>
+                                                </span>
+                                            </div>
+                                        <div class="col s3 m3 l3 hide-on-small-and-down large-screen-date">
+                                                    <span class="capitalize bold">
+                                                                fredag
+                                                    </span>
+                                                    <br>
+                                                            25 juni 19:30
+                                                    <div class="release-date">
+                                                        Insläpp 18:30
+                                                    </div>
+                                        </div>
+                                        <div class="col s3 m3 hide-on-small-and-down left-align show-name-container">
+                                            <div class="bold show-name">Operagala (numrerade platser)</div>
+                                                    <div class="supply-blobs"><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob"></span><span class="supply-blob"></span></div>
+                                        </div>
+                                        <div class="col s2 m2 hide-on-small-and-down price-range">
+                                            från 345 SEK
+                                        </div>
+                                        <div class="col s3 m2 hide-on-small-and-down location-med-and-up center-align">
+                                                <span>
+                                                                    <a target="_blank" class="cancel-trigger arenaLocationLink" href="http://www.google.se/maps/place/56.66,16.36">Slottsparken</a><br><span class="bold">Kalmar</span>
+                                                </span>
+                                        </div>
+                                        <div class="col s10 hide-on-med-and-up left-align combined-name-and-info">
+                                            <span class="bold show-name">Operagala (numrerade platser)</span>
+                                                    <div class="supply-blobs"><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob"></span><span class="supply-blob"></span></div>
+                                            <br>
+                                            <div class="hide-on-med-and-up price-range">
+                                                        från 345 SEK
+                                            </div>
+                                                <div class="show-info-small">
+                                                    <span class="capitalize">fredag</span>
+                                                    <br>
+                                                    25 juni 19:30
+                                                    <br>
+                                                        <span class="small-arena">
+                                                            <span class="bold">
+                                                                Slottsparken
+                                                            </span><br>
+                                                            Kalmar
+                                                        </span>
+                                                    <div class="release-date">
+                                                        Insläpp 18:30
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        <div class="row hide-on-med-and-up showcalander-btn-wrapper">
+                                            <div class="m2 center-align show-listing-arrow">
+                                                    <a class="btn waves-effect waves-light theme-background-color"><i class="material-icons right">arrow_forward</i><span>Biljetter</span></a>
+                                                <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                <div class="addon-href-contianer center-align">
+                                                    <a class="addon-href-style open-addons" data-showid="5006">
+                                                                Endast tillval
+                                                    </a>
+                                                </div>
+                                        </div>
+                                            <div class="addon-href-contianer center-align hide-on-small-and-down">
+                                                <a class="addon-href-style open-addons" data-showid="5006">
+                                                            Endast tillval
+                                                </a>
+                                            </div>
+                                        <div class="col s2 m2 center-align show-listing-arrow hide-on-small-and-down">
+                                                <a class="btn waves-effect waves-light theme-background-color"><i class="material-icons right">arrow_forward</i><span>Biljetter</span></a>
+                                            <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="position: relative;" class="show-listing-show pointer sd2027-06-26 not-bookable" data-showtype="not-bookable" data-fab="booking-fab" data-showid="5007" data-arenatype="unnumbered-show" data-modal="#material-modal">
+                                    <div class="row no-margin valign-wrapper">
+                                            <div class="col m1 center-align dateball-container">
+                                                <span class="dateball default-color">
+                                                            <span>26</span>
+                                                </span>
+                                            </div>
+                                        <div class="col s3 m3 l3 hide-on-small-and-down large-screen-date">
+                                                    <span class="capitalize bold">
+                                                                lördag
+                                                    </span>
+                                                    <br>
+                                                            26 juni 15:00
+                                        </div>
+                                        <div class="col s3 m3 hide-on-small-and-down left-align show-name-container">
+                                            <div class="bold show-name">Teater: En midsommarnattsdröm</div>
+                                                    <div class="show-status">Inställd på grund av väder</div>
+                                        </div>
+                                        <div class="col s2 m2 hide-on-small-and-down price-range">
+                                            från 245 SEK
+                                        </div>
+                                        <div class="col s3 m2 hide-on-small-and-down location-med-and-up right-align">
+                                                <span>
+                                                                    <a target="_blank" class="cancel-trigger arenaLocationLink" href="http://www.google.se/maps/place/56.66,16.36">Slottsparken</a><br><span class="bold">Kalmar</span>
+                                                </span>
+                                        </div>
+                                        <div class="col s10 hide-on-med-and-up left-align combined-name-and-info">
+                                            <span class="bold show-name">Teater: En midsommarnattsdröm</span>
+                                                    <div class="show-status">Inställd på grund av väder</div>
+                                            <br>
+                                            <div class="hide-on-med-and-up price-range">
+                                                        från 245 SEK
+                                            </div>
+                                                <div class="show-info-small">
+                                                    <span class="capitalize">lördag</span>
+                                                    <br>
+                                                    26 juni 15:00
+                                                    <br>
+                                                        <span class="small-arena">
+                                                            <span class="bold">
+                                                                Slottsparken
+                                                            </span><br>
+                                                            Kalmar
+                                                        </span>
+                                            </div>
+                                        </div>
+                                        <div class="row hide-on-med-and-up showcalander-btn-wrapper">
+                                            <div class="m2 center-align show-listing-arrow">
+                                                    <i class="material-icons theme-color">not_interested</i>
+                                                <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col s2 m2 center-align show-listing-arrow hide-on-small-and-down">
+                                                <i class="material-icons theme-color">not_interested</i>
+                                            <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="position: relative;" class="show-listing-show pointer sd2027-06-26 external-url" data-showtype="external-url" data-fab="booking-fab" data-showid="5008" data-arenatype="unnumbered-show" data-externalurl="https://example.com/biljetter" data-modal="#material-modal">
+                                    <div class="row no-margin valign-wrapper">
+                                            <div class="col m1 center-align dateball-container">
+                                                <span class="dateball default-color">
+                                                            <span>26</span>
+                                                </span>
+                                            </div>
+                                        <div class="col s3 m3 l3 hide-on-small-and-down large-screen-date">
+                                                    <span class="capitalize bold">
+                                                                lördag
+                                                    </span>
+                                                    <br>
+                                                            26 juni 22:00
+                                        </div>
+                                        <div class="col s3 m3 hide-on-small-and-down left-align show-name-container">
+                                            <div class="bold show-name">Efterfest på Kallis (biljetter hos annan säljare)</div>
+                                        </div>
+                                        <div class="col s2 m2 hide-on-small-and-down price-range">
+                                            från 150 SEK
+                                        </div>
+                                        <div class="col s3 m2 hide-on-small-and-down location-med-and-up right-align">
+                                                <span>
+                                                                    <a target="_blank" class="cancel-trigger arenaLocationLink" href="http://www.google.se/maps/place/56.66,16.36">Slottsparken</a><br><span class="bold">Kalmar</span>
+                                                </span>
+                                        </div>
+                                        <div class="col s10 hide-on-med-and-up left-align combined-name-and-info">
+                                            <span class="bold show-name">Efterfest på Kallis (biljetter hos annan säljare)</span>
+                                            <br>
+                                            <div class="hide-on-med-and-up price-range">
+                                                        från 150 SEK
+                                            </div>
+                                                <div class="show-info-small">
+                                                    <span class="capitalize">lördag</span>
+                                                    <br>
+                                                    26 juni 22:00
+                                                    <br>
+                                                        <span class="small-arena">
+                                                            <span class="bold">
+                                                                Slottsparken
+                                                            </span><br>
+                                                            Kalmar
+                                                        </span>
+                                            </div>
+                                        </div>
+                                        <div class="row hide-on-med-and-up showcalander-btn-wrapper">
+                                            <div class="m2 center-align show-listing-arrow">
+                                                    <a class="btn waves-effect waves-light theme-background-color"><i class="material-icons right">open_in_new</i><span>Biljetter</span></a>
+                                                <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col s2 m2 center-align show-listing-arrow hide-on-small-and-down">
+                                                <a class="btn waves-effect waves-light theme-background-color"><i class="material-icons right">open_in_new</i><span>Biljetter</span></a>
+                                            <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                        <div class="show-listing-month valign-wrapper row no-margin">
+                                            <div class="col s12">
+                                                <span class="uppercase bold month-name">
+                                                        juli 2027</span>
+                                            </div>
+                                        </div>
+                                <div style="position: relative;" class="show-listing-show pointer sd2027-07-02 closed not-bookable unnumbered-show" data-showtype="unnumbered-show" data-fab="booking-fab" data-showid="5009" data-arenatype="unnumbered-show" data-modal="#material-modal">
+                                    <div class="row no-margin valign-wrapper">
+                                            <div class="col m1 center-align dateball-container">
+                                                <span class="dateball default-color">
+                                                            <span>02</span>
+                                                </span>
+                                            </div>
+                                        <div class="col s3 m3 l3 hide-on-small-and-down large-screen-date">
+                                                    <span class="capitalize bold">
+                                                                fredag
+                                                    </span>
+                                                    <br>
+                                                            2 juli 19:00
+                                        </div>
+                                        <div class="col s3 m3 hide-on-small-and-down left-align show-name-container">
+                                            <div class="bold show-name">Midsommarkonsert med Kalmar Kammarorkester</div>
+                                                <div class="show-status">
+                                                    Bokning stängde 1-07-2027 23:59
+                                                </div>
+                                        </div>
+                                        <div class="col s2 m2 hide-on-small-and-down price-range">
+                                            från 295 SEK
+                                        </div>
+                                        <div class="col s3 m2 hide-on-small-and-down location-med-and-up right-align">
+                                                <span>
+                                                                    <a target="_blank" class="cancel-trigger arenaLocationLink" href="http://www.google.se/maps/place/56.66,16.36">Slottsparken</a><br><span class="bold">Kalmar</span>
+                                                </span>
+                                        </div>
+                                        <div class="col s10 hide-on-med-and-up left-align combined-name-and-info">
+                                            <span class="bold show-name">Midsommarkonsert med Kalmar Kammarorkester</span>
+                                                <div class="show-status">
+                                                    Bokning stängde 1-07-2027 23:59
+                                                </div>
+                                            <br>
+                                            <div class="hide-on-med-and-up price-range">
+                                                        från 295 SEK
+                                            </div>
+                                                <div class="show-info-small">
+                                                    <span class="capitalize">fredag</span>
+                                                    <br>
+                                                    2 juli 19:00
+                                                    <br>
+                                                        <span class="small-arena">
+                                                            <span class="bold">
+                                                                Slottsparken
+                                                            </span><br>
+                                                            Kalmar
+                                                        </span>
+                                            </div>
+                                        </div>
+                                        <div class="row hide-on-med-and-up showcalander-btn-wrapper">
+                                            <div class="m2 center-align show-listing-arrow">
+                                                    <a class="btn waves-effect waves-light theme-background-color"><i class="material-icons right">expand_more</i><span>Biljetter</span></a>
+                                                <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col s2 m2 center-align show-listing-arrow hide-on-small-and-down">
+                                                <a class="btn waves-effect waves-light theme-background-color"><i class="material-icons right">expand_more</i><span>Biljetter</span></a>
+                                            <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="position: relative;" class="show-listing-show pointer sd2027-07-03 unnumbered-show" data-showtype="unnumbered-show" data-fab="booking-fab" data-showid="5010" data-arenatype="unnumbered-show" data-modal="#material-modal">
+                                    <div class="row no-margin valign-wrapper">
+                                            <div class="col m1 center-align dateball-container">
+                                                <span class="dateball default-color">
+                                                            <span>03</span>
+                                                </span>
+                                            </div>
+                                        <div class="col s3 m3 l3 hide-on-small-and-down large-screen-date">
+                                                    <span class="capitalize bold">
+                                                                lördag
+                                                    </span>
+                                                    <br>
+                                                            3 juli 19:00
+                                        </div>
+                                        <div class="col s3 m3 hide-on-small-and-down left-align show-name-container">
+                                            <div class="bold show-name">Avslutningskonsert med extra lång föreställningstitel som visar hur namnet bryts på flera rader</div>
+                                                    <div class="supply-blobs plain-text-supply">12 kvar</div>
+                                        </div>
+                                        <div class="col s2 m2 hide-on-small-and-down price-range">
+                                            från 395 SEK
+                                        </div>
+                                        <div class="col s3 m2 hide-on-small-and-down location-med-and-up right-align">
+                                                <span>
+                                                                    <a target="_blank" class="cancel-trigger arenaLocationLink" href="http://www.google.se/maps/place/56.66,16.36">Slottsparken</a><br><span class="bold">Kalmar</span>
+                                                </span>
+                                        </div>
+                                        <div class="col s10 hide-on-med-and-up left-align combined-name-and-info">
+                                            <span class="bold show-name">Avslutningskonsert med extra lång föreställningstitel som visar hur namnet bryts på flera rader</span>
+                                                    <div class="supply-blobs plain-text-supply">12 kvar</div>
+                                            <br>
+                                            <div class="hide-on-med-and-up price-range">
+                                                        från 395 SEK
+                                            </div>
+                                                <div class="show-info-small">
+                                                    <span class="capitalize">lördag</span>
+                                                    <br>
+                                                    3 juli 19:00
+                                                    <br>
+                                                        <span class="small-arena">
+                                                            <span class="bold">
+                                                                Slottsparken
+                                                            </span><br>
+                                                            Kalmar
+                                                        </span>
+                                            </div>
+                                        </div>
+                                        <div class="row hide-on-med-and-up showcalander-btn-wrapper">
+                                            <div class="m2 center-align show-listing-arrow">
+                                                    <a class="btn waves-effect waves-light theme-background-color"><i class="material-icons right">expand_more</i><span>Biljetter</span></a>
+                                                <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col s2 m2 center-align show-listing-arrow hide-on-small-and-down">
+                                                <a class="btn waves-effect waves-light theme-background-color"><i class="material-icons right">expand_more</i><span>Biljetter</span></a>
+                                            <div class="preloader-wrapper display-none active">
+                                                    <div class="spinner-layer spinner-color-secondary">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="booking-contents unnumbered-show display-none show-5010" data-showid="5010" data-maxperbooking="30">
+                                    <div id="captcha-div-5010" class="recaptcha-container">
+                                    </div>
+                                </div>
+
+                    </div>
+                </div>
+                <div class="display-none fake-month show-listing-month row">
+                    <div class="col s12">
+                            <span class="uppercase bold month-name" style="margin-left: 30px">
+                              Välj datum i kalender för att se tillgång
+                            </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</main>
+<!-- #include footer -->
+</body>
+</html>
