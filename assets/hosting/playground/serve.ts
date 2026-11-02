@@ -117,7 +117,14 @@ for (const dir of ['custom-css', 'custom-js', 'playground']) {
 
 createServer((req, res) => {
   const url = new URL(req.url || '/', `http://${req.headers.host}`)
-  const pathname = decodeURIComponent(url.pathname)
+  let pathname: string
+  try {
+    pathname = decodeURIComponent(url.pathname)
+  }
+  catch {
+    res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' })
+    return res.end('Malformed path')
+  }
   res.setHeader('Cache-Control', 'no-store')
   res.setHeader('Access-Control-Allow-Origin', '*')
 
@@ -175,6 +182,7 @@ createServer((req, res) => {
   }
   res.writeHead(200, { 'Content-Type': type })
   res.end(readFileSync(file))
-}).listen(port, () => {
+}).listen(port, '127.0.0.1', () => {
+  // Bound to the loopback address: the playground is for this machine only
   process.stdout.write(`dagny playground: http://localhost:${port}/playground/\n`)
 })
