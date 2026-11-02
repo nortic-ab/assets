@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="sv" data-pg-kind="organizer">
+<head>
+<title>Organisatörssida med kalender – dagny playground</title>
+<!-- #include head -->
+<script type="application/json" id="pg-actions">[{"name": "toast::Varukorgen uppdaterad", "label": "Toast"}, {"name": "toast:error-toast:Kampanjkoden är redan aktiverad.", "label": "Toast: fel"}, {"name": "toast:warning-toast:Bara ett fåtal biljetter kvar", "label": "Toast: varning"}, {"name": "toast:info-toast:Kunde inte ladda platstillgång, försök igen om en liten stund.", "label": "Toast: info"}, {"name": "materialize:#share-modal", "label": "Dela"}, {"name": "materialize:#basket-cart-warning-modal", "label": "Varukorg: varning"}, {"name": "loading-payment", "label": "Till kassan (laddning)"}, {"name": "basket-overlay", "label": "Övergång till kassan"}, {"name": "basket-cart-loading", "label": "Lägger till i varukorg"}, {"name": "close", "label": "Stäng allt"}]</script>
+</head>
+<body data-organizerid="100" data-organizercart="false" data-basketcartsessionorganizerid="">
+<!-- Organisatörssida med kalender (organizer.useCalendar): filterchips, kalendern och raderna
+     för valt datum (organizerCalendarShows.jsp). organizerPage.jsp:s <style> ligger kvar. -->
+<!-- #include organizer-chrome-top -->
+<!-- #include material-modal -->
+<!-- #include organizer-chrome-bottom -->
+<main>
+<div class="message-default" style="display:none">
+    <p>Köp dina biljetter direkt på webben hos Nortic</p>
+</div>
+<div class="change-browser-plz" style="display: none;">
+    <h5>Gammal webbläsare</h5>
+    <p>Webbläsaren du använder har inte stöd för alla våra funktioner. För att kunna använda Nortic
+        behövs en nyare webbläsare. Vi rekommenderar Google Chrome.</p>
+</div>
+<div class="container">
+<div class="organizer-logo-container">
+            <a target="_blank" href="https://example.com"><img class="tooltipped" data-tooltip="example.com" src="/playground/media/organizer-logo.png" alt="Exempelarrangören"></a>
+</div>
+</div>
+<section id="top">
+    <div id="background-container">
+        <div class="obfuscator"></div>
+    </div>
+    <div id="main-ribbon" class="container">
+        <div class="slider-wrapper" id="event-info-slider-wrapper">
+                    <div class="slider-inner no-select">
+                    </div>
+        </div>
+                <h1>
+                    <span>
+                    Exempelarrangören
+                    </span>
+                </h1>
+                <a id="read-more"></a>
+    </div>
+</section>
+<style>
+    #background-container {
+        background-image: url("/playground/media/organizer.jpg");
+    }
+</style>
+                    <style>
+                        section#organizer-calendar {
+                            position: relative;
+                            z-index: 2;
+                            margin-top: 70px;
+                        }
+                        #organizer-calendar #show-listing {
+                            background-color: white;
+                            border-radius: 2px;
+                            padding-bottom: 20px;
+                        }
+                    </style>
+                    <section id="organizer-calendar" class="container">
+                        <div id="organizer-calendar-filters" class="row">
+                            <div class="col s12">
+                                <div class="n-chips">
+                                    <div class="freetext-filter-container input-field">
+                                        <input id="freetext-filter" type="text" class="freetext-filter" />
+                                        <label for="freetext-filter">Sök evenemang, plats eller stad</label>
+                                    </div>
+                                        <a class="n-chip theme-background-color" data-value="Konsert">
+                                            <span class="checkbox"></span> Konsert <span class="count theme-background-color">12</span>
+                                        </a>
+                                        <a class="n-chip theme-background-color disabled" data-value="Familj">
+                                            <span class="checkbox"></span> Familj <span class="count theme-background-color">4</span>
+                                        </a>
+                                        <a class="n-chip theme-background-color disabled" data-value="Teater">
+                                            <span class="checkbox"></span> Teater <span class="count theme-background-color">2</span>
+                                        </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="organizer-calendar-content">
+        <div class="col s12">
+    <div class="filter-calender-base">
+        <div id="calendar-wrapper" class="wrapper">
+            <div>
+<div class="calendar-header">
+    <p class="current-date" data-date-string="2027-06">Juni 2027</p>
+    <div class="icons">
+        <span id="cal-prev" data-min-date="2027-06" class="disabled"><i class="material-icons">keyboard_arrow_left</i></span>
+        <span id="cal-next" data-max-date="2027-08"><i class="material-icons">keyboard_arrow_right</i></span>
+    </div>
+</div>
+<div class="calendar">
+    <ul class="weeks"><li>Mån</li><li>Tis</li><li>Ons</li><li>Tors</li><li>Fre</li><li>Lör</li><li>Sön</li></ul>
+    <ul class="days"><li class="inactive">31</li><li data-date1="2027-06-01" class="">1</li><li data-date1="2027-06-02" class="">2</li><li data-date1="2027-06-03" class="">3</li><li data-date1="2027-06-04" class="">4</li><li data-date1="2027-06-05" class="">5</li><li data-date1="2027-06-06" class="">6</li><li data-date1="2027-06-07" class="">7</li><li data-date1="2027-06-08" class="">8</li><li data-date1="2027-06-09" class="">9</li><li data-date1="2027-06-10" class="">10</li><li data-date1="2027-06-11" class="">11</li><li data-date1="2027-06-12" class="">12</li><li data-date1="2027-06-13" class="">13</li><li data-date1="2027-06-14" class="">14</li><li data-date1="2027-06-15" class="">15</li><li data-date1="2027-06-16" class="">16</li><li data-date1="2027-06-17" class="">17</li><li data-date1="2027-06-18" class="selectable selected bookable">18</li><li data-date1="2027-06-19" class="selectable bookable">19</li><li data-date1="2027-06-20" class="selectable bookable">20</li><li data-date1="2027-06-21" class="">21</li><li data-date1="2027-06-22" class="">22</li><li data-date1="2027-06-23" class="">23</li><li data-date1="2027-06-24" class="">24</li><li data-date1="2027-06-25" class="">25</li><li data-date1="2027-06-26" class="">26</li><li data-date1="2027-06-27" class="">27</li><li data-date1="2027-06-28" class="">28</li><li data-date1="2027-06-29" class="">29</li><li data-date1="2027-06-30" class="">30</li><li class="inactive">1</li><li class="inactive">2</li><li class="inactive">3</li><li class="inactive">4</li></ul>
+</div>
+            </div>
+        </div>
+        <div id="flex-info-wrapper" class="wrapper info-text">
+        <div class="event-information">
+                <span id="event-information-text"><p>Sommarkvällar på Slottet är tre veckor av konserter, teater och allsång i <b>Slottsparken</b>. Ta med picknickfilten, köp något gott i matområdet och njut av långa ljusa kvällar vid vattnet. Grindarna öppnar en timme före varje föreställning.</p>
+<p>Alla föreställningar sker utomhus och genomförs i nästan alla väder. Barn under 7 år går gratis i vuxens sällskap men behöver en egen biljett. Läs mer om tillgänglighet, parkering och mat på vår webbplats.</p></span>
+            </div><a class="btn waves-effect theme-background-color uppercase event-information-button" data-expanded="false" data-organizerid="100" data-text-default="Läs mer" data-text-triggered="DÖLJ INFO">Läs mer</a></div>
+        <input id="all-selectable" type="hidden" value="">
+        <input id="dates-with-bookable" type="hidden" value="">
+    </div>
+        </div>
+                        </div>
+                    </section>
+                    <section id="active-events">
+                        <div class="container">
+                        <div id="show-listing">
+                            <div id="show-listing-body">
+                                <div class="row">
+                                    <div class="col s12" id="organizer-show-list">
+                                        <div id="no-shows-found" class="col s12 center-align n-shows-available display-none" style="padding: 50px 0;">
+                                            Inga föreställningar tillgängliga
+                                        </div>
+                                        <div class="spinner-container" id="organizer-calendar-loader-container" style="padding: 20px; display: none;">
+                                        </div>
+    <div style="position: relative;" class="show-listing-show pointer sd2027-06-18 unnumbered-show" data-showtype="unnumbered-show" data-showid="5101" data-eventid="100001" data-arenacity="kalmar" data-eventname="sommarkvällar på slottet 2027" data-tags="konsert" data-ticketurl="#" data-modal="#material-modal">
+        <div class="row no-margin valign-wrapper">
+            <div class="col m1 center-align dateball-container hide-on-small-and-down">
+                <span class="dateball default-color">
+                    <span>18</span>
+                </span>
+            </div>
+            <div class="col s3 m3 l3 hide-on-small-and-down large-screen-date">
+                <span class="capitalize bold">fredag</span>
+                    <br>
+                    19:00
+            </div>
+            <div class="col s3 m3 hide-on-small-and-down left-align show-name-container">
+                <div class="bold show-name">Sommarkvällar på Slottet 2027</div>
+                <div class="show-info">Midsommarkonsert med Kalmar Kammarorkester</div>
+                <div class="supply-blobs"><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob"></span></div>
+            </div>
+            <div class="col s2 m2 hide-on-small-and-down price-range">
+                från 0 SEK
+            </div>
+            <div class="col s3 m2 hide-on-small-and-down location-med-and-up right-align">
+                <span>
+                    Slottsparken<br><span class="bold">Kalmar</span>
+                </span>
+            </div>
+            <div class="col s10 hide-on-med-and-up left-align combined-name-and-info">
+                <span class="bold show-name">Sommarkvällar på Slottet 2027</span>
+                <div class="show-info">Midsommarkonsert med Kalmar Kammarorkester</div>
+                <div class="supply-blobs"><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob"></span></div>
+                <div class="price-range">
+                    från 0 SEK
+                </div>
+                <div class="show-info-small">
+                    <span class="capitalize">fredag 18 juni</span>
+                    <br>
+                    19:00
+                    <br>
+                    <span class="small-arena">
+                        <span class="bold">Slottsparken</span><br>
+                        Kalmar
+                    </span>
+                </div>
+            </div>
+            <div class="col s2 m1 center-align show-listing-arrow">
+                    <a class="btn waves-effect waves-light theme-background-color" href="#">
+                        <i class="material-icons right">arrow_forward</i>
+                        <span>Biljetter</span>
+                    </a>
+            </div>
+        </div>
+    </div>
+    <div style="position: relative;" class="show-listing-show pointer sd2027-06-18 unnumbered-show" data-showtype="unnumbered-show" data-showid="5102" data-eventid="100001" data-arenacity="kalmar" data-eventname="sommarfestivalen 2027" data-tags="konsert" data-ticketurl="#" data-modal="#material-modal">
+        <div class="row no-margin valign-wrapper">
+            <div class="col m1 center-align dateball-container hide-on-small-and-down">
+                <span class="dateball default-color">
+                    <span>18</span>
+                </span>
+            </div>
+            <div class="col s3 m3 l3 hide-on-small-and-down large-screen-date">
+                <span class="capitalize bold">fredag</span>
+                    <br>
+                    21:30
+            </div>
+            <div class="col s3 m3 hide-on-small-and-down left-align show-name-container">
+                <div class="bold show-name">Sommarfestivalen 2027</div>
+                <div class="show-info">Kvällspass fredag</div>
+                <div class="supply-blobs"><div class="indicator-limit"><i class="material-icons">new_releases</i>Fåtal kvar!</div></div>
+            </div>
+            <div class="col s2 m2 hide-on-small-and-down price-range">
+                från 495 SEK
+            </div>
+            <div class="col s3 m2 hide-on-small-and-down location-med-and-up right-align">
+                <span>
+                    Slottsparken<br><span class="bold">Kalmar</span>
+                </span>
+            </div>
+            <div class="col s10 hide-on-med-and-up left-align combined-name-and-info">
+                <span class="bold show-name">Sommarfestivalen 2027</span>
+                <div class="show-info">Kvällspass fredag</div>
+                <div class="supply-blobs"><div class="indicator-limit"><i class="material-icons">new_releases</i>Fåtal kvar!</div></div>
+                <div class="price-range">
+                    från 495 SEK
+                </div>
+                <div class="show-info-small">
+                    <span class="capitalize">fredag 18 juni</span>
+                    <br>
+                    21:30
+                    <br>
+                    <span class="small-arena">
+                        <span class="bold">Slottsparken</span><br>
+                        Kalmar
+                    </span>
+                </div>
+            </div>
+            <div class="col s2 m1 center-align show-listing-arrow">
+                    <a class="btn waves-effect waves-light theme-background-color" href="#">
+                        <i class="material-icons right">arrow_forward</i>
+                        <span>Biljetter</span>
+                    </a>
+            </div>
+        </div>
+    </div>
+    <div style="position: relative;" class="show-listing-show pointer sd2027-06-18 external-url" data-showtype="external-url" data-showid="5103" data-eventid="100001" data-arenacity="kalmar" data-eventname="efterfest på kallis" data-tags="konsert" data-ticketurl="#" data-modal="#material-modal">
+        <div class="row no-margin valign-wrapper">
+            <div class="col m1 center-align dateball-container hide-on-small-and-down">
+                <span class="dateball default-color">
+                    <span>18</span>
+                </span>
+            </div>
+            <div class="col s3 m3 l3 hide-on-small-and-down large-screen-date">
+                <span class="capitalize bold">fredag</span>
+                    <br>
+                    22:00
+            </div>
+            <div class="col s3 m3 hide-on-small-and-down left-align show-name-container">
+                <div class="bold show-name">Efterfest på Kallis</div>
+                <div class="show-info">Biljetter hos annan säljare</div>
+                <div class="supply-blobs hidden"></div>
+            </div>
+            <div class="col s2 m2 hide-on-small-and-down price-range">
+                från 150 SEK
+            </div>
+            <div class="col s3 m2 hide-on-small-and-down location-med-and-up right-align">
+                <span>
+                    Slottsparken<br><span class="bold">Kalmar</span>
+                </span>
+            </div>
+            <div class="col s10 hide-on-med-and-up left-align combined-name-and-info">
+                <span class="bold show-name">Efterfest på Kallis</span>
+                <div class="show-info">Biljetter hos annan säljare</div>
+                <div class="supply-blobs hidden"></div>
+                <div class="price-range">
+                    från 150 SEK
+                </div>
+                <div class="show-info-small">
+                    <span class="capitalize">fredag 18 juni</span>
+                    <br>
+                    22:00
+                    <br>
+                    <span class="small-arena">
+                        <span class="bold">Slottsparken</span><br>
+                        Kalmar
+                    </span>
+                </div>
+            </div>
+            <div class="col s2 m1 center-align show-listing-arrow">
+                    <a class="btn waves-effect waves-light theme-background-color" href="#">
+                        <i class="material-icons right">open_in_new</i>
+                        <span>Biljetter</span>
+                    </a>
+            </div>
+        </div>
+    </div>
+    <div style="position: relative;" class="show-listing-show pointer sd2027-06-18 unnumbered-show" data-showtype="unnumbered-show" data-showid="5104" data-eventid="100001" data-arenacity="kalmar" data-eventname="guidad visning av slottet med extra långt evenemangsnamn som bryts på flera rader" data-tags="konsert" data-ticketurl="#" data-modal="#material-modal">
+        <div class="row no-margin valign-wrapper">
+            <div class="col m1 center-align dateball-container hide-on-small-and-down">
+                <span class="dateball default-color">
+                    <span>18</span>
+                </span>
+            </div>
+            <div class="col s3 m3 l3 hide-on-small-and-down large-screen-date">
+                <span class="capitalize bold">fredag</span>
+                    <br>
+                    23:00
+            </div>
+            <div class="col s3 m3 hide-on-small-and-down left-align show-name-container">
+                <div class="bold show-name">Guidad visning av slottet med extra långt evenemangsnamn som bryts på flera rader</div>
+                <div class="show-info">Nattvisning</div>
+                <div class="supply-blobs"><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob"></span><span class="supply-blob"></span><span class="supply-blob"></span><span class="supply-blob"></span></div>
+            </div>
+            <div class="col s2 m2 hide-on-small-and-down price-range">
+                från 195 SEK
+            </div>
+            <div class="col s3 m2 hide-on-small-and-down location-med-and-up right-align">
+                <span>
+                    Slottsparken<br><span class="bold">Kalmar</span>
+                </span>
+            </div>
+            <div class="col s10 hide-on-med-and-up left-align combined-name-and-info">
+                <span class="bold show-name">Guidad visning av slottet med extra långt evenemangsnamn som bryts på flera rader</span>
+                <div class="show-info">Nattvisning</div>
+                <div class="supply-blobs"><span class="supply-blob supply-left theme-background-color-override"></span><span class="supply-blob"></span><span class="supply-blob"></span><span class="supply-blob"></span><span class="supply-blob"></span></div>
+                <div class="price-range">
+                    från 195 SEK
+                </div>
+                <div class="show-info-small">
+                    <span class="capitalize">fredag 18 juni</span>
+                    <br>
+                    23:00
+                    <br>
+                    <span class="small-arena">
+                        <span class="bold">Slottsparken</span><br>
+                        Kalmar
+                    </span>
+                </div>
+            </div>
+            <div class="col s2 m1 center-align show-listing-arrow">
+                    <a class="btn waves-effect waves-light theme-background-color" href="#">
+                        <i class="material-icons right">arrow_forward</i>
+                        <span>Biljetter</span>
+                    </a>
+            </div>
+        </div>
+    </div>
+                                    </div>
+                                </div>
+                                <div class="fake-month show-listing-month row display-none">
+                                    <div class="col s12">
+                                            <span class="uppercase bold month-name" style="margin-left: 30px">
+                                              Välj datum i kalender för att se tillgång
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </section>
+</main>
+<!-- #include footer -->
+</body>
+</html>

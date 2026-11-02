@@ -1,0 +1,90 @@
+/** http://codepen.io/ettrics/pen/Jdjdzp **/
+
+/**
+ * Material Modal CSS
+ */
+.material-modal {
+    will-change: visibility, opacity;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 9999;
+    visibility: hidden;
+    opacity: 0;
+    /*-webkit-transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);*/
+    /*transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);*/
+}
+.modal--active {
+    visibility: visible;
+    opacity: 1;
+}
+.modal--align-top {
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+.modal__bg {
+    background: transparent;
+}
+.modal__dialog {
+    padding: 1.2rem;
+}
+.modal__content {
+    will-change: transform, opacity;
+    position: relative;
+    padding: 2.4rem;
+    background-color: #fff;
+    background-clip: padding-box;
+    color: black;
+    box-shadow: 0 12px 15px 0 rgba(0,0,0,0.25);
+    opacity: 0;
+    -webkit-transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.modal__content--active {
+    opacity: 1;
+}
+.modal__close {
+    z-index: 1100;
+    cursor: pointer;
+}
+.modal__trigger {
+    -webkit-transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.modal__trigger--active {
+    z-index: 99999 !important;
+}
+div#modal__temp {
+    will-change: transform, opacity;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #fff;
+    -webkit-transform: none;
+    transform: none;
+    opacity: 1;
+    -webkit-transition: opacity 0.1s ease-out, -webkit-transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: opacity 0.1s ease-out, -webkit-transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: opacity 0.1s ease-out, transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: opacity 0.1s ease-out, transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), -webkit-transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}

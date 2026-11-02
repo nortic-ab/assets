@@ -1,5 +1,16 @@
 # Verifying a theme locally
 
+## The playground (first)
+
+`pnpm playground` serves `assets/hosting/playground` on http://localhost:5178/playground/ (never deployed). Every dagny page and state is there as static HTML with mock data: organizer page with cards and with a calendar, event with calendar (every row and ticket category state), event without calendar, dateless shows, "Endast tillval", the basket cart and "Din order", the arena page, the checkout (Kivra, SMS, premium, insurance, Klarna placeholder), the addon step and the order confirmation after payment (confirmed and its error boxes, `variant:<name>`). Choose environment, organizer and event in the shell, or open a page directly:
+
+```js
+await page.goto('http://localhost:5178/playground/pages/event-calendar.html?env=prod&org=4994&event=87118')
+await page.evaluate(() => PG.action('modal:event-message')) // also materialize:#id, show:selector, toast:<class>:<text>, loading-payment, close
+```
+
+The page links the theme files from disk the way `head.jsp` does (organizer CSS, event CSS, then the scripts with defer), sets `data-organizerid`/`data-eventid` on `<body>`, and answers missing theme files with an empty file like the Firebase rewrites. `theme=0` / `js=0` leave the CSS or the scripts out, for a comparison with dagny's default. Run every check below on the playground pages first; it needs neither EventSystem nor a real event, and it shows states a real event rarely has (Kivra, waitlist, access code, a closed show). Then confirm on the live or local page.
+
 ## The setup
 
 - EventSystem runs locally on `http://localhost:8081` (IntelliJ/Tomcat). Its gitignored `src/main/resources/config/local.properties` must point at the emulator:
