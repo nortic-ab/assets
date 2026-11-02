@@ -9,7 +9,9 @@
 <!-- Organisatörssida utan kalender: eventkorten (#popular-events). Inget event, så inget eventtema.
      Med fler än fyra kort visar eventCards.jsp sökfältet och taggarna (.n-chips): taggarna är avslagna
      (.disabled) tills man klickar, och en tagg som arrangören inte visar har display: none!important.
-     Det femte kortet är upptaget (.busy: krockar med en visning i varukorgen). -->
+     Det femte kortet är upptaget (.busy: krockar med en visning i varukorgen). data-filtertags har
+     samma fält som EventCardEventListView.getFilterTags(): namn, plats, arrangör, visningsdatum
+     (ÅÅÅÅ-MM-DD), månader, städer, taggar och sammanfattning. -->
 <!-- #include organizer-chrome-top -->
 <!-- #include material-modal -->
 <!-- #include organizer-chrome-bottom -->
@@ -72,7 +74,7 @@
                 </a>
         </div>
     <div id="event-card-grid" class="grid">
-            <div class="grid-item" data-filtertags="Sommarkvällar på Slottet 2027||Slottsparken">
+            <div class="grid-item" data-filtertags="Sommarkvällar på Slottet 2027||Slottsparken||Exempelarrangören||2027-06-18||2027-06-25||2027-07-02||2027-07-03||juni||juli||Exempelstad||Konsert||Familj||Konserter, teater och allsång i Slottsparken tre veckor i juni och juli.">
                 <div data-tilt="" data-event="100001" style="transform-style:preserve-3d;" class="card card-background-color card-color js-tilt ">
                         <input type="hidden" class="tag-value" value="Konsert">
                         <input type="hidden" class="tag-value" value="Familj">
@@ -114,7 +116,7 @@
                     </div>
                 </div>
             </div>
-            <div class="grid-item" data-filtertags="Sommarfestivalen 2027||Festivalområdet">
+            <div class="grid-item" data-filtertags="Sommarfestivalen 2027||Festivalområdet||Exempelarrangören||2027-06-18||juni||Exempelstad">
                 <div data-tilt="" data-event="100002" style="transform-style:preserve-3d;" class="card card-background-color card-color js-tilt ">
                     <div class="card-header">
                         <h3>Sommarfestivalen 2027</h3>
@@ -146,7 +148,7 @@
                     </div>
                 </div>
             </div>
-            <div class="grid-item" data-filtertags="Guidad visning av slottet med extra långt evenemangsnamn som bryts på flera rader||Slottet">
+            <div class="grid-item" data-filtertags="Guidad visning av slottet med extra långt evenemangsnamn som bryts på flera rader||Slottet||Exempelarrangören||2027-05-01||2027-07-15||2027-09-30||maj||juli||september||Exempelstad||Guidade visningar||Följ med på en timmes visning genom slottets salar, kök och fängelsehålor.">
                 <div data-tilt="" data-event="100003" style="transform-style:preserve-3d;" class="card card-background-color card-color js-tilt ">
                         <input type="hidden" class="tag-value" value="Guidade visningar">
                     <div class="card-header">
@@ -181,7 +183,7 @@
                     </div>
                 </div>
             </div>
-            <div class="grid-item" data-filtertags="Julmarknad||Borggården">
+            <div class="grid-item" data-filtertags="Julmarknad||Borggården||Exempelarrangören||2026-12-04||december||Exempelstad">
                 <div data-tilt="" data-event="100004" style="transform-style:preserve-3d;" class="card card-background-color card-color js-tilt ">
                     <div class="card-header">
                         <h3>Julmarknad</h3>
@@ -213,7 +215,7 @@
                     </div>
                 </div>
             </div>
-            <div class="grid-item" data-filtertags="Vinterkonsert i kyrkan||Domkyrkan">
+            <div class="grid-item" data-filtertags="Vinterkonsert i kyrkan||Domkyrkan||Exempelarrangören||2026-12-13||december||Exempelstad||Konsert||Körer och orgel i levande ljus kvällen före Lucia.">
                 <div data-tilt="" data-event="100005" style="transform-style:preserve-3d;" class="card card-background-color card-color js-tilt busy">
                         <input type="hidden" class="tag-value" value="Konsert">
                     <div class="card-header">

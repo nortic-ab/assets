@@ -249,8 +249,8 @@
     updateBasket()
   }
 
-  // addFreetextFilterListeners (organizerPage.js): the search field hides cards whose name, place or
-  // tags do not contain the text
+  // addFreetextFilterListeners (organizerPage.js): the search field hides cards where no filter tag
+  // (data-filtertags: name, venue, organizer, show dates, months, cities, tags, summary) contains the text
   document.addEventListener('input', (e) => {
     if (!(e.target instanceof HTMLInputElement) || e.target.id !== 'freetext-filter' || !e.target.closest('#popular-events'))
       return
