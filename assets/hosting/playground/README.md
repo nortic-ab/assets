@@ -24,7 +24,7 @@ leave the CSS or the scripts out).
 
 | Page                     | What it covers                                                                                                                                                |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `organizer`              | Organizer page with event cards (`#popular-events`), tags, long names, "Läs mer"                                                                              |
+| `organizer`              | Organizer page with event cards (`#popular-events`): the search field and tag chips (more than four cards), tags, long names, a busy card, "Läs mer"          |
 | `organizer-calendar`     | Organizer page with calendar (`organizer.useCalendar`): filter chips, calendar, show rows                                                                     |
 | `organizer-confirmation` | The order confirmation after payment: confirmed (with the post-sale offer, download and Wallet buttons, optionally the hotel offer) and the three error boxes |
 | `event-calendar`         | Event with calendar, every show row state and every ticket category state (below)                                                                             |

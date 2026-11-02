@@ -1,0 +1,908 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&display=swap');
+/*
+ * Destination Gotland (organizer 2059): organizer stylesheet for the organizer page.
+ *
+ * 2059 is a super organizer: its organizer page lists the events of its sub-organizers (Gotlands
+ * Museum, Visby domkyrka, Länsteatern …), and every event page belongs to the sub-organizer, so it
+ * links that organizer's stylesheet, not this one. This file therefore themes the organizer page:
+ * the header, the hero, the search field and tag chips, the event cards and the footer, plus the
+ * order confirmation in case one is ever shown here. Every rule is scoped to body:not([data-eventid])
+ * (event and show pages carry data-eventid on <body>), so an event of 2059's own would keep dagny's
+ * look; the variables live on that body too, not on :root.
+ *
+ * Byggt efter destinationgotland.se:s egna komponenter, uppmätta i sajtens CSS (main.css):
+ * - Archivo 400/500/600 från Google Fonts, brödtext 16/24 #505762, rubriker 600.
+ * - Heron som sajtens erbjudandepanel (.offer-variant-white): halvgenomskinligt blå panel
+ *   (#375D75 35 %, radie 2 %), vit rubrik 50/58 med sajtens textskugga och den röda etiketten
+ *   (.offer-pill.is-red) som sticker ut 16px till vänster upptill.
+ * - Sökfältet som bokningswidgetens fält: vit ruta, kant #ACBECA, radie 4px, etikett 14/22 med
+ *   ikon och värdet 16/26 600 i blått.
+ * - Taggarna som .btn-outline-primary: blå kontur, helt rund, 600; fylls blå vid hover och när
+ *   de är valda.
+ * - Eventkorten som .article-card: vita, radie 8px, sajtens låga skugga som lyfts vid hover (1s),
+ *   rubrik 22/30 600 blå, plats 12/12, datum 14/22 med sajtens kalenderikon, "Läs mer" som
+ *   .arrow-link och "Gå till" som kortets textlänk med rund pilknapp (.icon-btn-outline-primary)
+ *   som fylls blå när man håller över kortet.
+ * - Upptagna kort med sajtens vita etikett (.offer-pill), footern i sajtens blå.
+ * Ikonerna (pil, sök, kalender) är sajtens SVG:er i assets/, loggan är tmp/dg/logo (1).svg.
+ *
+ * Kontrast: blått på vitt 7,0:1 och på ljusblått 6,4:1, brödtext 7,3:1 respektive 6,6:1, mörk text
+ * på grönt 8,4:1, vitt på rött 6,1:1, vitt på blått 7,0:1. Den vita herorubriken står på panelen och
+ * en svag skugga i bildens nederkant och har sajtens textskugga.
+ */
+
+body:not([data-eventid]) {
+  --dg-blue: #375d75;
+  --dg-blue-dark: #1a435c;
+  --dg-ink: #22252a;
+  --dg-text: #505762;
+  --dg-sky: #ebf6fd;
+  --dg-field-line: #acbeca;
+  --dg-line: #e2e2e2;
+  --dg-white: #ffffff;
+  --dg-green: #58d78f;
+  --dg-green-hover: #33ab67;
+  --dg-red: #c3132c;
+  --dg-font: 'Archivo', Arial, sans-serif;
+  --dg-pad: clamp(16px, 4vw, 48px);
+  --dg-max: 1232px;
+  --dg-wrap: min(var(--dg-max), 100% - 2 * var(--dg-pad));
+  --dg-radius: 8px;
+  --dg-shadow: 0 1px 1px rgba(34, 37, 42, 0.1), 0 1px 1px rgba(34, 37, 42, 0.1);
+  --dg-shadow-hover: 0 6px 10px rgba(34, 37, 42, 0.1), 0 2px 4px rgba(34, 37, 42, 0.1);
+  --dg-text-shadow: 0 2px 4px rgba(0, 0, 0, 0.35), 0 6px 14px rgba(0, 0, 0, 0.28);
+  --dg-ease: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Remsan ovanför <main> (där headern ligger) är body. dagnys förvalda tema lägger en kornig
+     textur (filter.png) på body och .st-content. */
+  background-color: var(--dg-white);
+  background-image: none;
+  color: var(--dg-text);
+  font-family: var(--dg-font);
+}
+
+/* ---------------------------------------------------------------------------
+ * 1. Ground, header och footer
+ * ------------------------------------------------------------------------- */
+body:not([data-eventid]) .st-content {
+  background-color: var(--dg-sky);
+  background-image: none;
+  color: var(--dg-text);
+  font-family: var(--dg-font);
+  font-size: 16px;
+  line-height: 24px;
+}
+/* Sajtens header: vit med loggan till vänster och en tunn linje under. 64px: dagnys meny-nav ligger
+   64px hög ovanför <main> och syns annars under en lägre header. */
+body:not([data-eventid]) header#main-header {
+  height: 64px;
+  background-color: var(--dg-white);
+  box-shadow: 0 1px 0 var(--dg-line);
+}
+body:not([data-eventid]) header#main-header > .row {
+  height: 100%;
+}
+body:not([data-eventid]) header#main-header i.material-icons {
+  color: var(--dg-blue);
+}
+/* Loggan i headern: arrangörens loggbehållare (absolut i <main>, som börjar 64px ner) flyttas upp
+   till headerns vänstra kant och visar Destination Gotlands logga. Bilden från bild-API:t blir
+   osynlig men står kvar, så att en länk till arrangörens webbplats (om en läggs in) går att klicka på. */
+body:not([data-eventid]) main .organizer-logo-container {
+  z-index: 6;
+  top: -52px;
+  left: max(var(--dg-pad), (100% - var(--dg-max)) / 2);
+  width: 141px;
+  max-width: none;
+  height: 40px;
+  max-height: none;
+  margin: 0;
+  background: url('assets/destination-gotland-logo.svg') no-repeat left center / contain;
+}
+body:not([data-eventid]) main .organizer-logo-container > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+body:not([data-eventid]) main .organizer-logo-container img {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+/* Footern i sajtens blå: länkarna vita 16/24 600 utan versaler, understrukna vid hover */
+body:not([data-eventid]) footer.page-footer {
+  position: relative;
+  z-index: 2;
+  opacity: 1;
+  background-color: var(--dg-blue);
+  background-image: none;
+}
+body:not([data-eventid]) footer.page-footer,
+body:not([data-eventid]) footer.page-footer #left-column > a:not(#nortic-footer-link) {
+  color: var(--dg-white);
+  font-family: var(--dg-font);
+}
+body:not([data-eventid]) footer.page-footer #left-column > a:not(#nortic-footer-link) {
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+@media (hover: hover) {
+  body:not([data-eventid]) footer.page-footer #left-column > a:not(#nortic-footer-link):hover {
+    color: var(--dg-white);
+    text-decoration: underline;
+  }
+}
+body:not([data-eventid]) footer #divider {
+  border-right-color: rgba(172, 190, 202, 0.3);
+}
+body:not([data-eventid]) footer.page-footer img {
+  filter: brightness(0) invert(1);
+}
+
+/* ---------------------------------------------------------------------------
+ * 2. Heron: arrangörens bild med sajtens erbjudandepanel
+ * ------------------------------------------------------------------------- */
+/* dagny hänger bilden i ett fast lager bakom hela sidan, dimmar den och låter fadeBanner() skriva
+   filter och transform inline vid scroll. Här stannar bilden i heron, i full färg. */
+body:not([data-eventid]) section#top {
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(360px, 46vw, 540px);
+  overflow: hidden;
+  isolation: isolate;
+  background-color: var(--dg-blue-dark);
+}
+body:not([data-eventid]) section#top #background-container {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: auto;
+  min-height: 0;
+  background-position: center 40%;
+  filter: none !important;
+  transform: none !important;
+}
+/* En svag skugga i nederkanten: arrangörens bilder kan vara ljusa (solnedgång över havet) */
+body:not([data-eventid]) section#top #background-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(26, 67, 92, 0) 50%, rgba(26, 67, 92, 0.4) 100%);
+}
+/* Panelen: .start-hero-block__offer-container__inner med varianten för ljusa bilder */
+body:not([data-eventid]) section#top div#main-ribbon.container {
+  position: relative;
+  box-sizing: border-box;
+  width: min(641px, 100% - 2 * var(--dg-pad));
+  max-width: none;
+  margin: 0 0 clamp(32px, 4vw, 56px) max(var(--dg-pad), (100% - var(--dg-max)) / 2);
+  padding: 16px 16px 32px;
+  border-radius: 2%;
+  background: rgba(55, 93, 117, 0.35);
+}
+/* Etiketten (.offer-pill.is-red) sticker ut 16px till vänster om panelen */
+body:not([data-eventid]) section#top div#main-ribbon::before {
+  content: 'Evenemang på Gotland';
+  position: absolute;
+  top: 16px;
+  left: -16px;
+  padding: 8px 12px;
+  border-radius: 9999px;
+  background-color: rgba(195, 19, 44, 0.9);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--dg-white);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 12px;
+  text-transform: uppercase;
+}
+/* Infochipsen är tomma på organisatörssidan */
+body:not([data-eventid]) div#main-ribbon .slider-wrapper {
+  display: none;
+}
+body:not([data-eventid]) section#top div#main-ribbon > h1 {
+  margin: 32px 0 0;
+  color: var(--dg-white);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 50px;
+  line-height: 58px;
+  letter-spacing: 0;
+  text-shadow: var(--dg-text-shadow);
+  text-transform: none;
+}
+body:not([data-eventid]) section#top div#main-ribbon > h1 span {
+  color: inherit;
+}
+/* Beskrivningen, om arrangören lägger in en: brödtext i panelen under rubriken */
+body:not([data-eventid]) section#top div.event-information,
+body:not([data-eventid]) section#top div.event-information:not(.minimized) {
+  max-width: none;
+  margin: 16px 0 0 !important;
+  padding: 0 !important;
+  background: none;
+  color: var(--dg-white);
+  font-family: var(--dg-font);
+  font-size: 16px;
+  line-height: 24px;
+}
+body:not([data-eventid]) div#main-ribbon div.event-information p,
+body:not([data-eventid]) section#top div.event-information > span#event-information-text span {
+  color: var(--dg-white) !important;
+  font-size: inherit;
+  text-shadow: var(--dg-text-shadow);
+}
+body:not([data-eventid]) section#top a.event-information-button {
+  display: inline-flex;
+  align-items: center;
+  height: auto;
+  margin-top: 12px;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--dg-white);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  text-shadow: var(--dg-text-shadow);
+  text-transform: none;
+}
+body:not([data-eventid]) section#top a.event-information-button::after {
+  content: '';
+  width: 24px;
+  height: 24px;
+  margin-left: 8px;
+  background: url('assets/arrow-white.svg') no-repeat center / contain;
+}
+
+/* ---------------------------------------------------------------------------
+ * 3. Eventen: rubrik, sökfält och taggar
+ * ------------------------------------------------------------------------- */
+body:not([data-eventid]) section#popular-events {
+  margin-top: 0;
+  padding: 64px 0 80px;
+  background-color: var(--dg-sky);
+}
+body:not([data-eventid]) section#popular-events > .container {
+  width: var(--dg-wrap);
+  max-width: none;
+  margin: 0 auto;
+}
+/* Rubriken som sajtens sektionsrubriker (h2 34/42 600), bara när det finns event att visa */
+body:not([data-eventid]) section#popular-events > .container:has(.card)::before {
+  content: 'Alla evenemang';
+  display: block;
+  margin: 0 0 32px;
+  color: var(--dg-ink);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 42px;
+}
+body:not([data-eventid]) section#popular-events .n-chips {
+  gap: 12px;
+  margin-bottom: 40px;
+  cursor: default;
+}
+/* Sökfältet som bokningswidgetens fält ("Avresa"): vit ruta med kant #ACBECA och radie 4px,
+   ikonen och etiketten 14/22 på första raden, det man skriver 16/26 600 i blått under.
+   Materialize flyttar etiketten med transform; här står den still. */
+body:not([data-eventid]) section#popular-events .n-chips .input-field.freetext-filter-container {
+  position: relative;
+  width: min(447px, 100%);
+  margin: 0 12px 0 0;
+}
+body:not([data-eventid]) section#popular-events .n-chips input.freetext-filter {
+  box-sizing: border-box;
+  width: 100%;
+  height: 76px;
+  margin: 0;
+  padding: 36px 16px 12px;
+  border: 1px solid var(--dg-field-line);
+  border-radius: 4px;
+  background-color: var(--dg-white);
+  box-shadow: none;
+  color: var(--dg-blue);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 26px;
+  transition:
+    border-color var(--dg-ease),
+    box-shadow var(--dg-ease);
+}
+body:not([data-eventid]) section#popular-events .n-chips input.freetext-filter:focus {
+  border-color: var(--dg-blue);
+  box-shadow: 0 0 0 1px var(--dg-blue);
+}
+body:not([data-eventid]) section#popular-events .n-chips .input-field input ~ label,
+body:not([data-eventid]) section#popular-events .n-chips .input-field input ~ label.active,
+body:not([data-eventid]) section#popular-events .n-chips .input-field input:focus ~ label,
+body:not([data-eventid]) section#popular-events .n-chips .input-field input:focus ~ label.active {
+  top: 10px;
+  left: 44px;
+  transform: none;
+  color: var(--dg-text) !important;
+  font-family: var(--dg-font);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  text-shadow: none !important;
+  pointer-events: none;
+}
+/* Sajtens sökikon framför etiketten */
+body:not([data-eventid]) section#popular-events .n-chips .input-field.freetext-filter-container::before {
+  content: '';
+  position: absolute;
+  top: 11px;
+  left: 16px;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  background: url('assets/search.svg') no-repeat center / contain;
+}
+/* Taggarna som .btn-outline-primary: blå kontur, helt runda, fylls blå vid hover och när de är
+   valda. dagny gråar avslagna taggar med filter och halv opacitet och ger dem temafärgen. */
+body:not([data-eventid]) section#popular-events a.n-chip,
+body:not([data-eventid]) section#popular-events a.n-chip.theme-background-color,
+body:not([data-eventid]) section#popular-events a.n-chip.disabled {
+  align-items: center;
+  min-height: 48px;
+  padding: 0 24px 0 46px;
+  border: 1px solid var(--dg-blue);
+  border-radius: 9999px;
+  background-color: transparent;
+  box-shadow: none;
+  color: var(--dg-blue);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  filter: none;
+  opacity: 1;
+  transition:
+    background-color var(--dg-ease),
+    border-color var(--dg-ease),
+    color var(--dg-ease);
+}
+body:not([data-eventid]) section#popular-events a.n-chip.theme-background-color:not(.disabled) {
+  background-color: var(--dg-blue);
+  color: var(--dg-white);
+}
+@media (hover: hover) {
+  body:not([data-eventid]) section#popular-events a.n-chip.theme-background-color:hover {
+    background-color: var(--dg-blue);
+    color: var(--dg-white);
+    filter: none;
+  }
+  body:not([data-eventid]) section#popular-events a.n-chip.theme-background-color:not(.disabled):hover {
+    border-color: var(--dg-blue-dark);
+    background-color: var(--dg-blue-dark);
+  }
+}
+body:not([data-eventid]) section#popular-events a.n-chip span.checkbox {
+  top: 50%;
+  left: 16px;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  border-width: 1px;
+  border-radius: 4px;
+}
+body:not([data-eventid]) section#popular-events a.n-chip span.checkbox::before {
+  top: 4px;
+  left: 4px;
+}
+body:not([data-eventid]) section#popular-events a.n-chip span.count,
+body:not([data-eventid]) section#popular-events a.n-chip span.count.theme-background-color {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 9999px;
+  background-color: rgba(195, 19, 44, 0.9);
+  color: var(--dg-white);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 12px;
+  filter: none;
+}
+body:not([data-eventid]) section#popular-events a.n-chip:focus-visible {
+  outline: 2px solid var(--dg-blue);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+ * 4. Eventkorten som sajtens .article-card
+ * ------------------------------------------------------------------------- */
+body:not([data-eventid]) section#popular-events > .container > .grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 32px;
+}
+/* dagnys lutningseffekt (js-tilt) skriver transform inline och får vara kvar. Skuggan är låg i vila
+   och lyfts vid hover, långsamt som på sajten. */
+body:not([data-eventid]) section#popular-events .card.card-background-color {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--dg-radius);
+  background-color: var(--dg-white);
+  box-shadow: var(--dg-shadow);
+  color: var(--dg-text);
+  transition: box-shadow 1s;
+}
+@media (hover: hover) {
+  body:not([data-eventid]) section#popular-events .card.card-background-color:hover {
+    box-shadow: var(--dg-shadow-hover);
+  }
+}
+/* Bilden överst som på sajtens kort (dagny har rubriken först) */
+body:not([data-eventid]) section#popular-events .card .card-image {
+  position: relative;
+  order: -1;
+}
+body:not([data-eventid]) section#popular-events .card .card-image img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 389 / 220;
+  border-radius: 0;
+  object-fit: cover;
+}
+/* Kortet krockar med en visning i varukorgen: sajtens vita etikett (.offer-pill) nere till vänster */
+body:not([data-eventid]) section#popular-events .card.busy .card-image .busy {
+  inset: auto auto 16px 16px;
+  max-width: calc(100% - 32px);
+  padding: 8px 12px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.9);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--dg-ink);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 14px;
+  text-transform: uppercase;
+}
+body:not([data-eventid]) section#popular-events .card .card-header {
+  height: auto;
+  padding: 24px 24px 0;
+  border-radius: 0;
+  font-family: var(--dg-font);
+}
+body:not([data-eventid]) section#popular-events .card .card-header h3 {
+  margin: 0 0 8px;
+  color: var(--dg-blue);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 30px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+body:not([data-eventid]) section#popular-events .card .card-content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  height: auto;
+  padding: 0 24px;
+  color: var(--dg-text);
+}
+/* Platsen som .article-card__location (12/12) och datumet som .article-card__date (14/22 med
+   sajtens kalenderikon) */
+body:not([data-eventid]) section#popular-events .card .card-content .place {
+  margin: 0 0 8px;
+  color: var(--dg-text);
+  font-family: var(--dg-font);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 12px;
+  text-transform: none;
+}
+body:not([data-eventid]) section#popular-events .card .card-content .time {
+  display: flex;
+  align-items: center;
+  margin: 4px 0 0;
+  color: var(--dg-text);
+  font-family: var(--dg-font);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+}
+body:not([data-eventid]) section#popular-events .card .card-content .time::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  background: url('assets/calendar.svg') no-repeat center / contain;
+}
+body:not([data-eventid]) section#popular-events .card .card-content .time .dash {
+  margin: 0 4px;
+}
+body:not([data-eventid]) section#popular-events .card p {
+  flex: 1 1 auto;
+  margin: 16px 0 0;
+  color: var(--dg-text);
+  font-family: var(--dg-font);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+body:not([data-eventid]) section#popular-events .card .no-information-available {
+  color: var(--dg-text);
+  opacity: 1;
+}
+/* "Läs mer" som sajtens .arrow-link: 600 i blått med pilen efter */
+body:not([data-eventid]) section#popular-events .card .card-content .read-more-button,
+body:not([data-eventid]) section#popular-events .card .card-content .read-more-button.theme-color {
+  display: inline-flex;
+  align-items: center;
+  height: auto;
+  margin-left: 4px;
+  padding: 0;
+  background-color: transparent;
+  color: var(--dg-blue);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0;
+  text-transform: none;
+  vertical-align: bottom;
+}
+body:not([data-eventid]) section#popular-events .card .card-content .read-more-button::after {
+  content: '';
+  width: 24px;
+  height: 24px;
+  margin-left: 8px;
+  background: url('assets/arrow-blue.svg') no-repeat center / contain;
+}
+body:not([data-eventid]) section#popular-events .card .card-content .read-more-button:hover {
+  background-color: transparent;
+  color: var(--dg-blue);
+  filter: none;
+  text-decoration: underline;
+}
+/* "Gå till" som kortets textlänk med rund pilknapp till höger (.article-card__btn-link-wrapper
+   med .icon-btn-outline-primary). dagny flyttar knappen till höger med en inline-float, som inte
+   gäller i flexraden. */
+body:not([data-eventid]) section#popular-events .card .card-action {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 24px 24px;
+  border-top: 0;
+  background-color: transparent;
+}
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button,
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button.theme-background-color {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+  color: var(--dg-blue);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button::after {
+  content: '';
+  box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+  margin-left: 12px;
+  border: 1px solid rgba(55, 93, 117, 0.5);
+  border-radius: 9999px;
+  background: transparent url('assets/arrow-blue.svg') no-repeat center / 24px 24px;
+  transition:
+    background-color var(--dg-ease),
+    border-color var(--dg-ease);
+}
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button:hover,
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button:focus {
+  background-color: transparent;
+  color: var(--dg-blue);
+}
+@media (hover: hover) {
+  body:not([data-eventid]) section#popular-events .card:hover .card-action a.btn.goto-button::after {
+    border-color: var(--dg-blue);
+    background-color: var(--dg-blue);
+    background-image: url('assets/arrow-white.svg');
+  }
+}
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button:focus-visible {
+  outline: 2px solid var(--dg-blue);
+  outline-offset: 4px;
+}
+body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button .waves-ripple {
+  display: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * 5. Orderbekräftelsen (klarnaConfirmationBox.jsp), om den visas här
+ * ------------------------------------------------------------------------- */
+/* Ett vitt kort som sajtens: Klarnas kvitto i den är en vit iframe. dagny lägger vita flikar ovanpå
+   kortet (::before/::after) och färgar knappen blå. */
+body:not([data-eventid]) section#order-confirmation.klarna {
+  overflow-x: hidden;
+  border-radius: var(--dg-radius);
+  background-color: var(--dg-white);
+  box-shadow:
+    0 6px 10px rgba(34, 37, 42, 0.1),
+    0 24px 64px rgba(26, 67, 92, 0.3);
+  color: var(--dg-ink);
+  font-family: var(--dg-font);
+}
+body:not([data-eventid]) section#order-confirmation.klarna::before,
+body:not([data-eventid]) section#order-confirmation.klarna::after {
+  content: none;
+}
+body:not([data-eventid]) section#order-confirmation.klarna .confirmation .scroll-box {
+  padding: 0 clamp(20px, 4vw, 40px) 32px;
+}
+body:not([data-eventid]) section#order-confirmation #confirm-order-confirmation {
+  top: 14px;
+  right: 14px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(55, 93, 117, 0.5);
+  border-radius: 9999px;
+  opacity: 1;
+  color: var(--dg-blue);
+  transition:
+    background-color var(--dg-ease),
+    color var(--dg-ease);
+}
+body:not([data-eventid]) section#order-confirmation #confirm-order-confirmation i.material-icons {
+  font-size: 22px;
+  line-height: 38px;
+}
+@media (hover: hover) {
+  body:not([data-eventid]) section#order-confirmation #confirm-order-confirmation:hover {
+    background-color: var(--dg-blue);
+    color: var(--dg-white);
+  }
+}
+body:not([data-eventid]) section#order-confirmation p,
+body:not([data-eventid]) section#order-confirmation a,
+body:not([data-eventid]) section#order-confirmation span {
+  font-family: var(--dg-font);
+}
+body:not([data-eventid]) section#order-confirmation.klarna .postsale {
+  display: block;
+  padding: 0 0 8px;
+  text-align: left;
+}
+/* Rubrikerna som sajtens h3 (28/34 600) */
+body:not([data-eventid]) section#order-confirmation .postsale .postsale-name,
+body:not([data-eventid]) section#order-confirmation .error-box h1 {
+  margin: 32px 56px 20px 0;
+  padding-top: 0;
+  color: var(--dg-ink);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 34px;
+  text-transform: none;
+}
+body:not([data-eventid]) section#order-confirmation .postsale .postsale-image {
+  margin-bottom: 18px;
+  border-radius: var(--dg-radius);
+}
+body:not([data-eventid]) section#order-confirmation .postsale .postsale-headline {
+  float: none;
+  display: block;
+  margin: 0 0 8px;
+  color: var(--dg-blue);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 30px;
+  text-transform: none;
+}
+body:not([data-eventid]) section#order-confirmation.klarna .postsale-information,
+body:not([data-eventid]) section#order-confirmation .hotel-upsell p,
+body:not([data-eventid]) section#order-confirmation .error-box p {
+  display: block;
+  margin-left: 0;
+  padding: 0 0 18px;
+  color: var(--dg-text);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+/* Länkarna som .arrow-link */
+body:not([data-eventid]) section#order-confirmation.klarna .postsale .postsale-link,
+body:not([data-eventid]) section#order-confirmation .error-box a {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 0 4px;
+  color: var(--dg-blue);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  text-transform: none;
+  vertical-align: bottom;
+}
+body:not([data-eventid]) section#order-confirmation.klarna .postsale .postsale-link::after {
+  content: '';
+  width: 24px;
+  height: 24px;
+  margin-left: 8px;
+  background: url('assets/arrow-blue.svg') no-repeat center / contain;
+}
+body:not([data-eventid]) section#order-confirmation .error-box a {
+  margin: 0;
+}
+@media (hover: hover) {
+  body:not([data-eventid]) section#order-confirmation.klarna .postsale .postsale-link:hover,
+  body:not([data-eventid]) section#order-confirmation .error-box a:hover {
+    color: var(--dg-blue);
+    text-decoration: underline;
+  }
+}
+body:not([data-eventid]) section#order-confirmation .postsale hr.postsale-divider,
+body:not([data-eventid]) section#order-confirmation .hotel-upsell hr.postsale-divider {
+  width: 100%;
+  height: 1px;
+  margin: 20px 0 24px;
+  border: 0;
+  background-color: var(--dg-line);
+  opacity: 1;
+}
+/* Ladda ner biljetter: sajtens gröna knapp (.btn-secondary), mörkare grön vid hover */
+body:not([data-eventid]) section#order-confirmation.klarna .button-container {
+  padding: 24px 0 8px;
+}
+body:not([data-eventid]) section#order-confirmation.klarna a.btn.download-tickets {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  margin-top: 0;
+  padding: 0 32px;
+  border: 1px solid var(--dg-green);
+  border-radius: 9999px;
+  background-color: var(--dg-green);
+  box-shadow: none;
+  color: var(--dg-ink);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0;
+  text-transform: none;
+  transition:
+    background-color var(--dg-ease),
+    border-color var(--dg-ease);
+}
+body:not([data-eventid]) section#order-confirmation.klarna a.btn.download-tickets:hover {
+  border-color: var(--dg-green-hover);
+  background-color: var(--dg-green-hover);
+  filter: none;
+}
+body:not([data-eventid]) section#order-confirmation .wallet-row {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+/* Hotellerbjudandet: Hotels.com-knappen behåller sin egen färg */
+body:not([data-eventid]) section#order-confirmation .hotel-upsell h3 {
+  color: var(--dg-ink);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 30px;
+  text-transform: none;
+}
+body:not([data-eventid]) section#order-confirmation .error-box {
+  padding: 8px clamp(20px, 4vw, 40px) 32px;
+}
+
+/* ---------------------------------------------------------------------------
+ * 6. Mobil (dagnys brytpunkt; sajtens mindre rubrikstorlekar)
+ * ------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  /* <main> börjar 56px ner på telefon */
+  body:not([data-eventid]) main .organizer-logo-container {
+    top: -41px;
+    width: 120px;
+    height: 34px;
+  }
+  body:not([data-eventid]) section#top {
+    min-height: 360px;
+  }
+  body:not([data-eventid]) section#top div#main-ribbon.container {
+    width: calc(100% - 2 * var(--dg-pad));
+    margin: 0 var(--dg-pad) 24px;
+  }
+  body:not([data-eventid]) section#top div#main-ribbon::before {
+    left: -8px;
+  }
+  body:not([data-eventid]) section#top div#main-ribbon > h1 {
+    font-size: 40px;
+    line-height: 48px;
+  }
+  body:not([data-eventid]) section#popular-events {
+    padding: 48px 0 64px;
+  }
+  body:not([data-eventid]) section#popular-events > .container:has(.card)::before {
+    margin-bottom: 24px;
+    font-size: 32px;
+    line-height: 38px;
+  }
+  body:not([data-eventid]) section#popular-events .n-chips .input-field.freetext-filter-container {
+    width: 100%;
+    margin: 0;
+  }
+  body:not([data-eventid]) section#popular-events .n-chips input.freetext-filter {
+    height: 76px;
+  }
+  body:not([data-eventid]) section#popular-events > .container > .grid {
+    gap: 24px;
+  }
+  body:not([data-eventid]) section#popular-events .card .card-header h3 {
+    font-size: 20px;
+    line-height: 26px;
+  }
+  /* Footern: dagny låser den till 80px och länkarna till en rad, så de rinner ut till höger. Loggan
+     på egen rad, länkarna radbryts, ingen fast höjd. */
+  body:not([data-eventid]) footer.page-footer,
+  body:not([data-eventid]) footer.page-footer > .container > .row {
+    height: auto;
+  }
+  body:not([data-eventid]) footer.page-footer > .container > .row {
+    margin: 0;
+    padding: 26px 0 28px;
+  }
+  body:not([data-eventid]) footer.page-footer #left-column {
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    width: 100%;
+    padding: 0;
+    line-height: 1.4;
+  }
+  body:not([data-eventid]) footer.page-footer #left-column a#nortic-footer-link {
+    top: 0;
+    flex-basis: 100%;
+    height: auto;
+    line-height: 0;
+  }
+  body:not([data-eventid]) footer #divider {
+    display: none;
+  }
+  body:not([data-eventid]) footer.page-footer #left-column > a:not(#nortic-footer-link) {
+    height: auto;
+    margin-right: 0;
+    line-height: 1.4;
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body:not([data-eventid]) section#popular-events .card.card-background-color,
+  body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button::after,
+  body:not([data-eventid]) section#popular-events a.n-chip,
+  body:not([data-eventid]) section#popular-events .n-chips input.freetext-filter,
+  body:not([data-eventid]) section#order-confirmation #confirm-order-confirmation,
+  body:not([data-eventid]) section#order-confirmation.klarna a.btn.download-tickets {
+    transition: none;
+  }
+}
