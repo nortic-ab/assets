@@ -51,26 +51,43 @@ function expandIncludes(html: string, depth = 0): string {
   })
 }
 
-// The name a theme's header comment starts with: "VårVinterKalaset (organizer 4994): organizer
-// stylesheet…" gives "VårVinterKalaset". The header is a comment before the first rule that names an
-// organizer (a file can start with an @import and its own comment); files without one get no name.
-function themeTitle(file: string): string {
+// The header comment of a theme: the comment before the first rule that names an organizer (a file
+// can start with an @import and its own comment), as plain lines without the leading " * ".
+function themeHeader(file: string): string[] {
   if (!existsSync(file))
-    return ''
+    return []
   const source = readFileSync(file, 'utf8')
   const beforeFirstRule = source.slice(0, source.search(/\{/) + 1 || undefined)
   const comments = [...beforeFirstRule.matchAll(/\/\*([\s\S]*?)\*\//g)].map(m => m[1])
   const header = comments.find(c => /organi[sz]er/i.test(c)) || comments[0]
-  if (!header)
-    return ''
-  const line = header.split('\n').map(l => l.replace(/^\s*\*\s?/, '').trim()).find(l => /\p{L}/u.test(l)) || ''
+  return header ? header.split('\n').map(l => l.replace(/^\s*\*\s?/, '').trim()) : []
+}
+
+// The name a theme's header starts with: "VårVinterKalaset (organizer 4994): organizer
+// stylesheet…" gives "VårVinterKalaset". An event's own name in quotes wins: "Hotel Grand Stade
+// (organizer 3952, event 84422 "Fatboy Slim checks in at …")" gives the event name. Files without a
+// header get no name.
+function themeTitle(file: string): string {
+  const header = themeHeader(file)
+  const quoted = header.join(' ').match(/\bevent \d+ "([^"]+)"/)
+  if (quoted)
+    return quoted[1].slice(0, 60)
+  const line = header.find(l => /\p{L}/u.test(l)) || ''
   return line.split(/\s+\((?:organi[sz]er|event)|:\s/i)[0].replace(/^"|"$/g, '').trim().slice(0, 60)
+}
+
+// The organizer's name when an event header gives it: "(organizer 3727 Swing Golf & Lounge, event
+// 87831)" gives "Swing Golf & Lounge".
+function organizerNameIn(file: string, id: string): string {
+  const match = themeHeader(file).join(' ').match(new RegExp(`\\borgani[sz]er ${id} ([^,)]+)`))
+  return match ? match[1].trim().slice(0, 60) : ''
 }
 
 function listThemes() {
   const result: Record<string, unknown[]> = {}
   for (const env of ['prod', 'staging']) {
     const orgs = new Map<string, { id: string, title: string, css: boolean, js: boolean, events: Map<string, { id: string, title: string, css: boolean, js: boolean }> }>()
+    const namedInEvents = new Map<string, string>()
     for (const kind of ['css', 'js'] as const) {
       const root = path.join(hosting, `custom-${kind}`, env, 'eventsystem', 'organizers')
       if (!existsSync(root))
@@ -89,6 +106,7 @@ function listThemes() {
             const evFile = path.join(eventsDir, ev, kind === 'css' ? 'styles.css' : 'script.js')
             if (!existsSync(evFile))
               continue
+            namedInEvents.set(org, namedInEvents.get(org) || organizerNameIn(evFile, org))
             const evEntry = entry.events.get(ev) || { id: ev, title: '', css: false, js: false }
             evEntry[kind] = true
             evEntry.title ||= themeTitle(evFile)
@@ -97,6 +115,12 @@ function listThemes() {
         }
         orgs.set(org, entry)
       }
+    }
+    // An organizer without a stylesheet or script of its own (only event themes) takes its name from
+    // an event header that names it, then from the same organizer in prod, then from its first event.
+    for (const o of orgs.values()) {
+      const prodTitle = (result.prod as { id: string, title: string }[] | undefined)?.find(p => p.id === o.id)?.title
+      o.title ||= namedInEvents.get(o.id) || prodTitle || [...o.events.values()].sort((a, b) => Number(a.id) - Number(b.id))[0]?.title || ''
     }
     result[env] = [...orgs.values()]
       .filter(o => o.css || o.js || o.events.size)
