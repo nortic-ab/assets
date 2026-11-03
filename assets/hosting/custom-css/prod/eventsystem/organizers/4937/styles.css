@@ -3808,7 +3808,10 @@ body:where([data-eventid]:not([data-eventid='86043'])):has(#add-to-basket-cart:n
 :where(body[data-eventid]:not([data-eventid='86043'])) #basket-cart-warning-modal.modal,
 :where(body[data-eventid]:not([data-eventid='86043'])) #basket-cart-warning-modal-2.modal {
   width: min(480px, 100% - 32px);
-  overflow: hidden;
+  /* bara vågrätt: Materializes .modal har max-height 70 % och overflow-y: auto, så på en låg skärm
+     (telefon på tvären) måste rutan kunna scrollas till knapparna */
+  overflow-x: hidden;
+  overflow-y: auto;
   border-top: 4px solid var(--sk-gold);
   border-radius: 0;
   background-color: var(--sk-paper);
