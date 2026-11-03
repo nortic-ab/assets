@@ -632,6 +632,12 @@ div#basket-cart-go-to-payment .payment-blob i.material-icons,
 div#basket-cart .chip {
   color: var(--th-night);
 }
+/* Info-toasten är --tl-deep i organisatörstemat, här pumpa som fel-toasten: häxlila med benvit text
+   (6,4:1) så att de går isär */
+#toast-container .toast.info-toast {
+  background-color: var(--th-witch);
+  color: var(--th-bone);
+}
 
 /* ---------------------------------------------------------------------------
  * 7. Telefon
