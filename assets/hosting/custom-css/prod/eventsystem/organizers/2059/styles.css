@@ -783,7 +783,14 @@ body:not([data-eventid])
 body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar .days li.selectable.selected {
   color: var(--dg-white);
 }
-body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar .days li.selectable.selected::before {
+/* Halvsålda dagar har en mer specifik grundregel ovan, så de står med i både vald och hover */
+body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar .days li.selectable.selected::before,
+body:not([data-eventid])
+  #organizer-calendar
+  .filter-calender-base
+  .calendar
+  .days
+  li.selectable.bookable.half-sold.selected::before {
   border-color: var(--dg-blue);
   background-color: var(--dg-blue);
 }
@@ -827,7 +834,13 @@ body:not([data-eventid])
   .filter-calender-base
   .calendar
   .days
-  li.selectable.bookable.half-sold.selected::after {
+  li.selectable.bookable.half-sold.selected::after,
+body:not([data-eventid])
+  #organizer-calendar
+  .filter-calender-base
+  .calendar
+  .days
+  li.selectable.bookable.half-sold:not(.selected):hover::after {
   background-color: var(--dg-white);
 }
 body:not([data-eventid]) #organizer-calendar .filter-calender-base .days li:not(.selectable):hover::before {
@@ -842,7 +855,13 @@ body:not([data-eventid]) #organizer-calendar .filter-calender-base .days li:not(
     li.selectable:not(.selected):hover {
     color: var(--dg-white);
   }
-  body:not([data-eventid]) #organizer-calendar .filter-calender-base .days li.selectable:not(.selected):hover::before {
+  body:not([data-eventid]) #organizer-calendar .filter-calender-base .days li.selectable:not(.selected):hover::before,
+  body:not([data-eventid])
+    #organizer-calendar
+    .filter-calender-base
+    .calendar
+    .days
+    li.selectable.bookable.half-sold:not(.selected):hover::before {
     border-color: var(--dg-blue);
     background: var(--dg-blue);
   }
