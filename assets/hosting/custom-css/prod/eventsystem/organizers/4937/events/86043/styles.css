@@ -361,6 +361,36 @@ section#active-events .list-price {
   color: var(--pz-bone) !important;
 }
 
+/* "Few left!" on the ticket cards and in the show rows: a pumpkin label with night text (7.5:1)
+   instead of dagny's orange gradient with an icon */
+.unnumbered-show-container .indicator-limit,
+.unnumbered-show-container .indicator-limit.absolute-right,
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit {
+  padding: 3px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--pz-pumpkin);
+  box-shadow: none;
+  color: var(--pz-night);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.unnumbered-show-container .indicator-limit > i,
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit > i {
+  display: none;
+}
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit {
+  display: inline-block;
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 4px 0 0;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
 /* ---------------------------------------------------------------------------
  * 7. Modal and checkout
  * ------------------------------------------------------------------------- */
@@ -874,6 +904,28 @@ div#basket .price-container {
   justify-content: center;
   text-align: center;
   white-space: nowrap;
+}
+
+/* dagny puts "Lägg till i varukorg" and the "Varukorg"/"Till kassan" row in two fixed containers at
+   the same spot in the bottom right, so the button covered the row. While the button shows, the row
+   moves up above it, with dagny's own transition on the row. The plate behind the button keeps
+   dagny's orange and showed around it. */
+.basket-cart-floating-buttons {
+  transition:
+    bottom 0.3s ease,
+    transform 0.3s ease;
+}
+body:has(#add-to-basket-cart:not(.display-none)) .basket-cart-floating-buttons {
+  transform: translateY(-70px);
+}
+div#add-to-basket-cart .valign-wrapper {
+  background-color: transparent;
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .basket-cart-floating-buttons {
+    transition: none;
+  }
 }
 
 /* ---------------------------------------------------------------------------
