@@ -2393,7 +2393,10 @@ div#basket .price-container {
 #basket-cart-warning-modal.modal,
 #basket-cart-warning-modal-2.modal {
   width: min(480px, 100% - 32px);
-  overflow: hidden;
+  /* bara vågrätt: Materializes .modal har max-height 70 % och overflow-y: auto, så på en låg skärm
+     (telefon på tvären) måste rutan kunna scrollas till knapparna */
+  overflow-x: hidden;
+  overflow-y: auto;
   border-top: 4px solid var(--tl-accent);
   border-radius: var(--tl-radius);
   background-color: var(--tl-strand);
