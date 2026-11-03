@@ -2,9 +2,9 @@
 /*
  * Parken Zoo Säsongskort 2027 (organizer 4937, event 86041): event theme for the dagny event page.
  *
- * BLACK MONTH: den här filen är standardtemat plus Black Month-lagret i avsnitt 10 längst ned.
- * Standardtemat ligger orört i styles.standard.css (som inte länkas av sidan). Efter kampanjen:
- *   cp styles.standard.css styles.css
+ * BLACK MONTH: den här filen är färgtemat plus Black Month-lagret i avsnitt 10 längst ned. Färgtemat
+ * ligger numera i organisatörsfilen (../../styles.css), som laddas före den här. Efter kampanjen tas
+ * den här filen bort, så får Säsongskortet färgtemat därifrån.
  *
  * Built from the design spec "parkenzoo_desktop-mobile.pdf" (CSS-förbättringar för design) and its
  * handoff: logoguld #C9A46A, ljust guld #E2C48F (text på grönt), mörkt guld #7D5F2A (text på papper),
@@ -1795,10 +1795,14 @@ div#basket .price-container {
   --sk-no: #5c5c5c;
   --sk-scrim: 0, 0, 0;
 }
-/* Kassan, kassans modaler och de små modalerna: ljusa och neutrala, svart för handling */
+/* Kassan, kassans modaler och de små modalerna: ljusa och neutrala, svart för handling. Samma för
+   de vita korten som färgtemat (organisatörsfilen) ritar på sidan: kalendern och tillvalsgrupperna i
+   "Endast tillval", annars ljus text på vitt. */
 .modal__content,
 section#booking.payment-page,
-.nortic-modal {
+.nortic-modal,
+.filter-calender-base #calendar-wrapper > div,
+#addon-content-container .addon-group {
   --sk-gold: #141414;
   --sk-gold-light: #e3e3e3;
   --sk-gold-dark: #4a4a4a;
