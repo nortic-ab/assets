@@ -1035,6 +1035,31 @@ section#active-events .container .booking-contents.unnumbered-show .sold-out-ban
 .unnumbered-show-container .indicator-limit > i {
   display: none;
 }
+/* "Fåtal kvar!" på visningsraden: dagny lägger lappen i tillgångsmätaren med sin orange gradient och
+   ikon. Samma lapp som på biljettkorten. */
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit {
+  display: inline-block;
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 4px 0 0;
+  padding: 3px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--sw-sun);
+  box-shadow: none;
+  color: var(--sw-sun-text);
+  font-family: var(--sw-font);
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit > i {
+  display: none;
+}
 /* "Kampanj" på kategorier som en kampanjkod låst upp: en grön etikett på kortets överkant */
 section#active-events .container .booking-contents.unnumbered-show .show-category > .campaign {
   top: -12px;
@@ -1159,6 +1184,26 @@ div#add-to-basket-cart .valign-wrapper {
   border-radius: 999px;
   background-color: var(--sw-red);
   color: var(--sw-white);
+}
+/* dagny lägger "Lägg till i varukorg" och raden "Varukorg"/"Till kassan" i två fasta behållare på samma
+   plats nere till höger, så knappen täckte raden. Medan knappen syns lyfts raden ovanför den, med
+   dagnys egen övergång på raden. Plattan bakom knappen har dagnys orange och syntes runt den. */
+.basket-cart-floating-buttons {
+  transition:
+    bottom 0.3s ease,
+    transform 0.3s ease;
+}
+body:has(#add-to-basket-cart:not(.display-none)) .basket-cart-floating-buttons {
+  transform: translateY(-70px);
+}
+div#add-to-basket-cart .valign-wrapper {
+  background-color: transparent;
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .basket-cart-floating-buttons {
+    transition: none;
+  }
 }
 div#add-to-basket-cart:hover .btn {
   background-color: var(--sw-red-hover);
@@ -2700,7 +2745,7 @@ section#active-events .container .booking-contents.unnumbered-show .sold-out-ban
 }
 .unnumbered-show-container .indicator-limit,
 .unnumbered-show-container .indicator-limit.absolute-right {
-  background: var(--sw-orange);
+  background: var(--sw-sun);
   color: var(--sw-sun-text);
   text-transform: uppercase;
 }

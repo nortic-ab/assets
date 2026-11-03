@@ -1148,6 +1148,26 @@ div#add-to-basket-cart .valign-wrapper {
   background-color: var(--vk-red);
   color: var(--vk-white);
 }
+/* dagny lägger "Lägg till i varukorg" och raden "Varukorg"/"Till kassan" i två fasta behållare på samma
+   plats nere till höger, så knappen täckte raden. Medan knappen syns lyfts raden ovanför den, med
+   dagnys egen övergång på raden. Plattan bakom knappen har dagnys orange och syntes runt den. */
+.basket-cart-floating-buttons {
+  transition:
+    bottom 0.3s ease,
+    transform 0.3s ease;
+}
+body:has(#add-to-basket-cart:not(.display-none)) .basket-cart-floating-buttons {
+  transform: translateY(-70px);
+}
+div#add-to-basket-cart .valign-wrapper {
+  background-color: transparent;
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .basket-cart-floating-buttons {
+    transition: none;
+  }
+}
 div#add-to-basket-cart:hover .btn {
   background-color: var(--vk-red-hover);
 }

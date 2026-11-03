@@ -2538,6 +2538,31 @@ section#active-events #show-listing .show-listing-show .supply-blobs .supply-blo
 section#active-events #show-listing .show-listing-show .supply-blobs .supply-blob.supply-left {
   background-color: var(--kf-blue) !important;
 }
+/* "Fåtal kvar!" på raden: dagny lägger lappen i mätaren med sin orange gradient och ikon. Samma
+   rosa lapp med marinblå text som på biljettkorten. */
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit {
+  display: inline-block;
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 4px 0 0;
+  padding: 3px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--kf-orange);
+  box-shadow: none;
+  color: var(--kf-on-pink);
+  font-family: var(--kf-font);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit > i {
+  display: none;
+}
 /* Pilknappen: ljusblå rundel med blå pil, fylld blå när raden är öppen. Texten ("Biljetter")
    finns kvar för skärmläsare. */
 section#active-events #show-listing .show-listing-show .show-listing-arrow .btn:not(.display-none),
@@ -2837,6 +2862,27 @@ div#basket-cart .amount-blob .chip.amount {
   background-color: var(--kf-navy);
   color: var(--kf-white);
   box-shadow: 0 0 0 2px var(--kf-pink);
+}
+/* dagny lägger "Lägg till i varukorg" och raden "Varukorg"/"Till kassan" i två fasta behållare på samma
+   plats nere till höger, så knappen täckte raden (här mer än i dagny: versalerna gör den 233px bred).
+   Medan knappen syns lyfts raden ovanför den, med dagnys egen övergång på raden. Plattan bakom knappen
+   är rosa med egen skugga i dagny och syntes som en andra kant. */
+.basket-cart-floating-buttons {
+  transition:
+    bottom 0.3s ease,
+    transform 0.3s ease;
+}
+body:has(#add-to-basket-cart:not(.display-none)) .basket-cart-floating-buttons {
+  transform: translateY(-70px);
+}
+div#add-to-basket-cart .valign-wrapper {
+  background-color: transparent;
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .basket-cart-floating-buttons {
+    transition: none;
+  }
 }
 div#basket-overlay {
   background-color: var(--kf-blue);
@@ -3773,14 +3819,19 @@ body:not([data-eventid]) div#main-ribbon .slider-wrapper {
   display: none;
 }
 /* Ett svagt grundmönster i korten (assets/ksf-monster-svag.webp: vitt med nästan vita former #EDF3F7,
-   2 kB): biljettkorten, tillvalskorten i kassan och rumskorten i tillvalsvyerna. Text på den
-   mörkare tonen klarar minst 6,0:1. Valda kort behåller sin ljusblå ton med ring. */
+   2 kB): biljettkorten och tillvalskorten i kassan. Text på den mörkare tonen klarar minst 6,0:1.
+   Valda kort behåller sin ljusblå ton med ring. */
 .unnumbered-show-container .show-category-row .show-category-container .show-category,
 .unnumbered-show-container .show-category-row .show-category-container .show-category:has(div.available-at),
 section#active-events .container .unnumbered-show .unnumbered-campaign-attention,
-section#booking.payment-page .payment-list #addons .card.simple-addon-card,
-:is(#standalone-addon-container, #addon-content-container) .new-addon-row-wrapper {
+section#booking.payment-page .payment-list #addons .card.simple-addon-card {
   background: var(--kf-white) url('assets/ksf-monster-svag.webp') center / cover no-repeat;
+}
+/* Rumskorten i tillvalsvyerna har en bild överst, så mönstret syntes bara som en lös form under den:
+   vita kort med ljusblå kant i stället */
+:is(#standalone-addon-container, #addon-content-container) .new-addon-row-wrapper {
+  background: var(--kf-white);
+  box-shadow: inset 0 0 0 1px var(--kf-ice);
 }
 .unnumbered-show-container
   .show-category-row
@@ -3789,4 +3840,21 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card,
 :is(#standalone-addon-container, #addon-content-container)
   .new-addon-row-wrapper:has(.addon-amount-blob.minus:not(.disabled)) {
   background: var(--kf-ice);
+}
+/* "Endast tillval" ligger i biljettdelen, som här är det djupblå mönstret (avsnitt 13 utgick från
+   ett vitt kort): "Avbryt tillvalsköp" och rubriken "Tillval" i vitt, som biljettdelens rubrik */
+#addon-content-container .addon-back-button.btn-flat,
+#addon-content-container .addon-back-button.btn-flat i.material-icons {
+  color: var(--kf-white) !important;
+}
+#addon-content-container .addon-back-button.btn-flat:hover {
+  color: var(--kf-white) !important;
+  text-decoration: underline;
+}
+#addon-content-container .addon-back-button.btn-flat:focus-visible {
+  outline: 2px solid var(--kf-white);
+  outline-offset: 2px;
+}
+#addon-content-container .new-addons > div > p {
+  color: var(--kf-white);
 }

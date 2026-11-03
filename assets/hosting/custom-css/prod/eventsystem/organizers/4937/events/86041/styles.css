@@ -813,13 +813,35 @@ section#active-events .list-price {
   font-weight: 700;
   letter-spacing: 0.1em;
 }
-.unnumbered-show-container .indicator-limit {
+/* "Fåtal kvar!": en guldtonad lapp med mörkguld text (4,8:1) i stället för dagnys orange gradient med
+   ikon, där den guldfärgade texten inte gick att läsa */
+.unnumbered-show-container .indicator-limit,
+.unnumbered-show-container .indicator-limit.absolute-right,
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit {
+  padding: 3px 10px;
+  border: 1px solid var(--sk-line-strong);
+  border-radius: 999px;
+  background: var(--sk-tint);
+  box-shadow: none;
+  color: var(--sk-gold-dark);
   font-family: var(--sk-font);
   font-weight: 700;
   font-size: 11.5px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--sk-gold-dark);
+}
+.unnumbered-show-container .indicator-limit > i,
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit > i {
+  display: none;
+}
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit {
+  display: inline-block;
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 4px 0 0;
+  line-height: 1.5;
+  white-space: nowrap;
 }
 /* Runda stegare med 42px klickyta. dagny krymper dem till 27px mellan 991 och 1150px med en selektor
    från ett id och sju klasser; den här är en klass starkare. */
@@ -930,6 +952,26 @@ div#add-to-basket-cart .btn,
 div#add-to-basket-cart .valign-wrapper {
   background-color: var(--sk-green);
   color: var(--sk-paper);
+}
+/* dagny lägger "Lägg till i varukorg" och raden "Varukorg"/"Till kassan" i två fasta behållare på samma
+   plats nere till höger, så knappen täckte raden. Medan knappen syns lyfts raden ovanför den, med
+   dagnys egen övergång på raden. Plattan bakom knappen har dagnys orange och syntes runt den. */
+.basket-cart-floating-buttons {
+  transition:
+    bottom 0.3s ease,
+    transform 0.3s ease;
+}
+body:has(#add-to-basket-cart:not(.display-none)) .basket-cart-floating-buttons {
+  transform: translateY(-70px);
+}
+div#add-to-basket-cart .valign-wrapper {
+  background-color: transparent;
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .basket-cart-floating-buttons {
+    transition: none;
+  }
 }
 div#add-to-basket-cart:hover .btn {
   background-color: var(--sk-gold-dark);
@@ -1942,7 +1984,6 @@ section#top #background-container::before {
 .theme-secondary-background-color,
 .theme-secondary-background-color:hover,
 div#add-to-basket-cart .btn,
-div#add-to-basket-cart .valign-wrapper,
 #extend-time-button {
   background-color: var(--bm-action);
   color: var(--bm-on-action);
