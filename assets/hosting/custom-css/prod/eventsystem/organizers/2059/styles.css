@@ -834,13 +834,7 @@ body:not([data-eventid])
   .filter-calender-base
   .calendar
   .days
-  li.selectable.bookable.half-sold.selected::after,
-body:not([data-eventid])
-  #organizer-calendar
-  .filter-calender-base
-  .calendar
-  .days
-  li.selectable.bookable.half-sold:not(.selected):hover::after {
+  li.selectable.bookable.half-sold.selected::after {
   background-color: var(--dg-white);
 }
 body:not([data-eventid]) #organizer-calendar .filter-calender-base .days li:not(.selectable):hover::before {
@@ -864,6 +858,14 @@ body:not([data-eventid]) #organizer-calendar .filter-calender-base .days li:not(
     li.selectable.bookable.half-sold:not(.selected):hover::before {
     border-color: var(--dg-blue);
     background: var(--dg-blue);
+  }
+  body:not([data-eventid])
+    #organizer-calendar
+    .filter-calender-base
+    .calendar
+    .days
+    li.selectable.bookable.half-sold:not(.selected):hover::after {
+    background-color: var(--dg-white);
   }
 }
 /* Arrangörens beskrivning bredvid kalendern: brödtext direkt på sidan, inte dagnys mörka ruta */
