@@ -5,7 +5,8 @@
  * 2059 is a super organizer: its organizer page lists the events of its sub-organizers (Gotlands
  * Museum, Visby domkyrka, Länsteatern …), and every event page belongs to the sub-organizer, so it
  * links that organizer's stylesheet, not this one. This file therefore themes the organizer page:
- * the header, the hero, the search field and tag chips, the event cards and the footer, plus the
+ * the header, the hero, the search field and tag chips, the event cards (or, should the organizer
+ * switch it on, the calendar with the shows of the chosen date) and the footer, plus the
  * order confirmation in case one is ever shown here. Every rule is scoped to body:not([data-eventid])
  * (event and show pages carry data-eventid on <body>), so an event of 2059's own would keep dagny's
  * look; the variables live on that body too, not on :root.
@@ -215,6 +216,7 @@ body:not([data-eventid]) section#top div#main-ribbon > h1 {
   letter-spacing: 0;
   text-shadow: var(--dg-text-shadow);
   text-transform: none;
+  overflow-wrap: break-word;
 }
 body:not([data-eventid]) section#top div#main-ribbon > h1 span {
   color: inherit;
@@ -286,7 +288,7 @@ body:not([data-eventid]) section#popular-events > .container:has(.card)::before 
   font-size: 34px;
   line-height: 42px;
 }
-body:not([data-eventid]) section#popular-events .n-chips {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips {
   gap: 12px;
   margin-bottom: 40px;
   cursor: default;
@@ -294,12 +296,15 @@ body:not([data-eventid]) section#popular-events .n-chips {
 /* Sökfältet som bokningswidgetens fält ("Avresa"): vit ruta med kant #ACBECA och radie 4px,
    ikonen och etiketten 14/22 på första raden, det man skriver 16/26 600 i blått under.
    Materialize flyttar etiketten med transform; här står den still. */
-body:not([data-eventid]) section#popular-events .n-chips .input-field.freetext-filter-container {
+body:not([data-eventid])
+  :is(section#popular-events, section#organizer-calendar)
+  .n-chips
+  .input-field.freetext-filter-container {
   position: relative;
   width: min(447px, 100%);
   margin: 0 12px 0 0;
 }
-body:not([data-eventid]) section#popular-events .n-chips input.freetext-filter {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips input.freetext-filter {
   box-sizing: border-box;
   width: 100%;
   height: 76px;
@@ -318,14 +323,29 @@ body:not([data-eventid]) section#popular-events .n-chips input.freetext-filter {
     border-color var(--dg-ease),
     box-shadow var(--dg-ease);
 }
-body:not([data-eventid]) section#popular-events .n-chips input.freetext-filter:focus {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips input.freetext-filter:focus {
   border-color: var(--dg-blue);
   box-shadow: 0 0 0 1px var(--dg-blue);
 }
-body:not([data-eventid]) section#popular-events .n-chips .input-field input ~ label,
-body:not([data-eventid]) section#popular-events .n-chips .input-field input ~ label.active,
-body:not([data-eventid]) section#popular-events .n-chips .input-field input:focus ~ label,
-body:not([data-eventid]) section#popular-events .n-chips .input-field input:focus ~ label.active {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips .input-field input ~ label,
+body:not([data-eventid])
+  :is(section#popular-events, section#organizer-calendar)
+  .n-chips
+  .input-field
+  input
+  ~ label.active,
+body:not([data-eventid])
+  :is(section#popular-events, section#organizer-calendar)
+  .n-chips
+  .input-field
+  input:focus
+  ~ label,
+body:not([data-eventid])
+  :is(section#popular-events, section#organizer-calendar)
+  .n-chips
+  .input-field
+  input:focus
+  ~ label.active {
   top: 10px;
   left: 44px;
   transform: none;
@@ -338,7 +358,10 @@ body:not([data-eventid]) section#popular-events .n-chips .input-field input:focu
   pointer-events: none;
 }
 /* Sajtens sökikon framför etiketten */
-body:not([data-eventid]) section#popular-events .n-chips .input-field.freetext-filter-container::before {
+body:not([data-eventid])
+  :is(section#popular-events, section#organizer-calendar)
+  .n-chips
+  .input-field.freetext-filter-container::before {
   content: '';
   position: absolute;
   top: 11px;
@@ -351,9 +374,9 @@ body:not([data-eventid]) section#popular-events .n-chips .input-field.freetext-f
 }
 /* Taggarna som .btn-outline-primary: blå kontur, helt runda, fylls blå vid hover och när de är
    valda. dagny gråar avslagna taggar med filter och halv opacitet och ger dem temafärgen. */
-body:not([data-eventid]) section#popular-events a.n-chip,
-body:not([data-eventid]) section#popular-events a.n-chip.theme-background-color,
-body:not([data-eventid]) section#popular-events a.n-chip.disabled {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) a.n-chip,
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) a.n-chip.theme-background-color,
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) a.n-chip.disabled {
   align-items: center;
   min-height: 48px;
   padding: 0 24px 0 46px;
@@ -373,22 +396,28 @@ body:not([data-eventid]) section#popular-events a.n-chip.disabled {
     border-color var(--dg-ease),
     color var(--dg-ease);
 }
-body:not([data-eventid]) section#popular-events a.n-chip.theme-background-color:not(.disabled) {
+body:not([data-eventid])
+  :is(section#popular-events, section#organizer-calendar)
+  a.n-chip.theme-background-color:not(.disabled) {
   background-color: var(--dg-blue);
   color: var(--dg-white);
 }
 @media (hover: hover) {
-  body:not([data-eventid]) section#popular-events a.n-chip.theme-background-color:hover {
+  body:not([data-eventid])
+    :is(section#popular-events, section#organizer-calendar)
+    a.n-chip.theme-background-color:hover {
     background-color: var(--dg-blue);
     color: var(--dg-white);
     filter: none;
   }
-  body:not([data-eventid]) section#popular-events a.n-chip.theme-background-color:not(.disabled):hover {
+  body:not([data-eventid])
+    :is(section#popular-events, section#organizer-calendar)
+    a.n-chip.theme-background-color:not(.disabled):hover {
     border-color: var(--dg-blue-dark);
     background-color: var(--dg-blue-dark);
   }
 }
-body:not([data-eventid]) section#popular-events a.n-chip span.checkbox {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) a.n-chip span.checkbox {
   top: 50%;
   left: 16px;
   width: 20px;
@@ -397,12 +426,15 @@ body:not([data-eventid]) section#popular-events a.n-chip span.checkbox {
   border-width: 1px;
   border-radius: 4px;
 }
-body:not([data-eventid]) section#popular-events a.n-chip span.checkbox::before {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) a.n-chip span.checkbox::before {
   top: 4px;
   left: 4px;
 }
-body:not([data-eventid]) section#popular-events a.n-chip span.count,
-body:not([data-eventid]) section#popular-events a.n-chip span.count.theme-background-color {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) a.n-chip span.count,
+body:not([data-eventid])
+  :is(section#popular-events, section#organizer-calendar)
+  a.n-chip
+  span.count.theme-background-color {
   min-width: 22px;
   height: 22px;
   padding: 0 6px;
@@ -415,7 +447,7 @@ body:not([data-eventid]) section#popular-events a.n-chip span.count.theme-backgr
   line-height: 12px;
   filter: none;
 }
-body:not([data-eventid]) section#popular-events a.n-chip:focus-visible {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) a.n-chip:focus-visible {
   outline: 2px solid var(--dg-blue);
   outline-offset: 2px;
 }
@@ -637,6 +669,411 @@ body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-bu
 }
 
 /* ---------------------------------------------------------------------------
+ * 4b. Kalenderläget (organizer.useCalendar)
+ * ------------------------------------------------------------------------- */
+/* 2059 visar i dag eventkorten. Slår arrangören på kalendern visar organisatörssidan i stället
+   sökfältet och taggarna (avsnitt 3), kalendern med arrangörens beskrivning bredvid och raderna för
+   valt datum (organizerCalendarShows.jsp). Kalendern och listan blir vita kort som .article-card,
+   dagar med visningar konturknappar som fylls blå, raderna länkar till eventsidan.
+   organizerPage.jsp:s <style> ger sektionen 70px marginal. */
+body:not([data-eventid]) section#organizer-calendar.container {
+  width: var(--dg-wrap);
+  max-width: none;
+  margin: 0 auto;
+  padding-top: 64px;
+}
+body:not([data-eventid]) section#organizer-calendar.container::before {
+  content: 'Alla evenemang';
+  display: block;
+  margin: 0 0 32px;
+  color: var(--dg-ink);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 42px;
+}
+body:not([data-eventid]) #organizer-calendar .filter-calender-base {
+  column-gap: 32px;
+  row-gap: 32px;
+  margin-bottom: 0;
+}
+body:not([data-eventid]) #organizer-calendar .filter-calender-base #calendar-wrapper > div {
+  padding: 0 8px;
+  border-radius: var(--dg-radius);
+  box-shadow: var(--dg-shadow);
+}
+body:not([data-eventid]) #organizer-calendar .filter-calender-base .wrapper .calendar-header {
+  padding: 24px 16px 8px;
+}
+body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar-header .current-date {
+  margin: 0;
+  color: var(--dg-ink);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 30px;
+}
+/* Bläddringspilarna som .icon-btn-outline-primary: 40px rund kontur, fylls blå vid hover */
+body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar-header .icons span {
+  box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+  margin: 0 0 0 8px;
+  border: 1px solid rgba(55, 93, 117, 0.5);
+  color: var(--dg-blue);
+  line-height: 38px;
+  transition:
+    background-color var(--dg-ease),
+    border-color var(--dg-ease),
+    color var(--dg-ease);
+}
+body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar-header .icons span i.material-icons {
+  font-size: 24px;
+  line-height: 38px;
+}
+body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar-header .icons span.disabled {
+  opacity: 0.35;
+}
+@media (hover: hover) {
+  body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar-header .icons span:not(.disabled):hover {
+    border-color: var(--dg-blue);
+    background-color: var(--dg-blue);
+    color: var(--dg-white);
+  }
+  body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar-header .icons span.disabled:hover {
+    background-color: transparent;
+  }
+}
+body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar {
+  padding: 8px 16px 16px;
+}
+body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar li {
+  color: var(--dg-ink);
+  font-family: var(--dg-font);
+  font-size: 16px;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar .weeks li {
+  color: var(--dg-text);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+}
+/* Dagar med visningar: blå siffra i en rund kontur, fylld blå när dagen är vald eller under
+   pekaren. dagny färgar dem grönt, valda blått och dagar med få platser kvar gult. */
+body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar .days li.selectable {
+  color: var(--dg-blue);
+  font-weight: 600;
+}
+body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar .days li.selectable::before,
+body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar .days li.selectable.bookable::before,
+body:not([data-eventid])
+  #organizer-calendar
+  .filter-calender-base
+  .calendar
+  .days
+  li.selectable.bookable.half-sold::before {
+  box-sizing: border-box;
+  border: 1px solid rgba(55, 93, 117, 0.5);
+  background-color: transparent;
+  transition:
+    background-color var(--dg-ease),
+    border-color var(--dg-ease);
+}
+body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar .days li.selectable.selected {
+  color: var(--dg-white);
+}
+body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar .days li.selectable.selected::before {
+  border-color: var(--dg-blue);
+  background-color: var(--dg-blue);
+}
+/* Slutsålda dagar (valbara men inte bokningsbara): grå streckad kontur */
+body:not([data-eventid])
+  #organizer-calendar
+  .filter-calender-base
+  .calendar
+  .days
+  li.selectable:not(.bookable):not(.selected) {
+  color: var(--dg-text);
+  font-weight: 400;
+}
+body:not([data-eventid])
+  #organizer-calendar
+  .filter-calender-base
+  .calendar
+  .days
+  li.selectable:not(.bookable)::before {
+  border: 1px dashed var(--dg-field-line);
+}
+/* Få platser kvar: sajtens röda prick under siffran, vit på vald dag */
+body:not([data-eventid])
+  #organizer-calendar
+  .filter-calender-base
+  .calendar
+  .days
+  li.selectable.bookable.half-sold::after {
+  content: '';
+  position: absolute;
+  top: calc(50% + 10px);
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  background-color: var(--dg-red);
+}
+body:not([data-eventid])
+  #organizer-calendar
+  .filter-calender-base
+  .calendar
+  .days
+  li.selectable.bookable.half-sold.selected::after {
+  background-color: var(--dg-white);
+}
+body:not([data-eventid]) #organizer-calendar .filter-calender-base .days li:not(.selectable):hover::before {
+  background: transparent;
+}
+@media (hover: hover) {
+  body:not([data-eventid])
+    #organizer-calendar
+    .filter-calender-base
+    .calendar
+    .days
+    li.selectable:not(.selected):hover {
+    color: var(--dg-white);
+  }
+  body:not([data-eventid]) #organizer-calendar .filter-calender-base .days li.selectable:not(.selected):hover::before {
+    border-color: var(--dg-blue);
+    background: var(--dg-blue);
+  }
+}
+/* Arrangörens beskrivning bredvid kalendern: brödtext direkt på sidan, inte dagnys mörka ruta */
+body:not([data-eventid]) #flex-info-wrapper div.event-information,
+body:not([data-eventid]) #flex-info-wrapper div.event-information:not(.minimized) {
+  max-width: 720px;
+  margin: 0 0 8px !important;
+  padding: 0 !important;
+  border-radius: 0;
+  background: none;
+  color: var(--dg-text);
+  font-family: var(--dg-font);
+  font-size: 16px;
+  line-height: 24px;
+}
+body:not([data-eventid]) #flex-info-wrapper div.event-information > span#event-information-text span {
+  color: var(--dg-text) !important;
+  font-size: inherit !important;
+  text-shadow: none;
+}
+body:not([data-eventid]) #flex-info-wrapper div.event-information p {
+  margin: 0 0 16px;
+  line-height: 24px;
+}
+body:not([data-eventid]) #flex-info-wrapper div.event-information b,
+body:not([data-eventid]) #flex-info-wrapper div.event-information strong {
+  color: var(--dg-ink);
+  font-weight: 600;
+}
+body:not([data-eventid]) #flex-info-wrapper div.event-information a {
+  color: var(--dg-blue);
+  font-weight: 600;
+}
+/* "Läs mer" som .arrow-link, pilen pekar nedåt */
+body:not([data-eventid]) #flex-info-wrapper a.event-information-button {
+  display: inline-flex;
+  align-items: center;
+  height: auto;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--dg-blue);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+body:not([data-eventid]) #flex-info-wrapper a.event-information-button::after {
+  content: '';
+  width: 24px;
+  height: 24px;
+  margin-left: 8px;
+  background: url('assets/arrow-blue.svg') no-repeat center / contain;
+  transform: rotate(90deg);
+}
+body:not([data-eventid]) #flex-info-wrapper div.event-information:not(.minimized) + a.event-information-button::after {
+  transform: rotate(-90deg);
+}
+body:not([data-eventid]) #flex-info-wrapper a.event-information-button:hover {
+  background: none;
+  color: var(--dg-blue);
+  text-decoration: underline;
+}
+/* Visningarna för valt datum: en vit lista med låg skugga, raderna ljusblå under pekaren */
+body:not([data-eventid]) section#active-events {
+  margin-top: 0;
+  padding: 32px 0 80px;
+}
+body:not([data-eventid]) section#active-events > .container {
+  width: var(--dg-wrap);
+  max-width: none;
+  margin: 0 auto;
+}
+body:not([data-eventid]) section#active-events #show-listing {
+  overflow: hidden;
+  border-radius: var(--dg-radius);
+  box-shadow: var(--dg-shadow);
+  color: var(--dg-text);
+  font-family: var(--dg-font);
+  font-size: 14px;
+  line-height: 22px;
+}
+body:not([data-eventid]) section#active-events #show-listing > #show-listing-body {
+  padding-top: 0;
+}
+body:not([data-eventid]) section#active-events #show-listing > #show-listing-body > .row > .col {
+  padding-bottom: 0;
+}
+body:not([data-eventid]) section#active-events #show-listing > #show-listing-body .show-listing-show {
+  border-bottom: 1px solid var(--dg-line);
+  transition: background-color var(--dg-ease);
+}
+body:not([data-eventid]) section#active-events #show-listing > #show-listing-body .show-listing-show > .row {
+  padding: 20px 0;
+}
+@media (hover: hover) {
+  body:not([data-eventid]) section#active-events #show-listing > #show-listing-body .show-listing-show:hover {
+    background-color: var(--dg-sky);
+  }
+}
+body:not([data-eventid]) section#active-events #show-listing .bold {
+  color: var(--dg-ink);
+  font-weight: 600;
+}
+body:not([data-eventid]) section#active-events .show-listing-show .dateball {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background-color: var(--dg-blue);
+}
+body:not([data-eventid]) section#active-events .show-listing-show .dateball span {
+  color: var(--dg-white);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 14px;
+  font-variant-numeric: lining-nums;
+}
+/* Namnet som kortens rubrik (600 blått, utan versaler), lite mindre i raden */
+body:not([data-eventid]) section#active-events #show-listing .show-listing-show .show-name {
+  color: var(--dg-blue);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+body:not([data-eventid]) section#active-events #show-listing > #show-listing-body .show-listing-show .show-info,
+body:not([data-eventid]) section#active-events #show-listing > #show-listing-body .show-listing-show .price-range,
+body:not([data-eventid])
+  section#active-events
+  #show-listing
+  > #show-listing-body
+  .show-listing-show
+  .location-med-and-up,
+body:not([data-eventid]) section#active-events #show-listing > #show-listing-body .show-listing-show .large-screen-date,
+body:not([data-eventid]) section#active-events #show-listing > #show-listing-body .show-listing-show .show-info-small {
+  color: var(--dg-text);
+  font-family: var(--dg-font);
+  font-size: 14px;
+  line-height: 22px;
+  font-variant-numeric: lining-nums;
+}
+body:not([data-eventid]) section#active-events #show-listing .show-listing-show .supply-blobs .supply-blob {
+  background-color: var(--dg-field-line);
+}
+body:not([data-eventid]) section#active-events #show-listing .show-listing-show .supply-blobs .supply-blob.supply-left {
+  background-color: var(--dg-blue) !important;
+}
+/* "Fåtal kvar!" som sajtens röda etikett (.offer-pill.is-red) */
+body:not([data-eventid]) section#active-events .show-listing-show .indicator-limit {
+  margin: 6px 0 0;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 9999px;
+  background: rgba(195, 19, 44, 0.9);
+  box-shadow: none;
+  color: var(--dg-white);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 12px;
+  text-transform: uppercase;
+}
+body:not([data-eventid]) section#active-events .show-listing-show .indicator-limit > i {
+  display: none;
+}
+/* Biljetter som sajtens .btn (blå, helt rund, 600), pilen efter texten */
+body:not([data-eventid]) section#active-events .show-listing-show .show-listing-arrow a.btn,
+body:not([data-eventid]) section#active-events .show-listing-show .show-listing-arrow a.btn.theme-background-color {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: auto;
+  max-width: 100%;
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 9999px;
+  background-color: var(--dg-blue);
+  box-shadow: none;
+  color: var(--dg-white);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0;
+  text-transform: none;
+  transition: background-color var(--dg-ease);
+}
+body:not([data-eventid]) section#active-events .show-listing-show .show-listing-arrow a.btn i.material-icons {
+  order: 1;
+  float: none;
+  margin: 0;
+  font-size: 18px !important;
+  line-height: 1;
+}
+@media (hover: hover) {
+  body:not([data-eventid])
+    section#active-events
+    .show-listing-show:hover
+    .show-listing-arrow
+    a.btn.theme-background-color,
+  body:not([data-eventid])
+    section#active-events
+    .show-listing-show
+    .show-listing-arrow
+    a.btn.theme-background-color:hover {
+    background-color: var(--dg-blue-dark);
+  }
+}
+body:not([data-eventid]) section#active-events .show-listing-show .show-listing-arrow a.btn:focus-visible {
+  outline: 2px solid var(--dg-blue);
+  outline-offset: 2px;
+}
+body:not([data-eventid]) section#active-events #show-listing > #show-listing-body .no-shows-available,
+body:not([data-eventid]) section#active-events #show-listing .month-name {
+  color: var(--dg-text);
+  font-family: var(--dg-font);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+/* ---------------------------------------------------------------------------
  * 5. Orderbekräftelsen (klarnaConfirmationBox.jsp), om den visas här
  * ------------------------------------------------------------------------- */
 /* Ett vitt kort som sajtens: Klarnas kvitto i den är en vit iframe. dagny lägger vita flikar ovanpå
@@ -848,11 +1285,14 @@ body:not([data-eventid]) section#order-confirmation .error-box {
     font-size: 32px;
     line-height: 38px;
   }
-  body:not([data-eventid]) section#popular-events .n-chips .input-field.freetext-filter-container {
+  body:not([data-eventid])
+    :is(section#popular-events, section#organizer-calendar)
+    .n-chips
+    .input-field.freetext-filter-container {
     width: 100%;
     margin: 0;
   }
-  body:not([data-eventid]) section#popular-events .n-chips input.freetext-filter {
+  body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips input.freetext-filter {
     height: 76px;
   }
   body:not([data-eventid]) section#popular-events > .container > .grid {
@@ -861,6 +1301,44 @@ body:not([data-eventid]) section#order-confirmation .error-box {
   body:not([data-eventid]) section#popular-events .card .card-header h3 {
     font-size: 20px;
     line-height: 26px;
+  }
+  body:not([data-eventid]) section#organizer-calendar.container {
+    padding-top: 48px;
+  }
+  body:not([data-eventid]) section#organizer-calendar.container::before {
+    margin-bottom: 24px;
+    font-size: 32px;
+    line-height: 38px;
+  }
+  body:not([data-eventid]) #organizer-calendar .filter-calender-base #calendar-wrapper {
+    width: 100%;
+  }
+  body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar {
+    padding: 8px 4px 16px;
+  }
+  body:not([data-eventid]) section#active-events {
+    padding: 24px 0 64px;
+  }
+  body:not([data-eventid]) section#active-events #show-listing > #show-listing-body .show-listing-show > .row {
+    padding: 16px 0;
+  }
+  body:not([data-eventid]) section#active-events #show-listing .show-listing-show .show-name {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  body:not([data-eventid])
+    section#active-events
+    #show-listing
+    > #show-listing-body
+    .show-listing-show
+    > .row
+    .col:last-child {
+    padding-right: 16px;
+  }
+  body:not([data-eventid]) section#active-events .show-listing-show .show-listing-arrow a.btn,
+  body:not([data-eventid]) section#active-events .show-listing-show .show-listing-arrow a.btn.theme-background-color {
+    height: 36px;
+    padding: 0 12px;
   }
   /* Footern: dagny låser den till 80px och länkarna till en rad, så de rinner ut till höger. Loggan
      på egen rad, länkarna radbryts, ingen fast höjd. */
@@ -896,11 +1374,33 @@ body:not([data-eventid]) section#order-confirmation .error-box {
   }
 }
 
+/* Dagarnas ringar ryms inte i sju kolumner på smala telefoner (dagny krymper dem till 35px under
+   430px) */
+@media (max-width: 430px) {
+  body:not([data-eventid]) #organizer-calendar .filter-calender-base .days li::before {
+    width: 36px;
+    height: 36px;
+  }
+}
+@media (max-width: 360px) {
+  body:not([data-eventid]) #organizer-calendar .filter-calender-base .days li::before {
+    width: 32px;
+    height: 32px;
+  }
+  body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar li {
+    font-size: 15px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   body:not([data-eventid]) section#popular-events .card.card-background-color,
   body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-button::after,
-  body:not([data-eventid]) section#popular-events a.n-chip,
-  body:not([data-eventid]) section#popular-events .n-chips input.freetext-filter,
+  body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) a.n-chip,
+  body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips input.freetext-filter,
+  body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar-header .icons span,
+  body:not([data-eventid]) #organizer-calendar .filter-calender-base .calendar .days li.selectable::before,
+  body:not([data-eventid]) section#active-events #show-listing > #show-listing-body .show-listing-show,
+  body:not([data-eventid]) section#active-events .show-listing-show .show-listing-arrow a.btn,
   body:not([data-eventid]) section#order-confirmation #confirm-order-confirmation,
   body:not([data-eventid]) section#order-confirmation.klarna a.btn.download-tickets {
     transition: none;
