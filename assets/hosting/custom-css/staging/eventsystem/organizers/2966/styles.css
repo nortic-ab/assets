@@ -2,7 +2,7 @@
  * Lokverkstan Eventarena (organizer 2966): organizer stylesheet for every dagny page of the organizer,
  * the organizer page and all event and show pages. An event theme under events/<id>/ loads after this
  * file and can override it. The organizer page also gets a background video from
- * custom-js/prod/eventsystem/organizers/2966/script.js (organizer page only).
+ * custom-js/staging/eventsystem/organizers/2966/script.js (organizer page only).
  *
  * Built from "Lokverkstan Grafisk Profil, riktning B: Kanal": ljust papper, kanalblått och slussgrönt,
  * ett luftigt system som tar avstamp i Göta kanal och Motalas vatten, signalgult för det som ska
