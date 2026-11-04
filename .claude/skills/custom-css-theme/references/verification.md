@@ -165,6 +165,33 @@ The regex expects single quotes, which is what the repo's eslint formatting prod
 - Overlap: compare `getBoundingClientRect()` of the two elements (e.g. header `h2` vs `p`).
 - Alignment: log `[left, top, right, bottom]` for the blocks that should line up (title block, description, calendar, listing) at 390, 1000 and 1600 px; a 2 px drift is invisible in a screenshot and obvious to the customer.
 - Icon centring: the gaps between an `i.material-icons` and its button on all four sides should be equal.
+- The back arrow (`a.back-to-organizer`): the playground's event pages render it with `.fixed`; measure that state and the one at the top of a live page (remove the class to fake it). The plate must be about 40×40, the four gaps around the icon equal within 1 px, its centre on the header's centre (within 2 px), the icon colour at least 3:1 against the plate, and no overlap with the header logo (`header#main-header::before`):
+
+  ```js
+  for (const fixed of [true, false]) {
+    await page.evaluate(fixed => document.querySelector('a.back-to-organizer').classList.toggle('fixed', fixed), fixed)
+    await page.waitForTimeout(450) // a transition on the plate would otherwise be read halfway
+    console.log(fixed, await page.evaluate(() => {
+      const a = document.querySelector('a.back-to-organizer')
+      const r = a.getBoundingClientRect()
+      const i = a.querySelector('i').getBoundingClientRect()
+      const h = document.querySelector('header#main-header').getBoundingClientRect()
+      const logo = getComputedStyle(document.querySelector('header#main-header'), '::before')
+      return {
+        size: [r.width, r.height].map(Math.round),
+        gaps: [i.top - r.top, r.right - i.right, r.bottom - i.bottom, i.left - r.left].map(Math.round),
+        offCentre: Math.round((r.top + r.bottom) / 2 - (h.top + h.bottom) / 2),
+        plate: getComputedStyle(a).backgroundColor,
+        icon: getComputedStyle(a.querySelector('i')).color,
+        logoLeft: logo.content === 'none' ? null : logo.left,
+        right: Math.round(r.right),
+      }
+    }))
+  }
+  ```
+
+  A ready helper is `~/.cache/pz-verify/back-arrow.js <page> <org> [event] [width]` (`PG_ENV=staging` for staging themes). Then look at a crop of it at 2× (`el-shots.js … 'event-calendar|a.back-to-organizer'`): a square plate in a round theme, or a plate tight around the arrow, is the usual defect.
+
 - Page overflow: `document.documentElement.scrollWidth > innerWidth`, and list the elements whose `getBoundingClientRect().right > innerWidth` (the footer at 320 px is the usual culprit).
 - Jank ("hoppar in"): from the click, take screenshots in a tight loop with timestamps and read `PerformanceObserver` entries for `layout-shift` and `longtask` registered via `page.addInitScript`; run with and without the theme (route the theme to an empty body) to know whether the theme caused it.
 - Clicks the way a person makes them: Playwright's `click()` moves, presses and releases in one go and misses bugs where an element moves on hover (dagny's 5 px `hintDown` on "Läs mer" lost real clicks). Point first, wait, then press and release, at several offsets from the top edge, and check the state after each:
