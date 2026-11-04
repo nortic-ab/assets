@@ -2110,6 +2110,10 @@ div#basket .price-container {
   body:not([data-eventid]) section#popular-events .card.card-background-color {
     transition: none;
   }
+  /* Utan glid står listan direkt på sin plats: dagnys egen transform centrerar den */
+  section#booking .booking-contents .payment-list.animated.slideInUp {
+    animation: none;
+  }
 }
 
 /* ---------------------------------------------------------------------------
