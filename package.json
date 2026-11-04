@@ -12,9 +12,6 @@
     "build": "tsx index.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "serve:hosting": "pnpm dlx firebase-tools@15 emulators:start --only hosting",
-    "playground": "tsx assets/hosting/playground/serve.ts",
-    "playground:sync": "tsx assets/hosting/playground/sync-dagny.ts",
     "prepare": "simple-git-hooks"
   },
   "devDependencies": {
