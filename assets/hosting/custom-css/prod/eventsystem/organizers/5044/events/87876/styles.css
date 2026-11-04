@@ -1,0 +1,10 @@
+/*
+ * Brännbollsyran (organizer 5044), event 87876: on top of the organizer theme (../../styles.css).
+ *
+ * Eventets egen branding-bild ligger inline på #background-container och skulle annars visas i
+ * heron; här används samma drönarbild över festivalområdet som på organisatörssidan.
+ */
+section#top #background-container {
+  background-image: url('../../assets/brannbollsyran-hero.webp') !important;
+  background-position: center 40%;
+}

@@ -1,5 +1,16 @@
 # Verifying a theme locally
 
+## The playground (first)
+
+`pnpm playground` serves `assets/hosting/playground` on http://localhost:5178/playground/ (never deployed). Every dagny page and state is there as static HTML with mock data: organizer page with cards and with a calendar, event with calendar (every row and ticket category state), event without calendar, dateless shows, "Endast tillval", the basket cart and "Din order", the arena page, the checkout (Kivra, SMS, premium, insurance, Klarna placeholder), the addon step and the order confirmation after payment (confirmed and its error boxes, `variant:<name>`). Choose environment, organizer and event in the shell, or open a page directly:
+
+```js
+await page.goto('http://localhost:5178/playground/pages/event-calendar.html?env=prod&org=4994&event=87118')
+await page.evaluate(() => PG.action('modal:event-message')) // also materialize:#id, show:selector, toast:<class>:<text>, loading-payment, close
+```
+
+The page links the theme files from disk the way `head.jsp` does (organizer CSS, event CSS, then the scripts with defer), sets `data-organizerid`/`data-eventid` on `<body>`, and answers missing theme files with an empty file like the Firebase rewrites. `theme=0` / `js=0` leave the CSS or the scripts out, for a comparison with dagny's default. Run every check below on the playground pages first; it needs neither EventSystem nor a real event, and it shows states a real event rarely has (Kivra, waitlist, access code, a closed show). Then confirm on the live or local page.
+
 ## The setup
 
 - EventSystem runs locally on `http://localhost:8081` (IntelliJ/Tomcat). Its gitignored `src/main/resources/config/local.properties` must point at the emulator:
@@ -51,10 +62,14 @@
 
    **The event is public on prod** (Parken Zoo 86041, Grand Stade 85791): test on the event itself, with the same routing pointed at your own organizer and event (`~/.cache/pz-verify/pz-lib.js`: `open(browser, { width, org, event, theme, url })` serves `styles.css`, `script.js` and `assets/*` from this repo, and `dump(page, selector)` prints the rendered DOM with boxes). Clicking a show row navigates to `/ticket/show/<id>`, which opens the ticket cards directly. The same rule applies as for a host: no checkout, because it creates an order on the customer's real event.
 
+   **Nortic's own test organizer on prod, 538 "Nortic provzon", is the host for everything else**, including the checkout: it is Nortic's, so opening the payment page there is allowed (go no further than the Klarna box; never pay). Use it when the customer's organizer is locked or has no published events (Brännbollsyran 5044), and for every checkout check of an organizer-wide theme. Events: Säsongskort `84917` (unnumbered, 1 SEK: the checkout host), NorticAdmit Demo Event `7035` (calendar), HCP test `73377` (numbered seats); the organizer page is `/ticket/organizer/538`. With `pz-lib.js`: `open(browser, { org: '<yourOrg>', url: 'https://www.nortic.se/ticket/event/84917' })` serves your organizer's files for 538's requests (`orgTheme: false` leaves the organizer file out; `eventDir: '<id>'` serves `events/<id>/styles.css` from your organizer for whatever event the page is, to try an event layer on a 538 event).
+
 4. **Components the host does not have** (basket-cart buttons, "Din order" overview): copy their markup from the JSP (`priceBlobBasketCart.jsp`, `basketCartOverview.jsp` + `basketCartOverviewContent.jsp` + `klarna/ticketAndAddonsDetailBasketCart.jsp`) into a wrapper with an id of its own, add it with `insertAdjacentHTML`, and screenshot it. The page already holds hidden originals with the same ids, so scope every query and locator to your wrapper (`#so-test #basket-cart`, `#cart-overview-modal.open`).
 5. **Quick look without the flow**: append a `<link>` to `document.body` (a stylesheet appended to `<head>` with `addStyleTag` ends up before dagny's late sheets and loses).
 6. **A state you cannot reach locally** (not-released category, sold-out banner): inject the markup dagny would render (copy it from the JSP) and screenshot. Example: `container.insertAdjacentHTML('beforeend', '<div class="available-at"><i class="material-icons">schedule</i>Släpps <span>2027-06-24 19:00</span></div>')`.
 7. **Checkout parts without a checkout** (insurance row, addon cards such as Kivra, the Kivra modals): the theme's selectors need dagny's nesting, so build it around the copied JSP markup and append it to the event page: `<section id="booking" class="payment-page klarna"><div class="booking-contents"><div class="payment-list" style="position:static;transform:none;left:auto;width:auto"><div id="details"><div id="details-list">…insuranceDetail markup…</div></div><div id="addons"><div class="list-box"><div class="row">…kivraAddonDetail markup…</div></div></div></div></div></section>`. Render one insurance row with "yes" checked and one with "no", and measure what matters (row colours, the computed colour of `span.fake-label`, name/price text boxes not overlapping via `Range.getBoundingClientRect()`). Campaign categories (`.generated-by-campaign-code`) are injected the same way into `.show-category-scoll-wrapper`, from the template in `eventPage.js`.
+
+8. **The addons step** (`#standalone-addon-container`): none of the test events has connected addons, so open the checkout on 538 (Säsongskort 84917, see above) with the theme routed in, then hide `.payment-list` and insert the markup of `klarna/addons/popupAddonModals.jsp` with sample data, _together with that file's `<style>` block_ (lines from `<style>` to `</style>`), at the start of `#material-modal section#booking .booking-contents`. Without the `<style>` the result looks better than the real page, because in production that block loads after the theme. A ready helper is `~/.cache/pz-verify/addon-view.js` (`show(page)` after the payment list has appeared, three room cards with 538's event images, the middle one with amount 1); `vk-addon.js <org>` screenshots it at 1280 and 390 px, with `none` as second argument for dagny's default. The "Endast tillval" view works the same way on the event page: `~/.cache/pz-verify/addon-content.js` (`show(page)` hides the opened row's ticket area on 538's Säsongskort and inserts `addonContent.jsp`'s markup and `<style>`), screenshotted by `vk-addon-content.js <org>`.
 
 ## When the user previews on the live page (Chrome Local Overrides)
 
@@ -90,6 +105,38 @@ function hashCode(s) {
 // '3712fd0a'
 hashCode('nortic-assets.web.app/custom-css/prod/eventsystem/organizers/4276/events/87117/styles.css').toString(16)
 ```
+
+For an organizer-wide theme the user makes the organizer folder the overrides root (`organizers/<org>/nortic-assets.web.app/custom-css/prod/eventsystem/organizers/<org>/styles.css`), and the override must also contain every event file under `events/<id>/`, or the user sees an event page without its layer (Brännbollsyran 87876). A ready copy is `~/.cache/pz-verify/build-override.js <org> [overrideRoot]` (run it after every change to the theme; the scratchpad is cleared between sessions, so keep build scripts there). One builder for both levels, with `url('assets/…')` inlined in the organizer file and `url('../../assets/…')` in event files, and the asset files copied to their URL paths:
+
+```js
+// build-override-<org>.js — test only, never commit the output
+const fs = require('node:fs')
+const path = require('node:path')
+const ORG = '<org>'
+const org = `<repo>/assets/hosting/custom-css/prod/eventsystem/organizers/${ORG}`
+const root = `${org}/nortic-assets.web.app`
+const base = `nortic-assets.web.app/custom-css/prod/eventsystem/organizers/${ORG}`
+const types = { '.woff2': 'font/woff2', '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml' }
+function inline(css, prefix) {
+  return css.replace(new RegExp(`url\\('${prefix}assets/([^']+)'\\)`, 'g'), (m, f) =>
+    `url('data:${types[path.extname(f)]};base64,${fs.readFileSync(path.join(org, 'assets', f)).toString('base64')}')`)
+}
+function put(url, data) { // hashCode as above
+  for (const f of [`${root}/${url.slice('nortic-assets.web.app/'.length)}`, `${root}/longurls/${path.basename(url)}-${hashCode(url).toString(16)}${path.extname(url)}`]) {
+    fs.mkdirSync(path.dirname(f), { recursive: true })
+    fs.writeFileSync(f, data)
+  }
+}
+put(`${base}/styles.css`, inline(fs.readFileSync(`${org}/styles.css`, 'utf8'), ''))
+for (const id of fs.existsSync(`${org}/events`) ? fs.readdirSync(`${org}/events`) : []) {
+  if (fs.existsSync(`${org}/events/${id}/styles.css`))
+    put(`${base}/events/${id}/styles.css`, inline(fs.readFileSync(`${org}/events/${id}/styles.css`, 'utf8'), '\\.\\./\\.\\./'))
+}
+for (const f of fs.readdirSync(`${org}/assets`))
+  put(`${base}/assets/${f}`, fs.readFileSync(`${org}/assets/${f}`))
+```
+
+Throw if a relative `url('…assets/` is left after inlining: a URL in double quotes or without quotes slips past the regex and 404s in the preview. An `@import` of an external kit (Adobe Fonts) stays as it is.
 
 Write every file under both names. An event theme that sits on an organizer theme which is not deployed either (Tosselilla 87117 on 4276) needs the organizer stylesheet in the same overrides folder, or the preview shows the event layer on bare dagny. Put the asset files themselves at their URL paths in the folder as well; then a stylesheet with relative URLs that the user copies in still loads them. When the user reports 404s on fonts or images in the Network tab, look at what is in each override file first: in Tosselilla's case the event CSS had been copied into the organizer's slot and the event slot held the server's 249-byte placeholder.
 
@@ -149,6 +196,44 @@ The regex expects single quotes, which is what the repo's eslint formatting prod
       return (la + 0.05) / (lb + 0.05)
   ```
 
+- Hover contrast: hover every visible link and button with text and measure the text colour against the nearest opaque background, before and during hover. Report everything below 4.5:1 during hover that hover made worse, or that is below 3:1. Measure the element that carries the text (an icon inside a link often has a colour of its own). A ready helper is `~/.cache/pz-verify/hover-audit.js <org> <event|-> [url] [width]` (with `-` it serves the organizer file only; a `url` such as 538's `84917` reaches the checkout's light scope). Known false alarms: backgrounds drawn in `::before`/`::after` (the calendar's day circles) and gradients (`grad: true` in the output), plus disabled controls. The core of it:
+
+  ```js
+  const sel = 'a, button, .btn, .amount-blob, [role=button]'
+  for (let i = 0, n = await page.locator(sel).count(); i < n; i++) {
+    const loc = page.locator(sel).nth(i)
+    if (!(await loc.isVisible()) || !(await loc.textContent()).trim())
+      continue
+    const measure = () => loc.evaluate((el0) => {
+      const own = e => [...e.childNodes].some(c => c.nodeType === 3 && c.textContent.trim())
+      const el = own(el0) ? el0 : [...el0.querySelectorAll('*')].find(own) || el0
+      const rgb = s => s.match(/[\d.]+/g).map(Number)
+      const chan = v => (v / 255 <= 0.03928 ? v / 255 / 12.92 : ((v / 255 + 0.055) / 1.055) ** 2.4)
+      const lum = c => 0.2126 * chan(c[0]) + 0.7152 * chan(c[1]) + 0.0722 * chan(c[2])
+      let bg = [255, 255, 255]
+      for (let e = el; e; e = e.parentElement) {
+        const c = rgb(getComputedStyle(e).backgroundColor)
+        if ((c[3] ?? 1) > 0.5) {
+          bg = c
+          break
+        }
+      }
+      const [a, b] = [lum(rgb(getComputedStyle(el).color)), lum(bg)]
+      return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
+    })
+    const before = await measure()
+    await loc.hover({ force: true })
+    await page.waitForTimeout(450) // let transitions finish
+    const after = await measure()
+    if (after < 4.5 && (after < before || after < 3))
+      console.log(await loc.textContent(), before, after)
+    await page.mouse.move(1, 1)
+  }
+  ```
+
+  A screenshot taken right after scrolling can catch a link mid-transition and look like a contrast problem; move the mouse away and wait before you judge it.
+
+- Asset URLs as they will be deployed ("se till att src till bilder är rätt", "kolla så url till images fungerar i prod"): open the customer's real organizer page and one event page, serve only the files that will be committed (route `…/organizers/<org>/…` to the repo, `abort` or 404 everything else under `custom-css`), and list every `custom-css` response with its status. All 200 means the relative paths resolve from both the organizer file and the event files. Then `document.fonts` for the fonts.
 - Emulator headers for fonts: `curl -sI http://localhost:5055/custom-css/staging/eventsystem/organizers/<org>/assets/<font>.woff2` must show `Access-Control-Allow-Origin: *`.
 
 ## When the user sends a screen recording

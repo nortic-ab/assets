@@ -176,9 +176,33 @@ body:not([data-eventid]) header#main-header::before {
 header#main-header i.material-icons {
   color: var(--tl-ink);
 }
-/* Bakåtpilen: mörk på den vita headern, en mörk rundel när den följer med vid scroll */
+/* Bakåtpilen: mörk på den vita headern, en mörk rundel när sidan har scrollats (.fixed). dagnys mall
+   gör den till en rundel med padding, men den regeln når inte alla arrangörer, och då blev pilen en
+   inline-länk med kantig mörk platta runt ikonen. Här alltid en rund knapp på 40px. */
 a.back-to-organizer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+  /* kolumnen i headern är 24px hög (ikonens höjd); -8px håller knappen på headerns mittlinje */
+  margin: -8px 0;
+  padding: 0;
+  border-radius: 50%;
   color: var(--tl-ink);
+  vertical-align: middle;
+  transition:
+    background-color var(--tl-ease),
+    opacity var(--tl-ease);
+}
+a.back-to-organizer i.material-icons {
+  line-height: 1;
+}
+@media (hover: hover) {
+  a.back-to-organizer:not(.fixed):hover {
+    background-color: var(--tl-hover);
+  }
 }
 a.back-to-organizer.fixed {
   color: var(--tl-white);
@@ -187,6 +211,10 @@ a.back-to-organizer.fixed {
 }
 a.back-to-organizer.fixed:hover {
   opacity: 1;
+}
+a.back-to-organizer:focus-visible {
+  outline: 2px solid var(--tl-deep);
+  outline-offset: 2px;
 }
 /* Pilen ligger i headern och får annars headerns mörka ikonfärg även på den mörka rundeln */
 header#main-header a.back-to-organizer.fixed i.material-icons {
@@ -268,6 +296,22 @@ div#main-ribbon .event-info > i.material-icons {
   color: var(--tl-deep);
   font-size: 18px;
   vertical-align: -4px;
+}
+/* Etiketterna i raden är (speltid,) orter och datumspann. "1 Ort" visas inte. Datumspannet säger "Inga
+   föreställningar" när eventet saknar daterade visningar (dagny skriver samma markup för båda): då har
+   ingen visningsrad en dag i datumbollen, bara ikonen för datumlös visning, så då döljs det också, och
+   raden helt när ingen etikett är kvar. */
+div#main-ribbon .slider-inner > .event-info:nth-last-child(2),
+body:not(:has(#show-listing .show-listing-show .dateball > span))
+  div#main-ribbon
+  .slider-inner
+  > .event-info:last-child {
+  display: none;
+}
+body:not(:has(#show-listing .show-listing-show .dateball > span))
+  div#main-ribbon
+  .slider-wrapper:not(:has(.event-info:nth-last-child(3))) {
+  display: none;
 }
 /* Arrangörens taggar: dagny ritar dem med skugga i stället för kant */
 div#main-ribbon a.n-chip,
@@ -610,6 +654,126 @@ body:not([data-eventid]) section#popular-events .card .card-action a.btn.goto-bu
   line-height: 52px;
 }
 
+/* Sökfältet och arrangörens taggar ovanför eventkorten (eller kalendern): ett vitt pillerfält och
+   taggar som vita piller med kant, Tosse-röda när de är valda. dagny gråar avslagna taggar med filter
+   och halv opacitet och ritar en skugga runt dem. */
+:is(section#popular-events, section#organizer-calendar) .n-chips {
+  gap: 10px 12px;
+  margin-bottom: 32px;
+  cursor: default;
+}
+:is(section#popular-events, section#organizer-calendar) .n-chips .input-field.freetext-filter-container {
+  position: relative;
+  width: min(320px, 100%);
+  margin: 0 8px 0 0;
+}
+:is(section#popular-events, section#organizer-calendar) .n-chips input.freetext-filter {
+  box-sizing: border-box;
+  width: 100%;
+  height: 44px;
+  margin: 0;
+  padding: 0 18px 0 44px;
+  border: 1.5px solid var(--tl-line-strong);
+  border-radius: 999px;
+  background: var(--tl-white) url('assets/search.svg') no-repeat 16px center / 20px 20px;
+  box-shadow: none;
+  color: var(--tl-ink);
+  font-family: var(--tl-font);
+  font-weight: 600;
+  font-size: 16px;
+  transition:
+    border-color var(--tl-ease),
+    box-shadow var(--tl-ease);
+}
+:is(section#popular-events, section#organizer-calendar) .n-chips input.freetext-filter:focus {
+  border-color: var(--tl-deep);
+  box-shadow: 0 0 0 3px rgba(0, 180, 255, 0.25);
+}
+/* Etiketten som platshållare i fältet; Materialize flyttar den upp och dagny gör den vit med skugga.
+   Den försvinner när fältet har fokus eller text (.active). */
+:is(section#popular-events, section#organizer-calendar) .n-chips .input-field input ~ label {
+  top: 50%;
+  left: 44px;
+  height: auto;
+  transform: translateY(-50%);
+  color: var(--tl-muted) !important;
+  font-family: var(--tl-font);
+  font-size: 16px;
+  line-height: 1.2;
+  text-shadow: none !important;
+  pointer-events: none;
+}
+:is(section#popular-events, section#organizer-calendar) .n-chips .input-field input ~ label.active,
+:is(section#popular-events, section#organizer-calendar) .n-chips .input-field input:focus ~ label {
+  opacity: 0;
+}
+:is(section#popular-events, section#organizer-calendar) a.n-chip,
+:is(section#popular-events, section#organizer-calendar) a.n-chip.theme-background-color,
+:is(section#popular-events, section#organizer-calendar) a.n-chip.disabled {
+  align-items: center;
+  min-height: 44px;
+  padding: 0 18px 0 44px;
+  border: 1.5px solid var(--tl-line-strong);
+  border-radius: 999px;
+  background-color: var(--tl-white);
+  box-shadow: none;
+  color: var(--tl-ink);
+  font-family: var(--tl-font);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.2;
+  filter: none;
+  opacity: 1;
+  transition:
+    background-color var(--tl-ease),
+    border-color var(--tl-ease),
+    color var(--tl-ease);
+}
+:is(section#popular-events, section#organizer-calendar) a.n-chip.theme-background-color:not(.disabled) {
+  border-color: var(--tl-red);
+  background-color: var(--tl-red);
+  color: var(--tl-white);
+}
+@media (hover: hover) {
+  :is(section#popular-events, section#organizer-calendar) a.n-chip.theme-background-color.disabled:hover {
+    border-color: var(--tl-ink);
+    background-color: var(--tl-hover);
+    filter: none;
+  }
+  :is(section#popular-events, section#organizer-calendar) a.n-chip.theme-background-color:not(.disabled):hover {
+    border-color: var(--tl-red-hover);
+    background-color: var(--tl-red-hover);
+    filter: none;
+  }
+}
+:is(section#popular-events, section#organizer-calendar) a.n-chip:focus-visible {
+  outline: 2px solid var(--tl-deep);
+  outline-offset: 2px;
+}
+:is(section#popular-events, section#organizer-calendar) a.n-chip span.checkbox {
+  top: 50%;
+  left: 16px;
+  width: 18px;
+  height: 18px;
+  margin-top: -9px;
+  border-radius: 5px;
+}
+/* Antalet som en solgul bubbla med svart text, som datumen i kalendern */
+:is(section#popular-events, section#organizer-calendar) a.n-chip span.count,
+:is(section#popular-events, section#organizer-calendar) a.n-chip span.count.theme-background-color {
+  top: -8px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background-color: var(--tl-yellow);
+  color: var(--tl-ink);
+  font-family: var(--tl-font);
+  font-weight: 800;
+  font-size: 11px;
+  filter: none;
+}
+
 /* ---------------------------------------------------------------------------
  * 3. Buttons and the organizer theme classes
  * ------------------------------------------------------------------------- */
@@ -816,6 +980,13 @@ section#active-events > .container {
 /* ---------------------------------------------------------------------------
  * 5. Show listing: vitt kort, solgula datum
  * ------------------------------------------------------------------------- */
+/* Rubriken "Löpande föreställningar" ovanför visningar utan datum (säsongskort och liknande) visas inte;
+   dagny ger den ingen egen klass, men nästa rad har ikonen för datumlös visning */
+section#active-events
+  #show-listing
+  .show-listing-month:not(.fake-month):has(+ .show-listing-show .dateball .no-date-show) {
+  display: none !important;
+}
 /* dagny döljer rader och månadsrubriker med .display-none; temat sätter display på dem */
 section#active-events #show-listing .show-listing-show.display-none,
 section#active-events #show-listing .show-listing-month.display-none {
@@ -1048,6 +1219,31 @@ section#active-events .container .booking-contents.unnumbered-show .sold-out-ban
 .unnumbered-show-container .indicator-limit > i {
   display: none;
 }
+/* "Fåtal kvar!" på visningsraden: dagny lägger lappen i tillgångsmätaren med sin orange gradient och
+   ikon. Samma lapp som på biljettkorten. */
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit {
+  display: inline-block;
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 4px 0 0;
+  padding: 3px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--tl-orange);
+  box-shadow: none;
+  color: var(--tl-ink);
+  font-family: var(--tl-font);
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  white-space: nowrap;
+}
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit > i {
+  display: none;
+}
 /* "Kampanj" på kategorier som en kampanjkod låst upp: en grön etikett på kortets överkant */
 section#active-events .container .booking-contents.unnumbered-show .show-category > .campaign {
   top: -12px;
@@ -1172,6 +1368,26 @@ div#add-to-basket-cart .valign-wrapper {
   border-radius: 999px;
   background-color: var(--tl-red);
   color: var(--tl-white);
+}
+/* dagny lägger "Lägg till i varukorg" och raden "Varukorg"/"Till kassan" i två fasta behållare på samma
+   plats nere till höger, så knappen täckte raden. Medan knappen syns lyfts raden ovanför den, med
+   dagnys egen övergång på raden. Plattan bakom knappen har dagnys orange och syntes runt den. */
+.basket-cart-floating-buttons {
+  transition:
+    bottom 0.3s ease,
+    transform 0.3s ease;
+}
+body:has(#add-to-basket-cart:not(.display-none)) .basket-cart-floating-buttons {
+  transform: translateY(-70px);
+}
+div#add-to-basket-cart .valign-wrapper {
+  background-color: transparent;
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .basket-cart-floating-buttons {
+    transition: none;
+  }
 }
 div#add-to-basket-cart:hover .btn {
   background-color: var(--tl-red-hover);
@@ -1421,14 +1637,63 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card {
   box-shadow: none;
   color: var(--tl-ink);
 }
-/* dagny lägger namnet i en col s7 och priset i en col s5 med 10px luft i varje, så namnet får ~90px
-   och "Premiumbiljetter" delas mitt i ordet. Kortet har fast höjd (210px) och "Ja, tack" ligger
-   absolut i botten, så priset kan inte flytta till en egen rad. Som flexrad tar priset bara sin
-   bredd och namnet resten (~118px i ett 220px-kort, "Premiumbiljetter" i 14px är 107-112px). */
+/* dagny lägger namnet i en col s7 och priset i en col s5, så namnet får ~90px och "Premiumbiljetter"
+   delas mitt i ordet ("Premiumbiljette / r") så fort typsnittet eller textstorleken är lite större.
+   Kortet (210px) och omslagen runt det har fasta höjder med dold överfyllnad, och "Ja, tack" och
+   "Läs mer" ligger absolut i botten. Här följer hela kedjan innehållet: namnet ligger alltid helt på
+   en rad (bara ett ord som är bredare än kortet bryts), priset går ner på en egen rad när det inte
+   ryms bredvid, och kryssraden ligger sist i kortet. */
+section#booking.payment-page .payment-list #addons #addons-container,
+section#booking.payment-page .payment-list #addons #addons-container .content,
+section#booking.payment-page .payment-list #addons .list-box,
+section#booking.payment-page .payment-list #addons .horizontal-scroll-cards,
+section#booking.payment-page .payment-list #addons #card-slider-wrapper,
+section#booking.payment-page .payment-list #addons #card-slider-inner,
+section#booking.payment-page .payment-list #addons .row,
+section#booking.payment-page .payment-list #addons .card-container {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+section#booking.payment-page .payment-list #addons #card-slider-inner {
+  align-items: stretch;
+}
+section#booking.payment-page .payment-list #addons #card-slider-inner > .card-container {
+  display: flex;
+}
+section#booking.payment-page .payment-list #addons .horizontal-scroll-cards,
+section#booking.payment-page .payment-list #addons #card-slider-wrapper {
+  padding-bottom: 8px;
+}
+section#booking .booking-contents .payment-list #addons .card.simple-addon-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  height: auto;
+  min-height: 210px;
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-content {
+  flex: 1 1 auto;
+}
+section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-action {
+  position: static;
+  order: 2;
+  margin-top: auto;
+}
+/* "Läs mer" på premiumkortet ligger absolut 35px från nederkanten i dagny och hamnar över "Ja, tack"
+   när kryssraden ligger i flödet; här ligger den mellan texten och kryssraden */
+section#booking.payment-page.klarna .booking-contents .payment-list .premium-ticket-detail-container .read-more-button {
+  position: static;
+  order: 1;
+  align-self: flex-start;
+  margin: 4px 24px 0;
+}
 section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-title.row {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: baseline;
+  row-gap: 2px;
 }
 section#booking.payment-page .payment-list #addons .card.simple-addon-card .card-title.row::after {
   content: none;
@@ -1439,9 +1704,9 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .card
   margin-left: 0;
 }
 section#booking.payment-page .payment-list #addons .card.simple-addon-card .addon-name {
-  flex: 1 1 auto;
-  min-width: 0;
-  padding-right: 8px;
+  flex: 0 0 auto;
+  max-width: 100%;
+  padding-right: 12px;
   color: var(--tl-ink);
   font-family: var(--tl-font);
   font-weight: 800;
@@ -1450,9 +1715,11 @@ section#booking.payment-page .payment-list #addons .card.simple-addon-card .addo
   white-space: normal;
   overflow-wrap: break-word;
 }
+/* dagny ger namnet padding 25px 12px 0 26px och priset 25px 20px 0 0; under namnet behöver priset
+   namnets vänsterkant och bara lite luft upptill (på samma rad linjerar baslinjen dem ändå) */
 section#booking.payment-page .payment-list #addons .card.simple-addon-card .addon-price {
   flex: 0 0 auto;
-  padding-left: 0;
+  padding: 4px 20px 0 26px;
   color: var(--tl-ink);
   font-family: var(--tl-font);
   font-weight: 800;
@@ -1824,6 +2091,99 @@ section#booking .modal .modal-content a {
   color: var(--tl-disabled-ink);
 }
 
+/* Arrangörens meddelanden (åldersgräns, ändrad starttid …): dagny målar dem i arrangörens temafärg
+   (.theme-background-color-override, med !important) och temats regler ovan gav dem svart text. Här
+   en Tosse-röd ruta med vit text (5,9:1), rubriken i Baloo och OK som ett vitt piller. Rubriken har
+   inline nowrap och klipptes med "…"; den får radbrytas. */
+.nortic-modal.theme-background-color-override.theme-text-color-override {
+  border-top-color: var(--tl-red-edge);
+  background-color: var(--tl-red) !important;
+  color: var(--tl-white) !important;
+  font-family: var(--tl-font);
+  text-shadow: none;
+}
+.nortic-modal.theme-background-color-override.theme-text-color-override h3 {
+  white-space: normal !important;
+  color: var(--tl-white);
+  font-family: var(--tl-display);
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1.15;
+}
+.nortic-modal.theme-background-color-override.theme-text-color-override p {
+  color: var(--tl-white);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.nortic-modal.theme-background-color-override.theme-text-color-override i.material-icons,
+.nortic-modal.theme-background-color-override.theme-text-color-override .close-button i.material-icons {
+  color: var(--tl-white);
+}
+.nortic-modal.theme-background-color-override.theme-text-color-override .hide-event-messsage.flat-button {
+  min-width: 120px;
+  padding: 10px 28px;
+  border-radius: 999px;
+  background-color: var(--tl-white);
+  box-shadow: 0 3px 0 var(--tl-red-edge);
+  color: var(--tl-red);
+  font-family: var(--tl-font);
+  font-weight: 800;
+  font-size: 16px;
+  text-align: center;
+  transition: background-color var(--tl-ease);
+}
+@media (hover: hover) {
+  .nortic-modal.theme-background-color-override.theme-text-color-override .hide-event-messsage.flat-button:hover {
+    background-color: var(--tl-hover);
+  }
+}
+
+/* Toasts ("Varukorgen uppdaterad", fel, varningar, varukorgens tidsgräns): rundade i Nunito, i temats
+   färger i stället för Materializes kantiga grå och dagnys rött, orange och blått */
+#toast-container .toast {
+  min-height: 48px;
+  padding: 10px 22px;
+  border-radius: var(--tl-radius);
+  background-color: var(--tl-ink);
+  box-shadow: 0 10px 28px rgba(30, 30, 30, 0.22);
+  color: var(--tl-white);
+  font-family: var(--tl-font);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.4;
+}
+#toast-container .toast.error-toast {
+  background-color: var(--tl-red);
+  color: var(--tl-white);
+}
+#toast-container .toast.warning-toast {
+  background-color: var(--tl-orange);
+  color: var(--tl-ink);
+}
+#toast-container .toast.info-toast {
+  background-color: var(--tl-deep);
+  color: var(--tl-white);
+}
+/* Varukorgens tidsgräns: "Förläng tid" som en rund knapp inne i toasten (Materialize lägger den med
+   negativ marginal mot högerkanten, så den stack ut) */
+#toast-container .toast #extend-time-button.btn-flat {
+  flex: 0 0 auto;
+  height: 36px;
+  margin: 0 0 0 16px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-family: var(--tl-font);
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 36px;
+  text-transform: none;
+}
+#toast-container .toast #extend-time-button.btn-flat.disabled {
+  background-color: var(--tl-disabled) !important;
+  color: var(--tl-disabled-ink) !important;
+}
+
 /* ---------------------------------------------------------------------------
  * 8. Floating basket
  * ------------------------------------------------------------------------- */
@@ -2026,6 +2386,115 @@ div#basket .price-container {
   color: var(--tl-ink);
 }
 
+/* Varukorgens varningar ("Du kommer att förlora innehållet i din varukorg", "Du har inte lagt till
+   ditt tidigare val …", basketCartWarningModal.jsp): Materializes kantiga vita ruta med platta
+   knappar blir ett kort på strand med rubriken i Baloo, Avbryt/Nej som konturknapp och
+   Fortsätt/Ja som stilguidens röda knapp */
+#basket-cart-warning-modal.modal,
+#basket-cart-warning-modal-2.modal {
+  width: min(480px, 100% - 32px);
+  /* bara vågrätt: Materializes .modal har max-height 70 % och overflow-y: auto, så på en låg skärm
+     (telefon på tvären) måste rutan kunna scrollas till knapparna */
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-top: 4px solid var(--tl-accent);
+  border-radius: var(--tl-radius);
+  background-color: var(--tl-strand);
+  box-shadow: 0 24px 60px rgba(30, 30, 30, 0.35);
+  color: var(--tl-ink);
+  font-family: var(--tl-font);
+}
+#basket-cart-warning-modal .modal-content,
+#basket-cart-warning-modal-2 .modal-content {
+  padding: 28px 28px 8px;
+  color: var(--tl-ink);
+  font-size: 16px;
+  line-height: 1.5;
+}
+#basket-cart-warning-modal .modal-content h5,
+#basket-cart-warning-modal-2 .modal-content h5 {
+  margin: 0 0 10px;
+  color: var(--tl-ink);
+  font-family: var(--tl-display);
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1.15;
+}
+#basket-cart-warning-modal .modal-footer,
+#basket-cart-warning-modal-2 .modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  height: auto;
+  padding: 16px 28px 28px;
+  background-color: transparent;
+}
+#basket-cart-warning-modal .modal-footer .btn-flat,
+#basket-cart-warning-modal-2 .modal-footer .btn-flat {
+  float: none;
+  height: 44px;
+  margin: 0;
+  padding: 0 22px;
+  border-radius: 999px;
+  font-family: var(--tl-font);
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 44px;
+  text-transform: none;
+  transition: background-color var(--tl-ease);
+}
+#basket-cart-warning-modal .modal-footer .btn-flat.cancel,
+#basket-cart-warning-modal-2 .modal-footer .btn-flat.cancel {
+  border: 1.5px solid var(--tl-line-strong);
+  background-color: var(--tl-white);
+  color: var(--tl-ink);
+  line-height: 41px;
+}
+#basket-cart-warning-modal .modal-footer .btn-flat.confirm,
+#basket-cart-warning-modal-2 .modal-footer .btn-flat.confirm {
+  background-color: var(--tl-red);
+  box-shadow: 0 3px 0 var(--tl-red-edge);
+  color: var(--tl-white);
+}
+@media (hover: hover) {
+  #basket-cart-warning-modal .modal-footer .btn-flat.cancel:hover,
+  #basket-cart-warning-modal-2 .modal-footer .btn-flat.cancel:hover {
+    background-color: var(--tl-hover);
+  }
+  #basket-cart-warning-modal .modal-footer .btn-flat.confirm:hover,
+  #basket-cart-warning-modal-2 .modal-footer .btn-flat.confirm:hover {
+    background-color: var(--tl-red-hover);
+  }
+}
+/* "Lägger till i varukorg" (#event-page-loading-overlay-basket, med inline-stilar) och "Tar bort …"
+   (#basket-cart-loading-overlay): dagnys lila slöja blir temats svarta, texten Baloo utan skugga och
+   snurrans fyra färgskikt regnbågens färger */
+#event-page-loading-overlay-basket,
+#basket-cart-loading-overlay {
+  background-color: rgba(30, 30, 30, 0.82) !important;
+}
+#event-page-loading-overlay-basket .spinner-container span,
+#basket-cart-loading-overlay .basket-cart-loading-overlay-text {
+  color: var(--tl-white) !important;
+  font-family: var(--tl-display);
+  font-weight: 800 !important;
+  text-shadow: none !important;
+}
+:is(#event-page-loading-overlay-basket, #basket-cart-loading-overlay) .spinner-layer.spinner-blue {
+  border-color: var(--tl-blue);
+}
+:is(#event-page-loading-overlay-basket, #basket-cart-loading-overlay) .spinner-layer.spinner-red {
+  border-color: var(--tl-red);
+}
+:is(#event-page-loading-overlay-basket, #basket-cart-loading-overlay) .spinner-layer.spinner-yellow,
+#basket-cart-loading-overlay .spinner-layer.blue-spinner {
+  border-color: var(--tl-yellow);
+}
+:is(#event-page-loading-overlay-basket, #basket-cart-loading-overlay) .spinner-layer.spinner-green {
+  border-color: var(--tl-green);
+}
+
 /* ---------------------------------------------------------------------------
  * 9. Smala skärmar
  * ------------------------------------------------------------------------- */
@@ -2137,4 +2606,564 @@ div#basket .price-container {
   body:not([data-eventid]) section#popular-events .card.card-background-color {
     transition: none;
   }
+}
+
+/* ---------------------------------------------------------------------------
+ * 10. Orderbekräftelsen
+ * ------------------------------------------------------------------------- */
+/* Orderbekräftelsen (klarnaConfirmationBox.jsp) visas på organisatörssidan efter köpet, så den får
+   bara den här filen, aldrig eventets (inte heller Halloween-lagret). Ett vitt kort med regnbågen
+   överst: Klarnas kvitto i det är en vit iframe. dagny lägger vita flikar ovanpå kortet
+   (::before/::after) och färgar knappen och länkarna blå. */
+section#order-confirmation.klarna {
+  overflow-x: hidden;
+  border-radius: var(--tl-radius);
+  background: var(--tl-rainbow) top / 100% 6px no-repeat var(--tl-white);
+  box-shadow:
+    0 1px 2px rgba(30, 30, 30, 0.08),
+    0 24px 64px rgba(30, 30, 30, 0.28);
+  color: var(--tl-ink);
+  font-family: var(--tl-font);
+}
+section#order-confirmation.klarna::before,
+section#order-confirmation.klarna::after {
+  content: none;
+}
+section#order-confirmation.klarna .confirmation .scroll-box {
+  padding: 0 clamp(20px, 4vw, 40px) 32px;
+}
+section#order-confirmation #confirm-order-confirmation {
+  top: 16px;
+  right: 14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  opacity: 1;
+  color: var(--tl-ink);
+  transition: background-color var(--tl-ease);
+}
+section#order-confirmation #confirm-order-confirmation i.material-icons {
+  font-size: 22px;
+  line-height: 44px;
+}
+@media (hover: hover) {
+  section#order-confirmation #confirm-order-confirmation:hover {
+    background-color: var(--tl-hover);
+  }
+}
+section#order-confirmation p,
+section#order-confirmation a,
+section#order-confirmation span {
+  font-family: var(--tl-font);
+}
+
+/* Erbjudandet efter köpet: tacket som rubrik i Baloo, bilden med radie, texten vänsterställd */
+section#order-confirmation.klarna .postsale {
+  display: block;
+  padding: 0 0 8px;
+  text-align: left;
+}
+section#order-confirmation .postsale .postsale-name {
+  margin: 0 56px 20px 0;
+  padding-top: 34px;
+  color: var(--tl-ink);
+  font-family: var(--tl-display);
+  font-weight: 800;
+  font-size: clamp(28px, 4vw, 36px);
+  line-height: 1.1;
+  text-transform: none;
+}
+section#order-confirmation .postsale .postsale-image {
+  margin-bottom: 18px;
+  border-radius: 12px;
+}
+section#order-confirmation .postsale .postsale-headline {
+  float: none;
+  display: block;
+  margin: 0 0 6px;
+  color: var(--tl-ink);
+  font-family: var(--tl-display);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.25;
+  text-transform: none;
+}
+section#order-confirmation.klarna .postsale-information {
+  display: block;
+  margin-left: 0;
+  padding: 0 0 18px;
+  color: var(--tl-muted);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+}
+section#order-confirmation.klarna .postsale .postsale-link {
+  display: inline;
+  margin: 0 0 0 4px;
+  padding: 0 0 1px;
+  border-bottom: 2px solid var(--tl-blue);
+  color: var(--tl-deep);
+  font-weight: 800;
+  font-size: 16px;
+  text-transform: none;
+}
+@media (hover: hover) {
+  section#order-confirmation.klarna .postsale .postsale-link:hover {
+    border-bottom-color: var(--tl-ink);
+    color: var(--tl-ink);
+  }
+}
+section#order-confirmation .postsale hr.postsale-divider,
+section#order-confirmation .hotel-upsell hr.postsale-divider {
+  width: 100%;
+  height: 1px;
+  margin: 20px 0 24px;
+  border: 0;
+  background-color: var(--tl-line);
+  opacity: 1;
+}
+
+/* Ladda ner biljetter: stilguidens primärknapp, Tosse-röd med skuggkant */
+section#order-confirmation.klarna .button-container {
+  padding: 24px 0 8px;
+}
+section#order-confirmation.klarna a.btn.download-tickets {
+  display: block;
+  height: 52px;
+  margin-top: 0;
+  border-radius: 999px;
+  background-color: var(--tl-red);
+  box-shadow: 0 3px 0 var(--tl-red-edge);
+  color: var(--tl-white);
+  font-family: var(--tl-font);
+  font-weight: 800;
+  font-size: 17px;
+  line-height: 52px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+section#order-confirmation.klarna a.btn.download-tickets:hover {
+  background-color: var(--tl-red-hover);
+  filter: none;
+}
+section#order-confirmation .wallet-row {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Hotellerbjudandet: rubriken i Baloo, Hotels.com-knappen behåller sin egen färg */
+section#order-confirmation .hotel-upsell h3 {
+  color: var(--tl-ink);
+  font-family: var(--tl-display);
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1.2;
+  text-transform: none;
+}
+section#order-confirmation .hotel-upsell p {
+  color: var(--tl-muted);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+/* Felrutorna */
+section#order-confirmation .error-box {
+  padding: 8px clamp(20px, 4vw, 40px) 32px;
+}
+section#order-confirmation .error-box h1 {
+  margin: 34px 56px 18px 0;
+  color: var(--tl-ink);
+  font-family: var(--tl-display);
+  font-weight: 800;
+  font-size: clamp(28px, 4vw, 36px);
+  line-height: 1.15;
+}
+section#order-confirmation .error-box p {
+  color: var(--tl-ink);
+  font-size: 16px;
+  line-height: 1.6;
+}
+section#order-confirmation .error-box a {
+  margin-top: 12px;
+  border-bottom: 2px solid var(--tl-blue);
+  color: var(--tl-deep);
+  font-weight: 800;
+}
+@media (hover: hover) {
+  section#order-confirmation .error-box a:hover {
+    border-bottom-color: var(--tl-ink);
+    color: var(--tl-ink);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * 11. Tillvalssteget (#standalone-addon-container, popupAddonModals.jsp)
+ *
+ * Visas i kassan före betalningen när visningen har kopplade tillval (Arrangörstips med hotellrum,
+ * mat, parkering …). Vyn har en egen <style> i markupen, alltså efter temat, så allt här prefixas med
+ * id:t, och !important används mot inline-färgerna (den gula ikonplattan, den grå pilen,
+ * .yellow-background på datumbollen och stegarna). Heron (datum och visningsnamn) är vit med svart
+ * skugga i dagny, gjord för dess mörka bakgrundsfoto; här står den på strand i svart Baloo.
+ * ------------------------------------------------------------------------- */
+#standalone-addon-container .addon-wrapper-container {
+  background-color: var(--tl-strand);
+  box-shadow: none;
+  color: var(--tl-ink);
+  font-family: var(--tl-font);
+  font-size: 14px;
+}
+#standalone-addon-container .hero-wrapper h1 {
+  color: var(--tl-ink);
+  font-family: var(--tl-display);
+  font-weight: 800;
+  font-size: clamp(30px, 4.4vw, 48px);
+  line-height: 1.05;
+  letter-spacing: 0;
+  text-shadow: none;
+  text-transform: none;
+  text-wrap: balance;
+}
+#standalone-addon-container .addon-date-text {
+  color: var(--tl-ink);
+  font-family: var(--tl-font);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-shadow: none;
+}
+/* Ikonen är ett i.material-icons: ingen font-family här, annars skrivs "date_range" ut som text */
+#standalone-addon-container .addon-date-icon {
+  color: var(--tl-red);
+  font-size: 18px;
+  text-shadow: none;
+}
+/* Månaden som rubrik i Baloo, som visningslistans månader */
+#standalone-addon-container .addon-wrapper-header {
+  height: auto;
+  padding: 28px 4px 12px;
+  background-color: transparent;
+}
+#standalone-addon-container .addon-wrapper-header span {
+  margin-left: 0;
+  color: var(--tl-ink);
+  font-family: var(--tl-display);
+  font-weight: 800;
+  font-size: clamp(24px, 3vw, 30px);
+  letter-spacing: 0;
+  text-transform: capitalize;
+}
+/* Visningsraden överst: ett vitt kort med solgul datumboll, som visningsraderna på eventsidan */
+#standalone-addon-container .addon-wrapper-body {
+  margin: 0;
+  padding: 16px clamp(16px, 2vw, 24px);
+  border: 1px solid var(--tl-line);
+  border-radius: var(--tl-radius);
+  background-color: var(--tl-white);
+  box-shadow: none;
+}
+#standalone-addon-container .addon-dateball-container,
+#standalone-addon-container .addon-dateball-container.yellow-background {
+  background-color: var(--tl-yellow) !important;
+}
+#standalone-addon-container .addon-dateball,
+#standalone-addon-container .addon-dateball.white-text {
+  color: var(--tl-ink) !important;
+  font-family: var(--tl-font);
+  font-weight: 800;
+}
+#standalone-addon-container .addon-wrapper-dates-container {
+  color: var(--tl-ink);
+  font-weight: 600;
+  font-size: 15px;
+}
+#standalone-addon-container .addon-wrapper-dates-container .bold {
+  color: var(--tl-ink);
+  font-weight: 800;
+  text-transform: capitalize;
+}
+#standalone-addon-container .addon-wrapper-body .show-name {
+  color: var(--tl-ink);
+  font-family: var(--tl-font);
+  font-weight: 800;
+  font-size: 16px;
+  text-transform: none;
+}
+#standalone-addon-container .addon-wrapper-lowest-price {
+  color: var(--tl-ink);
+  font-weight: 800;
+}
+#standalone-addon-container .addon-location {
+  color: var(--tl-muted);
+  font-weight: 600;
+}
+#standalone-addon-container .addon-location .bold {
+  color: var(--tl-ink);
+  font-weight: 800;
+}
+
+/* Grupperna, korten och stegarna delas med "Endast tillval"-vyn på eventsidan (#addon-content-container,
+   avsnitt 12): samma markup från dagny, och båda har en egen <style> efter temat. Stegarna heter
+   .addon-amount-blob i båda (bara tillvalssteget har även .amount-blob). */
+:is(#standalone-addon-container, #addon-content-container) .container.addons {
+  width: 100%;
+  max-width: none;
+}
+:is(#standalone-addon-container, #addon-content-container) .popupaddon-header {
+  margin: 24px 4px 12px;
+  color: var(--tl-ink);
+  font-family: var(--tl-display);
+  font-weight: 800;
+  font-size: clamp(24px, 3vw, 30px);
+  line-height: 1.1;
+}
+/* Grupperna (Arrangörstips, Mat, Boende …) som vita kort med temats radie */
+:is(#standalone-addon-container, #addon-content-container) .addon-group {
+  margin-bottom: 12px;
+  overflow: hidden;
+  border: 1px solid var(--tl-line);
+  border-radius: var(--tl-radius);
+  background-color: var(--tl-white);
+  box-shadow: none;
+}
+:is(#standalone-addon-container, #addon-content-container) .collapsible {
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+}
+:is(#standalone-addon-container, #addon-content-container) .collapsible-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--tl-line);
+  background-color: var(--tl-white);
+  color: var(--tl-ink);
+}
+:is(#standalone-addon-container, #addon-content-container) .collapsible-body {
+  border-bottom: 0;
+  background-color: var(--tl-white);
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-card-header p {
+  color: var(--tl-ink);
+  font-family: var(--tl-display);
+  font-weight: 800 !important;
+  font-size: 19px !important;
+}
+/* Ikonplattan solgul med svart ikon (inline gul med vit ikon) */
+:is(#standalone-addon-container, #addon-content-container) .addon-type-icon {
+  width: 36px !important;
+  height: 36px !important;
+  background: var(--tl-yellow) !important;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-type-icon i.material-icons {
+  color: var(--tl-ink) !important;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-arrow {
+  color: var(--tl-ink) !important;
+}
+/* Tillvalet i gruppen ("Paket och tillval") och dess datum */
+:is(#standalone-addon-container, #addon-content-container) .addon-show-header {
+  color: var(--tl-ink);
+  font-family: var(--tl-display);
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1.2;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-show-date,
+:is(#standalone-addon-container, #addon-content-container) .addon-show-information,
+:is(#standalone-addon-container, #addon-content-container) .category-info {
+  color: var(--tl-muted);
+  font-family: var(--tl-font);
+  font-weight: 600;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-show-date {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-chip {
+  margin-right: 8px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background-color: var(--tl-sand);
+  color: var(--tl-ink);
+  font-family: var(--tl-font);
+  font-weight: 800;
+  font-size: 12px;
+}
+/* Korten som biljettkorten: vita med linje och temats radie, namnet i fetstil och priset i Baloo.
+   Vyns <style> ger kortet min-height 320px och innehållet 120px; korten följer innehållet här. */
+:is(#standalone-addon-container, #addon-content-container) .new-addon-row-wrapper {
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--tl-line);
+  border-radius: var(--tl-radius);
+  background: var(--tl-white);
+  box-shadow: none;
+  transition: box-shadow var(--tl-ease);
+}
+:is(#standalone-addon-container, #addon-content-container) .the-body {
+  gap: 14px;
+  min-height: 0;
+}
+:is(#standalone-addon-container, #addon-content-container) .placeholder-image-container {
+  border-radius: 0;
+  background-color: var(--tl-sand);
+}
+:is(#standalone-addon-container, #addon-content-container) .new-addon-the-header,
+:is(#standalone-addon-container, #addon-content-container) .new-addon-the-header p {
+  margin: 0;
+  color: var(--tl-ink);
+  font-family: var(--tl-font);
+  font-weight: 800;
+  font-size: 17px;
+  line-height: 1.3;
+}
+:is(#standalone-addon-container, #addon-content-container) .price-info {
+  margin: 6px 0 0;
+}
+:is(#standalone-addon-container, #addon-content-container) .price-info,
+:is(#standalone-addon-container, #addon-content-container) .price-info b {
+  color: var(--tl-ink);
+  font-family: var(--tl-display);
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+/* Stegarna som på biljettkorten: plus röd med skuggkant, minus som kontur (vyns <style> gör dem runda,
+   2em, med vitt antal och gul .yellow-background) */
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob-container {
+  gap: 4px;
+  width: fit-content;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.plus,
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.minus {
+  box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  border-radius: 50%;
+  font-family: var(--tl-font);
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 36px;
+  transition:
+    background-color var(--tl-ease),
+    border-color var(--tl-ease);
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.plus {
+  border: 2px solid var(--tl-red) !important;
+  background-color: var(--tl-red) !important;
+  box-shadow: 0 3px 0 var(--tl-red-edge);
+  color: var(--tl-white) !important;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.minus {
+  border: 2px solid var(--tl-ink) !important;
+  background-color: var(--tl-white) !important;
+  color: var(--tl-ink) !important;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.minus.disabled {
+  border-color: var(--tl-disabled) !important;
+  background-color: var(--tl-white) !important;
+  color: var(--tl-disabled-ink) !important;
+}
+@media (hover: hover) {
+  :is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.plus:hover {
+    border-color: var(--tl-red-hover) !important;
+    background-color: var(--tl-red-hover) !important;
+  }
+  :is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.minus:not(.disabled):hover {
+    background-color: var(--tl-hover) !important;
+  }
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.amount {
+  width: 32px;
+  height: 40px;
+  margin: 0;
+  border: 0;
+  background-color: transparent;
+  color: var(--tl-ink);
+  font-family: var(--tl-font);
+  font-weight: 800;
+  font-size: 17px;
+  line-height: 40px;
+  opacity: 1;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.amount.zero {
+  color: var(--tl-muted);
+}
+/* Kort med antal > 0: röd ring, som biljettkorten */
+:is(#standalone-addon-container, #addon-content-container)
+  .new-addon-row-wrapper:has(.addon-amount-blob.minus:not(.disabled)) {
+  border-color: var(--tl-red);
+  box-shadow: inset 0 0 0 1px var(--tl-red);
+}
+/* "Gå vidare": stilguidens primärknapp */
+:is(#standalone-addon-container, #addon-content-container) .addon-btn-container .btn.addon-btn {
+  height: 52px;
+  padding: 0 32px;
+  border-radius: 999px;
+  background-color: var(--tl-red);
+  box-shadow: 0 3px 0 var(--tl-red-edge);
+  color: var(--tl-white);
+  font-family: var(--tl-font);
+  font-weight: 800;
+  font-size: 17px;
+  line-height: 52px;
+  text-transform: none;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-btn-container .btn.addon-btn:hover {
+  background-color: var(--tl-red-hover);
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-btn-container .btn.addon-btn:disabled {
+  background-color: var(--tl-disabled) !important;
+  box-shadow: none;
+  color: var(--tl-disabled-ink) !important;
+}
+
+/* ---------------------------------------------------------------------------
+ * 12. "Endast tillval" på eventsidan (#addon-content-container, addonContent.jsp)
+ *
+ * Knappen "Endast tillval" (a.btn.open-addons) under biljettkorten byter biljettdelen i den öppnade
+ * visningsraden mot den här vyn: "Avbryt tillvalsköp", rubriken "Tillval" och samma grupper och kort
+ * som tillvalssteget i kassan (avsnitt 11 täcker dem). Vyns egen <style> lägger en grå platta bakom;
+ * rubriken har inline 20px/400.
+ * ------------------------------------------------------------------------- */
+#addon-content-container .new-top-addon-container {
+  padding: 8px 0 4px;
+  background-color: transparent;
+}
+/* dagnys mobilregel ger varje .container i section#active-events margin 0 20px */
+#addon-content-container .container.new-addons {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+/* "Avbryt tillvalsköp" som textlänk med pil, som "Läs mer" */
+#addon-content-container .addon-back-button.btn-flat {
+  height: 40px;
+  padding: 0 4px !important;
+  color: var(--tl-ink) !important;
+  font-family: var(--tl-font);
+  font-weight: 800;
+  font-size: 15px;
+  text-transform: none;
+}
+#addon-content-container .addon-back-button.btn-flat i.material-icons {
+  color: var(--tl-red);
+  font-size: 20px;
+}
+#addon-content-container .addon-back-button.btn-flat:hover {
+  background-color: transparent;
+  text-decoration: underline;
+}
+#addon-content-container .addon-back-button.btn-flat:focus-visible {
+  outline: 2px solid var(--tl-deep);
+  outline-offset: 2px;
+}
+#addon-content-container .new-addons > div > p {
+  margin: 4px 4px 12px;
+  color: var(--tl-ink);
+  font-family: var(--tl-display);
+  font-weight: 800 !important;
+  font-size: clamp(24px, 3vw, 30px) !important;
+  line-height: 1.1;
 }

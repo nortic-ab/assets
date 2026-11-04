@@ -401,6 +401,36 @@ section#active-events .list-price {
 .booking-contents .amount-blob-container:has(> .available-at) .amount-blob {
   visibility: hidden;
 }
+/* "Few left!" on the ticket cards and in the show rows: a red outline label in the mono face
+   instead of dagny's orange gradient with an icon */
+.unnumbered-show-container .indicator-limit,
+.unnumbered-show-container .indicator-limit.absolute-right,
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit {
+  padding: 3px 10px;
+  border: 1px solid var(--mf-red);
+  border-radius: 999px;
+  background: var(--mf-white);
+  box-shadow: none;
+  color: var(--mf-red);
+  font-family: var(--mf-mono);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.unnumbered-show-container .indicator-limit > i,
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit > i {
+  display: none;
+}
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit {
+  display: inline-block;
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 4px 0 0;
+  line-height: 1.5;
+  white-space: nowrap;
+}
 .unnumbered-show-container a.btn.open-addons {
   background-color: var(--mf-ink) !important;
   color: var(--mf-white) !important;
@@ -796,6 +826,27 @@ div#add-to-basket-cart .btn,
 div#add-to-basket-cart .valign-wrapper {
   background-color: var(--mf-green-deep);
   color: var(--mf-white);
+}
+/* dagny puts "Lägg till i varukorg" and the "Varukorg"/"Till kassan" row in two fixed containers at
+   the same spot in the bottom right, so the button covered the row. While the button shows, the row
+   moves up above it, with dagny's own transition on the row. The plate behind the button keeps
+   dagny's orange and showed around it. */
+.basket-cart-floating-buttons {
+  transition:
+    bottom 0.3s ease,
+    transform 0.3s ease;
+}
+body:has(#add-to-basket-cart:not(.display-none)) .basket-cart-floating-buttons {
+  transform: translateY(-70px);
+}
+div#add-to-basket-cart .valign-wrapper {
+  background-color: transparent;
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .basket-cart-floating-buttons {
+    transition: none;
+  }
 }
 div#add-to-basket-cart:hover .btn {
   background-color: var(--mf-green);

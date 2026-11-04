@@ -936,6 +936,31 @@ section#active-events .container .booking-contents.unnumbered-show .sold-out-ban
 .unnumbered-show-container .indicator-limit > i {
   display: none;
 }
+/* "Fåtal kvar!" på visningsraden: dagny lägger lappen i tillgångsmätaren med sin orange gradient och
+   ikon, som har line-height 0, så den klämdes till 2px. Samma lapp som på biljettkorten. */
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit {
+  display: inline-block;
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 4px 0 0;
+  padding: 3px 10px;
+  border: 1.5px solid var(--hg-black);
+  border-radius: 999px;
+  background: var(--hg-yellow);
+  box-shadow: none;
+  color: var(--hg-black);
+  font-family: var(--hg-font);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit > i {
+  display: none;
+}
 .unnumbered-show-container .show-category-row .show-category-container .show-category .sold-out-message {
   color: var(--hg-red-ink);
 }
@@ -1063,6 +1088,26 @@ div#add-to-basket-cart .btn,
 div#add-to-basket-cart .valign-wrapper {
   background-color: var(--hg-yellow);
   color: var(--hg-black);
+}
+/* dagny lägger "Lägg till i varukorg" och raden "Varukorg"/"Till kassan" i två fasta behållare på samma
+   plats nere till höger, så knappen täckte raden. Medan knappen syns lyfts raden ovanför den, med
+   dagnys egen övergång på raden. Plattan bakom knappen har dagnys orange och syntes runt den. */
+.basket-cart-floating-buttons {
+  transition:
+    bottom 0.3s ease,
+    transform 0.3s ease;
+}
+body:has(#add-to-basket-cart:not(.display-none)) .basket-cart-floating-buttons {
+  transform: translateY(-70px);
+}
+div#add-to-basket-cart .valign-wrapper {
+  background-color: transparent;
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .basket-cart-floating-buttons {
+    transition: none;
+  }
 }
 div#add-to-basket-cart:hover .btn {
   background-color: var(--hg-yellow-hover);
@@ -1833,9 +1878,11 @@ div#basket .price-container {
 }
 /* Pillret är 56px med box-sizing: border-box, så den svarta kanten lämnar 52px inuti. dagnys 50px
    rundlar 3px från kanten hamnar då snett och nuddar kanten nedtill: 44px med 4px luft runt om,
-   och ikonerna centrerade i dem. */
+   och ikonerna centrerade i dem. Samma för varukorgsknapparna ("Varukorg", "Till kassan"). */
 div#basket .amount-blob,
-div#basket .proceed-arrow-blob {
+div#basket .proceed-arrow-blob,
+div#basket-cart .amount-blob,
+div#basket-cart-go-to-payment .payment-blob {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1843,13 +1890,17 @@ div#basket .proceed-arrow-blob {
   width: 44px;
   height: 44px;
 }
-div#basket .amount-blob {
+div#basket .amount-blob,
+div#basket-cart .amount-blob,
+div#basket-cart-go-to-payment .payment-blob {
   left: 4px;
 }
 div#basket .proceed-arrow-blob {
   right: 4px;
 }
-div#basket .amount-blob .icon {
+div#basket .amount-blob .icon,
+div#basket-cart .amount-blob .icon,
+div#basket-cart-go-to-payment .payment-blob .icon {
   top: 10px;
   left: 10px;
   line-height: 0;
