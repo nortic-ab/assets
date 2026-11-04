@@ -165,7 +165,7 @@ The regex expects single quotes, which is what the repo's eslint formatting prod
 - Overlap: compare `getBoundingClientRect()` of the two elements (e.g. header `h2` vs `p`).
 - Alignment: log `[left, top, right, bottom]` for the blocks that should line up (title block, description, calendar, listing) at 390, 1000 and 1600 px; a 2 px drift is invisible in a screenshot and obvious to the customer.
 - Icon centring: the gaps between an `i.material-icons` and its button on all four sides should be equal.
-- The back arrow (`a.back-to-organizer`): the playground's event pages render it with `.fixed`; measure that state and the one at the top of a live page (remove the class to fake it). The plate must be about 40×40, the four gaps around the icon equal within 1 px, its centre on the header's centre (within 2 px), the icon colour at least 3:1 against the plate, and no overlap with the header logo (`header#main-header::before`):
+- The back arrow (`a.back-to-organizer`): the playground's event pages render it with `.fixed`; measure that state and the one at the top of a live page (remove the class to fake it). The plate must be about 40×40, the four gaps around the icon equal within 1 px, its centre on the header's centre (within 2 px), the icon colour at least 3:1 against the plate, and clear of the header logo (`header#main-header::before`): no overlap and at least ~12 px between them, on phones too (a logo right next to the plate reads as cramped):
 
   ```js
   for (const fixed of [true, false]) {
@@ -175,16 +175,27 @@ The regex expects single quotes, which is what the repo's eslint formatting prod
       const a = document.querySelector('a.back-to-organizer')
       const r = a.getBoundingClientRect()
       const i = a.querySelector('i').getBoundingClientRect()
-      const h = document.querySelector('header#main-header').getBoundingClientRect()
-      const logo = getComputedStyle(document.querySelector('header#main-header'), '::before')
+      const header = document.querySelector('header#main-header')
+      const h = header.getBoundingClientRect()
+      // The logo is a pseudo-element: rebuild its viewport rectangle from the computed box, which is
+      // relative to the header, plus any translate (a centred logo uses translateX(-50%))
+      const s = getComputedStyle(header, '::before')
+      let logo = null
+      if (s.content !== 'none' && !Number.isNaN(Number.parseFloat(s.left))) {
+        const tx = s.transform === 'none' ? 0 : new DOMMatrix(s.transform).m41
+        const x = h.left + Number.parseFloat(s.left) + tx
+        const y = h.top + Number.parseFloat(s.top)
+        logo = { left: x, right: x + Number.parseFloat(s.width), top: y, bottom: y + Number.parseFloat(s.height) }
+      }
       return {
         size: [r.width, r.height].map(Math.round),
         gaps: [i.top - r.top, r.right - i.right, r.bottom - i.bottom, i.left - r.left].map(Math.round),
         offCentre: Math.round((r.top + r.bottom) / 2 - (h.top + h.bottom) / 2),
         plate: getComputedStyle(a).backgroundColor,
         icon: getComputedStyle(a.querySelector('i')).color,
-        logoLeft: logo.content === 'none' ? null : logo.left,
-        right: Math.round(r.right),
+        logo: logo && [logo.left, logo.top, logo.right, logo.bottom].map(Math.round),
+        overlapsLogo: !!logo && r.left < logo.right && r.right > logo.left && r.top < logo.bottom && r.bottom > logo.top,
+        gapToLogo: logo && Math.round(logo.left >= r.right ? logo.left - r.right : r.left - logo.right),
       }
     }))
   }

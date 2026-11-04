@@ -1644,6 +1644,10 @@ section#booking .modal .modal-content h1:not(i) {
 /* Sista stycket i försäkringsvillkoren har inline color: black på sin länk */
 section#booking .modal .modal-content a {
   color: var(--kl-deep) !important;
+  /* Länkarna har textens färg; strecket skiljer dem från brödtexten, som villkorslänken */
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 /* På telefon sträcker dagny ut "Läs mer"-modalen över hela höjden, så dess rubrik hamnar under
    kassans egen titelrad och kryss. Modalen har en egen bakåtpil. */
@@ -2235,6 +2239,12 @@ footer.page-footer,
 footer.page-footer #left-column > a:not(#nortic-footer-link) {
   color: var(--kl-paper);
 }
+/* Hovern i avsnitt 1 använder --kl-yellow, som är svart på sidan: svart text i den svarta footern */
+@media (hover: hover) {
+  footer.page-footer #left-column > a:not(#nortic-footer-link):hover {
+    color: var(--kl-grey);
+  }
+}
 
 /* Heron: infochips och taggar som sajtens etiketter, 2px vit ram */
 div#main-ribbon .event-info {
@@ -2824,7 +2834,8 @@ section#booking.payment-page.klarna
  * hörn och 2px ramar, som resten av temat.
  * ------------------------------------------------------------------------- */
 /* Kalendern: "fåtal kvar" (half-sold) fick vit rundel med vit siffra; här en grå ring på svart */
-.filter-calender-base .days li.selectable.bookable.half-sold::before {
+/* :not(.selected): annars vinner regeln över den valda dagens vita fyllning (samma specificitet) */
+.filter-calender-base .days li.selectable.bookable.half-sold:not(.selected)::before {
   background-color: var(--kl-black);
   box-shadow: inset 0 0 0 2px var(--kl-grey);
 }
