@@ -146,13 +146,13 @@ header#main-header {
 header#main-header > .row {
   height: 100%;
 }
-/* Logotypen i linje med innehållet, men alltid till höger om dagnys bakåtpil (fast i x 10-54).
-   Stilguidens minsta bredd är 120px. */
+/* Logotypen i linje med innehållet, men alltid till höger om bakåtpilens knapp (x 30-70 på dator)
+   med 14px luft. Stilguidens minsta bredd är 120px. */
 header#main-header::before {
   content: '';
   position: absolute;
   top: 8px;
-  left: max(70px, (100% - var(--kl-max)) / 2);
+  left: max(84px, (100% - var(--kl-max)) / 2);
   width: 145px;
   height: 48px;
   pointer-events: none;
@@ -164,9 +164,25 @@ body:not([data-eventid]) header#main-header::before {
 header#main-header i.material-icons {
   color: var(--kl-ink);
 }
-/* Bakåtpilen: mörk på den vita headern, en mörk rundel när den följer med vid scroll */
+/* Bakåtpilen: en 40px knapp på headerns mittlinje i båda lägena, vit platta när den följer med vid
+   scroll (.fixed). dagnys mall ger den fasta pilen en platta med padding, men regeln når inte alla
+   arrangörer, och utan egen storlek blev det en vit ruta tätt runt ikonen. */
 a.back-to-organizer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+  /* kolumnen i headern är 24px hög (ikonens höjd); -8px håller knappen på headerns mittlinje */
+  margin: -8px 0;
+  padding: 0;
+  border-radius: 0;
   color: var(--kl-ink);
+  vertical-align: middle;
+}
+a.back-to-organizer i.material-icons {
+  line-height: 1;
 }
 a.back-to-organizer.fixed {
   color: var(--kl-white);
@@ -1988,14 +2004,15 @@ div#basket .price-container {
     --kl-pad: 18px;
     --kl-photo: 56vw;
   }
-  header#main-header::before {
+  /* Logotypen centrerad i headern: till vänster låg den tätt intill bakåtpilens 40px-knapp */
+  header#main-header::before,
+  body:not([data-eventid]) header#main-header::before {
     top: 11px;
-    left: 60px;
+    left: 50%;
     width: 126px;
     height: 42px;
-  }
-  body:not([data-eventid]) header#main-header::before {
-    left: var(--kl-pad);
+    transform: translateX(-50%);
+    background-position: center;
   }
   section#active-events > .container {
     margin: 0 auto;
@@ -2091,7 +2108,11 @@ section#booking .booking-contents .payment-list,
 section#booking .modal,
 .nortic-modal,
 .kivra-dialog,
-#cart-overview-modal.modal {
+#cart-overview-modal.modal,
+:is(#basket-cart-warning-modal, #basket-cart-warning-modal-2, #share-modal).modal,
+#material-modal.arena-page,
+#standalone-addon-container .addon-wrapper-container,
+section#order-confirmation {
   --kl-strand: #f2f2f2;
   --kl-white: var(--kl-paper);
   --kl-ink: var(--kl-black);
@@ -2333,17 +2354,17 @@ body:not([data-eventid]) div#main-ribbon > h1 {
 
 /* Organisatörssidan: taggfiltret ("Namn, stad, datum, tagg") med alla genrer. Kompakta etiketter med
    2px ram; vald tagg vit med svart text, som handoffens filter. */
-body:not([data-eventid]) section#popular-events .n-chips {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin: 0 0 36px;
 }
-body:not([data-eventid]) section#popular-events .n-chips .freetext-filter-container {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips .freetext-filter-container {
   flex: 1 1 100%;
   margin: 0 0 8px;
 }
-body:not([data-eventid]) section#popular-events .n-chips input.freetext-filter {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips input.freetext-filter {
   box-sizing: border-box;
   height: 48px;
   margin: 0;
@@ -2356,19 +2377,32 @@ body:not([data-eventid]) section#popular-events .n-chips input.freetext-filter {
   font-family: var(--kl-font);
   font-size: 15px;
 }
-body:not([data-eventid]) section#popular-events .n-chips .input-field input ~ label {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips .input-field input ~ label {
   left: 16px;
   color: var(--kl-grey);
   font-family: var(--kl-font);
   font-size: 14px;
   text-transform: uppercase;
 }
-body:not([data-eventid]) section#popular-events .n-chips .input-field input ~ label.active,
-body:not([data-eventid]) section#popular-events .n-chips .input-field input:focus ~ label {
+body:not([data-eventid])
+  :is(section#popular-events, section#organizer-calendar)
+  .n-chips
+  .input-field
+  input
+  ~ label.active,
+body:not([data-eventid])
+  :is(section#popular-events, section#organizer-calendar)
+  .n-chips
+  .input-field
+  input:focus
+  ~ label {
   opacity: 0;
 }
-body:not([data-eventid]) section#popular-events .n-chips a.n-chip,
-body:not([data-eventid]) section#popular-events .n-chips a.n-chip.theme-background-color {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips a.n-chip,
+body:not([data-eventid])
+  :is(section#popular-events, section#organizer-calendar)
+  .n-chips
+  a.n-chip.theme-background-color {
   margin: 0;
   padding: 5px 10px;
   border: 1px solid #3a3a3a;
@@ -2384,11 +2418,15 @@ body:not([data-eventid]) section#popular-events .n-chips a.n-chip.theme-backgrou
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
-body:not([data-eventid]) section#popular-events .n-chips a.n-chip .checkbox {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips a.n-chip .checkbox {
   display: none;
 }
-body:not([data-eventid]) section#popular-events .n-chips a.n-chip span.count,
-body:not([data-eventid]) section#popular-events .n-chips a.n-chip span.count.theme-background-color {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips a.n-chip span.count,
+body:not([data-eventid])
+  :is(section#popular-events, section#organizer-calendar)
+  .n-chips
+  a.n-chip
+  span.count.theme-background-color {
   position: static;
   min-width: 0;
   height: auto;
@@ -2401,23 +2439,27 @@ body:not([data-eventid]) section#popular-events .n-chips a.n-chip span.count.the
   font-size: 11px;
 }
 @media (hover: hover) {
-  body:not([data-eventid]) section#popular-events .n-chips a.n-chip:hover {
+  body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips a.n-chip:hover {
     border-color: var(--kl-paper);
   }
 }
-body:not([data-eventid]) section#popular-events .n-chips a.n-chip:not(.disabled) {
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips a.n-chip:not(.disabled) {
   border-color: var(--kl-paper);
   background-color: var(--kl-paper);
   color: var(--kl-black);
 }
-body:not([data-eventid]) section#popular-events .n-chips a.n-chip:not(.disabled) span.count {
+body:not([data-eventid])
+  :is(section#popular-events, section#organizer-calendar)
+  .n-chips
+  a.n-chip:not(.disabled)
+  span.count {
   color: var(--kl-black);
 }
 
 /* På telefon är de ~90 taggarna nästan två skärmhöjder; filtret blir en ruta på ett par rader som
    scrollar, med sökfältet kvar överst */
 @media (max-width: 600px) {
-  body:not([data-eventid]) section#popular-events .n-chips {
+  body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips {
     max-height: 260px;
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -2426,7 +2468,7 @@ body:not([data-eventid]) section#popular-events .n-chips a.n-chip:not(.disabled)
     scrollbar-width: thin;
     scrollbar-color: #3a3a3a transparent;
   }
-  body:not([data-eventid]) section#popular-events .n-chips .freetext-filter-container {
+  body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips .freetext-filter-container {
     position: sticky;
     top: 0;
     z-index: 1;
@@ -2462,7 +2504,12 @@ body:not([data-eventid]) section#popular-events .card .no-information-available 
   color: var(--kl-muted);
   opacity: 1;
 }
-body:not([data-eventid]) section#popular-events .n-chips .input-field input ~ label:not(.active) {
+body:not([data-eventid])
+  :is(section#popular-events, section#organizer-calendar)
+  .n-chips
+  .input-field
+  input
+  ~ label:not(.active) {
   top: 13px;
 }
 body:not([data-eventid]) section#popular-events .card .card-content .place {
@@ -2766,4 +2813,947 @@ section#booking.payment-page.klarna
   .insurance-detail-container
   .selection-row {
   border-radius: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * 12. Det som saknades i lekplatsens genomgång
+ *
+ * Kalenderläget på organisatörssidan, "Fåtal kvar" och "Endast tillval" i visningsraden, varukorgens
+ * knapprad, toasts, arrangörens meddelanden, varukorgens varningar, dela-rutan, laddningsskärmarna,
+ * salongen (numrerade platser), tillvalsvyerna och orderbekräftelsen. Allt i svart och vitt med raka
+ * hörn och 2px ramar, som resten av temat.
+ * ------------------------------------------------------------------------- */
+/* Kalendern: "fåtal kvar" (half-sold) fick vit rundel med vit siffra; här en grå ring på svart */
+.filter-calender-base .days li.selectable.bookable.half-sold::before {
+  background-color: var(--kl-black);
+  box-shadow: inset 0 0 0 2px var(--kl-grey);
+}
+.filter-calender-base .calendar .days li.selectable.bookable.half-sold:not(.selected) {
+  color: var(--kl-paper);
+}
+
+/* Sökfältet i kalenderläget ligger på en rad med taggarna; etiketten bröts i två rader i dagnys
+   smala fält */
+body:not([data-eventid]) section#organizer-calendar .n-chips .freetext-filter-container {
+  flex: 1 1 320px;
+  max-width: 420px;
+}
+body:not([data-eventid]) :is(section#popular-events, section#organizer-calendar) .n-chips .input-field input ~ label {
+  white-space: nowrap;
+}
+
+/* "Fåtal kvar!" på visningsraden: dagny lägger lappen i tillgångsmätaren med sin orange gradient och
+   ikon. Samma etikett som på biljettkorten. */
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit {
+  display: inline-block;
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 4px 0 0;
+  padding: 2px 8px;
+  border: 2px solid var(--kl-black);
+  border-radius: 0;
+  background: var(--kl-paper);
+  box-shadow: none;
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+  font-weight: 800;
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+section#active-events #show-listing .show-listing-show .supply-blobs .indicator-limit > i {
+  display: none;
+}
+
+/* Knappen i raden: dagny ger den 100px, och "BILJETTER" i versal mono klipptes till "BILJETTE…".
+   Ikonen ligger först i markupen och flyter till höger; som flexrad räknas bredden rätt, och med
+   8px luft ryms texten i kolumnens ~103px. */
+section#active-events .show-listing-show:not(.expanded) .show-listing-arrow .btn {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: auto;
+  min-width: 100px;
+  padding: 0 8px;
+}
+section#active-events .show-listing-show:not(.expanded) .show-listing-arrow .btn i.material-icons.right {
+  float: none;
+  margin: 0;
+}
+/* "Endast tillval" i raden: dagnys 100px breda omslag klippte texten ("Endast t…"); här en
+   konturknapp som får sin bredd */
+section#active-events #show-listing .show-listing-show .addon-href-contianer {
+  flex: 0 0 auto;
+  width: auto;
+}
+a.addon-href-style.open-addons {
+  height: 36px;
+  padding: 0 12px;
+  border: 2px solid var(--kl-black);
+  border-radius: 0;
+  background-color: var(--kl-paper);
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 32px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition:
+    background-color var(--kl-ease),
+    color var(--kl-ease);
+}
+@media (hover: hover) {
+  a.addon-href-style.open-addons:hover {
+    background-color: var(--kl-black);
+    color: var(--kl-paper);
+  }
+}
+
+/* Varukorgen: dagny lägger "Lägg till i varukorg" och raden "Varukorg"/"Till kassan" i två fasta
+   behållare på samma plats nere till höger, så knappen täckte raden ("Varuk"). Medan knappen syns
+   lyfts raden ovanför den, med dagnys egen övergång på raden. */
+.basket-cart-floating-buttons {
+  transition:
+    bottom 0.3s ease,
+    transform 0.3s ease;
+}
+body:has(#add-to-basket-cart:not(.display-none)) .basket-cart-floating-buttons {
+  transform: translateY(-70px);
+}
+div#add-to-basket-cart .valign-wrapper {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+/* Toasts: vita med svart text och 2px ram i stället för Materializes grå och dagnys röda, orange och
+   blå; typen syns i en kant till vänster */
+#toast-container .toast {
+  min-height: 48px;
+  padding: 10px 20px;
+  border: 2px solid var(--kl-black);
+  border-radius: 0;
+  background-color: var(--kl-paper);
+  box-shadow: none;
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.4;
+}
+#toast-container .toast.error-toast {
+  box-shadow: inset 6px 0 0 #a8321f;
+}
+#toast-container .toast.warning-toast {
+  box-shadow: inset 6px 0 0 #b3b3b3;
+}
+#toast-container .toast.info-toast {
+  box-shadow: inset 6px 0 0 var(--kl-black);
+}
+/* Varukorgens tidsgräns: "Förläng tid" som en svart knapp inne i toasten (Materialize lägger den med
+   negativ marginal mot högerkanten) */
+#toast-container .toast #extend-time-button.btn-flat {
+  flex: 0 0 auto;
+  height: 36px;
+  margin: 0 0 0 16px;
+  padding: 0 14px;
+  border-radius: 0;
+  background-color: var(--kl-black);
+  color: var(--kl-paper);
+  font-family: var(--kl-font);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 36px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+#toast-container .toast #extend-time-button.btn-flat.disabled {
+  background-color: var(--kl-disabled) !important;
+  color: var(--kl-disabled-ink) !important;
+}
+
+/* Arrangörens meddelanden (åldersgräns, ändrad starttid): dagny målar rutan i arrangörens färg
+   (svart, med !important) och panelens svarta text försvann i den. Här en vit ruta som de andra
+   modalerna. Rubriken har inline nowrap och klipptes med "…"; den får radbrytas. */
+.nortic-modal.theme-background-color-override.theme-text-color-override {
+  background-color: var(--kl-paper) !important;
+  color: var(--kl-black) !important;
+  font-family: var(--kl-font);
+  text-shadow: none;
+}
+.nortic-modal.theme-background-color-override.theme-text-color-override h3 {
+  white-space: normal !important;
+  color: var(--kl-black);
+  font-size: 22px;
+  line-height: 1.15;
+}
+.nortic-modal.theme-background-color-override.theme-text-color-override p {
+  color: var(--kl-black);
+  font-size: 15px;
+  line-height: 1.55;
+}
+.nortic-modal.theme-background-color-override.theme-text-color-override i.material-icons {
+  box-shadow: none !important;
+  color: var(--kl-black);
+}
+.nortic-modal.theme-background-color-override.theme-text-color-override .hide-event-messsage.flat-button {
+  min-width: 120px;
+  height: 44px;
+  padding: 0 24px;
+  border-radius: 0;
+  background-color: var(--kl-black);
+  color: var(--kl-paper);
+  font-family: var(--kl-font);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 44px;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
+}
+@media (hover: hover) {
+  .nortic-modal.theme-background-color-override.theme-text-color-override .hide-event-messsage.flat-button:hover {
+    background-color: #333333;
+  }
+}
+
+/* Varukorgens varningar (basketCartWarningModal.jsp) och dela-rutan (#share-modal): vita rutor med
+   2px svart ram, rubriken i versaler och knapparna som temats. Bara vågrätt klipp: .modal har
+   max-height 70 % och overflow-y: auto, så på en låg skärm måste rutan kunna scrollas till knapparna. */
+:is(#basket-cart-warning-modal, #basket-cart-warning-modal-2, #share-modal).modal {
+  width: min(480px, 100% - 40px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 2px solid var(--kl-black);
+  border-radius: 0;
+  background-color: var(--kl-paper);
+  box-shadow: none;
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+}
+:is(#basket-cart-warning-modal, #basket-cart-warning-modal-2, #share-modal) .modal-content {
+  padding: 26px 26px 8px;
+  color: var(--kl-black);
+  font-size: 14px;
+  line-height: 1.55;
+}
+:is(#basket-cart-warning-modal, #basket-cart-warning-modal-2, #share-modal) .modal-content h5 {
+  margin: 0 0 12px;
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+:is(#basket-cart-warning-modal, #basket-cart-warning-modal-2) .modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  height: auto;
+  padding: 16px 26px 26px;
+  background-color: transparent;
+}
+:is(#basket-cart-warning-modal, #basket-cart-warning-modal-2) .modal-footer .btn-flat,
+#share-modal #button-row .btn {
+  float: none;
+  height: 44px;
+  margin: 0;
+  padding: 0 18px;
+  border: 2px solid var(--kl-black);
+  border-radius: 0;
+  font-family: var(--kl-font);
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 40px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition:
+    background-color var(--kl-ease),
+    color var(--kl-ease);
+}
+:is(#basket-cart-warning-modal, #basket-cart-warning-modal-2) .modal-footer .btn-flat.cancel,
+#share-modal #button-row .btn.btn-flat {
+  background-color: var(--kl-paper);
+  color: var(--kl-black);
+}
+:is(#basket-cart-warning-modal, #basket-cart-warning-modal-2) .modal-footer .btn-flat.confirm,
+#share-modal #button-row .btn:not(.btn-flat),
+#share-modal #button-row #copy-link-button {
+  background-color: var(--kl-black);
+  color: var(--kl-paper);
+}
+@media (hover: hover) {
+  :is(#basket-cart-warning-modal, #basket-cart-warning-modal-2) .modal-footer .btn-flat.cancel:hover,
+  #share-modal #button-row .btn.btn-flat:hover {
+    background-color: #f2f2f2;
+  }
+  :is(#basket-cart-warning-modal, #basket-cart-warning-modal-2) .modal-footer .btn-flat.confirm:hover,
+  #share-modal #button-row #copy-link-button:hover {
+    border-color: #333333;
+    background-color: #333333;
+  }
+}
+#share-modal #social-share-buttons-row {
+  display: flex;
+  gap: 10px;
+}
+#share-modal .social-share-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--kl-black);
+  border-radius: 0;
+  background-color: var(--kl-paper);
+}
+#share-modal .social-share-button img {
+  width: 22px;
+  height: 22px;
+}
+#share-modal #share-url-row.gray-background {
+  margin: 8px 0 20px;
+  padding: 14px 16px 16px;
+  border-radius: 0;
+  background-color: #f2f2f2;
+}
+#share-modal #share-url {
+  margin: 0 0 12px;
+  border-bottom: 2px solid var(--kl-black);
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+  font-size: 13px;
+}
+#share-modal #button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* "Lägger till i varukorg" (#event-page-loading-overlay-basket, med inline-stilar) och "Tar bort …"
+   (#basket-cart-loading-overlay): svart slöja, vit text utan skugga och vit snurra */
+#event-page-loading-overlay-basket,
+#basket-cart-loading-overlay {
+  background-color: rgba(0, 0, 0, 0.88) !important;
+}
+#event-page-loading-overlay-basket .spinner-container span,
+#basket-cart-loading-overlay .basket-cart-loading-overlay-text {
+  color: var(--kl-paper) !important;
+  font-family: var(--kl-font);
+  font-weight: 800 !important;
+  letter-spacing: -0.02em;
+  text-shadow: none !important;
+  text-transform: uppercase;
+}
+:is(#event-page-loading-overlay-basket, #basket-cart-loading-overlay) .spinner-layer {
+  border-color: var(--kl-paper);
+}
+
+/* Salongen (numrerade platser, #material-modal.arena-page): dagnys ljusa sida ärvde sidans vita text,
+   så rubriken och sektionsnamnen försvann. Här svart text på dagnys ljusa yta. dagny målar den aktiva
+   sektionsraden #f6f8fa i CSS och inline från arenaPage.js, och arenaPageCommon.js målar
+   bekräftaknappen och stegarna inline i sektionens färg (!important). */
+#material-modal.arena-page,
+#material-modal.arena-page header.booking-header,
+#material-modal.arena-page header.booking-header i.material-icons {
+  color: var(--kl-black);
+}
+section#booking .booking-contents .section-list,
+section#booking .booking-contents .category-selection-modal {
+  border-radius: 0;
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+}
+section#booking .booking-contents .section-list .section-list-header,
+section#booking .booking-contents .section-list .section-list-header-title {
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+section#booking .booking-contents .section-list .section {
+  border-bottom: 1px solid #e0e0e0;
+}
+section#booking .booking-contents .section-list .section .section-name {
+  color: var(--kl-black);
+  font-weight: 800;
+  font-size: 15px;
+}
+section#booking .booking-contents .section-list .section .section-info,
+section#booking .booking-contents .section-list .section .section-price-range,
+section#booking .booking-contents .section-list .section .seats-available .seats-available-text {
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+}
+section#booking .booking-contents .section-list .section,
+section#booking .booking-contents .section-list .section-container .section.active {
+  background-color: transparent !important;
+}
+section#booking .booking-contents .section-list .section-container .section.active,
+section#booking .booking-contents .section-list .section:hover,
+section#booking .booking-contents .section-list .section[style*='246, 248, 250'],
+section#booking .booking-contents .section-list .category-container:not(.disabled):hover {
+  background-color: #f2f2f2 !important;
+  box-shadow: inset 4px 0 0 var(--kl-black);
+}
+section#booking .booking-contents .section-list .filters .filter-group div:not(.filter-group-caption) {
+  border: 2px solid var(--kl-black);
+  border-radius: 0;
+  color: var(--kl-black);
+}
+section#booking .booking-contents .section-list .filters .filter-group div:not(.filter-group-caption):hover,
+section#booking .booking-contents .section-list .filters .filter-group div.selected {
+  background-color: var(--kl-black);
+  color: var(--kl-paper);
+}
+section#booking .booking-contents .category-selection-modal header,
+section#booking .booking-contents .category-selection-modal header i.material-icons {
+  color: var(--kl-black);
+}
+section#booking .booking-contents .category-selection-modal h2 {
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+section#booking .booking-contents .category-selection-modal .confirm,
+section#booking .booking-contents .category-selection-modal .become-member-button {
+  border-radius: 0;
+  background-color: var(--kl-black) !important;
+  color: var(--kl-paper) !important;
+  font-family: var(--kl-font);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+section#booking .booking-contents .category-selection-modal .amount-blob.plus,
+section#booking .booking-contents .standing-section-dropdown .amount-blob.plus {
+  border-radius: 0;
+  background-color: var(--kl-black) !important;
+  color: var(--kl-paper);
+}
+
+/* Tillvalssteget (#standalone-addon-container, popupAddonModals.jsp) och "Endast tillval" i den
+   öppnade visningsraden (#addon-content-container, addonContent.jsp). Båda har en egen <style> efter
+   temat, så allt prefixas med id:t och !important används mot inline-färgerna (den gula ikonplattan,
+   den grå pilen, .yellow-background på datumbollen och stegarna). Heron (datum och visningsnamn) ligger
+   i dagny absolut i ett fast utrymme överst; här står den i flödet överst i den vita panelen. */
+#standalone-addon-container,
+#standalone-addon-container .scroll-inner {
+  font-family: var(--kl-font);
+}
+#standalone-addon-container .scroll-inner {
+  box-sizing: border-box;
+  padding: 18px 16px 24px;
+}
+#standalone-addon-container .hero-wrapper {
+  position: static;
+  width: auto;
+  padding: 0 0 24px;
+}
+#standalone-addon-container .hero-wrapper > div:first-child {
+  margin-bottom: 10px !important;
+}
+#standalone-addon-container .hero-wrapper h1 {
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+  font-weight: 800;
+  font-size: clamp(28px, 4.4vw, 52px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-shadow: none;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+#standalone-addon-container .addon-date-text {
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-shadow: none;
+}
+/* Ikonen är ett i.material-icons: ingen font-family här, annars skrivs "date_range" ut som text */
+#standalone-addon-container .addon-date-icon {
+  color: var(--kl-black);
+  font-size: 18px;
+  text-shadow: none;
+}
+#standalone-addon-container .addon-wrapper-container {
+  padding: 22px clamp(14px, 2.4vw, 28px) 28px;
+  border-top: 2px solid var(--kl-paper);
+  border-radius: 0;
+  background-color: var(--kl-paper);
+  color: var(--kl-black);
+  font-size: 14px;
+}
+#standalone-addon-container .addon-wrapper-header {
+  display: none;
+}
+/* Visningsraden överst, som raderna i visningslistan */
+#standalone-addon-container .addon-wrapper-body {
+  margin: 0;
+  padding: 16px clamp(16px, 2vw, 24px);
+  border: 2px solid var(--kl-black);
+  border-radius: 0;
+  background-color: var(--kl-paper);
+  box-shadow: none;
+}
+#standalone-addon-container .addon-dateball-container,
+#standalone-addon-container .addon-dateball-container.yellow-background {
+  border-radius: 0;
+  background-color: var(--kl-black) !important;
+}
+#standalone-addon-container .addon-dateball,
+#standalone-addon-container .addon-dateball.white-text {
+  color: var(--kl-paper) !important;
+  font-family: var(--kl-font);
+  font-weight: 800;
+}
+#standalone-addon-container .addon-wrapper-dates-container,
+#standalone-addon-container .addon-wrapper-lowest-price,
+#standalone-addon-container .addon-location {
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+}
+#standalone-addon-container .addon-wrapper-dates-container .bold,
+#standalone-addon-container .addon-wrapper-body .show-name {
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+:is(#standalone-addon-container, #addon-content-container),
+:is(#standalone-addon-container, #addon-content-container) p,
+:is(#standalone-addon-container, #addon-content-container) span:not(.material-icons),
+:is(#standalone-addon-container, #addon-content-container) b {
+  font-family: var(--kl-font);
+}
+:is(#standalone-addon-container, #addon-content-container) .container.addons {
+  width: 100%;
+  max-width: none;
+}
+:is(#standalone-addon-container, #addon-content-container) .popupaddon-header {
+  margin: 26px 0 12px;
+  color: var(--kl-black);
+  font-weight: 800;
+  font-size: clamp(24px, 3vw, 32px);
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-group {
+  margin-bottom: 12px;
+  overflow: hidden;
+  border: 2px solid var(--kl-black);
+  border-radius: 0;
+  background-color: var(--kl-paper);
+  box-shadow: none;
+}
+:is(#standalone-addon-container, #addon-content-container) .collapsible {
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+}
+:is(#standalone-addon-container, #addon-content-container) .collapsible-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: var(--kl-paper);
+  color: var(--kl-black);
+}
+:is(#standalone-addon-container, #addon-content-container) .collapsible-body {
+  border-bottom: 0;
+  background-color: var(--kl-paper);
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-card-header p {
+  color: var(--kl-black);
+  font-weight: 800 !important;
+  font-size: 14px !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-type-icon {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 0 !important;
+  background: var(--kl-black) !important;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-type-icon i.material-icons {
+  color: var(--kl-paper) !important;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-arrow {
+  color: var(--kl-black) !important;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-show-header {
+  margin-bottom: 16px;
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-show-date,
+:is(#standalone-addon-container, #addon-content-container) .addon-show-information,
+:is(#standalone-addon-container, #addon-content-container) .category-info {
+  color: var(--kl-muted);
+}
+/* Datumet som en svart etikett */
+:is(#standalone-addon-container, #addon-content-container) .addon-show-date {
+  width: fit-content;
+  margin-top: 10px;
+  padding: 4px 10px;
+  background-color: var(--kl-black);
+  color: var(--kl-paper);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-chip {
+  margin-right: 8px;
+  padding: 2px 8px;
+  border: 2px solid var(--kl-black);
+  border-radius: 0;
+  background-color: var(--kl-paper);
+  color: var(--kl-black);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+/* Korten som biljettkorten: vita med tunn grå ram, raka hörn; valt kort får 2px svart ram */
+:is(#standalone-addon-container, #addon-content-container) .addon-list {
+  gap: 16px;
+}
+:is(#standalone-addon-container, #addon-content-container) .new-addon-row-wrapper {
+  min-height: 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 0;
+  background: var(--kl-paper);
+  box-shadow: none;
+}
+:is(#standalone-addon-container, #addon-content-container)
+  .new-addon-row-wrapper:has(.addon-amount-blob.minus:not(.disabled)) {
+  border-color: var(--kl-black);
+  box-shadow: inset 0 0 0 1px var(--kl-black);
+}
+:is(#standalone-addon-container, #addon-content-container) .the-body {
+  min-height: 0;
+}
+:is(#standalone-addon-container, #addon-content-container) .placeholder-image-container,
+:is(#standalone-addon-container, #addon-content-container) .placeholder-image-container .placeholder-image {
+  border-radius: 0;
+}
+:is(#standalone-addon-container, #addon-content-container) .new-addon-the-header,
+:is(#standalone-addon-container, #addon-content-container) .new-addon-the-header p {
+  margin: 0;
+  color: var(--kl-black);
+  font-weight: 800;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+:is(#standalone-addon-container, #addon-content-container) .price-info,
+:is(#standalone-addon-container, #addon-content-container) .price-info b {
+  color: var(--kl-black);
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+/* Stegarna som på biljettkorten: svart fyrkantigt plus, minus med svart ram (vyns <style> gör dem
+   runda, 2em, med orange bakgrund och grå inaktiv) */
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob-container {
+  gap: 8px;
+  width: fit-content;
+  padding: 0;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.plus,
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.minus {
+  box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  border: 2px solid var(--kl-black);
+  border-radius: 0;
+  font-family: var(--kl-font);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 36px;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.plus {
+  background-color: var(--kl-black) !important;
+  color: var(--kl-paper) !important;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.plus:hover {
+  border-color: #333333;
+  background-color: #333333 !important;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.minus {
+  background-color: var(--kl-paper) !important;
+  color: var(--kl-black) !important;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.minus:not(.disabled):hover {
+  background-color: #f2f2f2 !important;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.minus.disabled {
+  border-color: #e0e0e0;
+  color: #b3b3b3 !important;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.amount,
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.amount.zero,
+:is(#standalone-addon-container, #addon-content-container) .addon-amount-blob.amount .amount-indicator {
+  width: 24px;
+  height: 40px;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--kl-black);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 40px;
+  opacity: 1;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-btn-container .btn.addon-btn {
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 0;
+  background-color: var(--kl-black);
+  color: var(--kl-paper);
+  line-height: 48px;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-btn-container .btn.addon-btn:hover {
+  background-color: #333333;
+}
+:is(#standalone-addon-container, #addon-content-container) .addon-btn-container .btn.addon-btn:disabled {
+  background-color: #e0e0e0 !important;
+  color: #555555 !important;
+}
+/* "Endast tillval": vyns egen <style> lägger en grå platta bakom; rubriken har inline 20px/400 */
+#addon-content-container .new-top-addon-container {
+  padding: 8px 0 4px;
+  background-color: transparent;
+}
+#addon-content-container .container.new-addons {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+#addon-content-container .addon-back-button.btn-flat {
+  height: 40px;
+  padding: 0 4px !important;
+  color: var(--kl-black) !important;
+  font-family: var(--kl-font);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+#addon-content-container .addon-back-button.btn-flat:hover {
+  background-color: transparent;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+#addon-content-container .new-addons > div > p {
+  margin: 4px 0 12px;
+  color: var(--kl-black);
+  font-weight: 800 !important;
+  font-size: clamp(24px, 3vw, 32px) !important;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+/* Orderbekräftelsen (klarnaConfirmationBox.jsp): visas på organisatörssidan efter köpet, så den får
+   bara den här filen. En vit panel med 2px vit ram mot den svarta slöjan; Klarnas kvitto i den är en
+   vit iframe. dagny lägger vita flikar ovanpå kortet (::before/::after) och färgar knappen blå. */
+section#order-confirmation.klarna {
+  overflow-x: hidden;
+  border: 2px solid var(--kl-paper);
+  border-radius: 0;
+  background-color: var(--kl-paper);
+  box-shadow: none;
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+}
+section#order-confirmation.klarna::before,
+section#order-confirmation.klarna::after {
+  content: none;
+}
+section#order-confirmation.klarna .confirmation .scroll-box {
+  padding: 0 clamp(20px, 4vw, 40px) 32px;
+}
+section#order-confirmation #confirm-order-confirmation {
+  top: 12px;
+  right: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 0;
+  opacity: 1;
+  color: var(--kl-black);
+}
+section#order-confirmation #confirm-order-confirmation i.material-icons {
+  font-size: 22px;
+  line-height: 44px;
+}
+@media (hover: hover) {
+  section#order-confirmation #confirm-order-confirmation:hover {
+    background-color: #f2f2f2;
+  }
+}
+section#order-confirmation p,
+section#order-confirmation a,
+section#order-confirmation span {
+  font-family: var(--kl-font);
+}
+section#order-confirmation.klarna .postsale {
+  display: block;
+  padding: 0 0 8px;
+  text-align: left;
+}
+section#order-confirmation .postsale .postsale-name {
+  margin: 0 56px 22px 0;
+  padding-top: 30px;
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+  font-weight: 800;
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+section#order-confirmation .postsale .postsale-image {
+  margin-bottom: 18px;
+  border-radius: 0;
+}
+section#order-confirmation .postsale .postsale-headline {
+  float: none;
+  display: block;
+  margin: 0 0 8px;
+  color: var(--kl-black);
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+section#order-confirmation.klarna .postsale-information {
+  display: block;
+  margin-left: 0;
+  padding: 0 0 18px;
+  color: var(--kl-black);
+  font-size: 14px;
+  line-height: 1.6;
+}
+section#order-confirmation.klarna .postsale .postsale-link {
+  display: inline;
+  margin: 0 0 0 4px;
+  padding: 0;
+  border-bottom: 2px solid var(--kl-black);
+  color: var(--kl-black);
+  font-weight: 800;
+  font-size: 14px;
+  text-transform: none;
+}
+section#order-confirmation .postsale hr.postsale-divider,
+section#order-confirmation .hotel-upsell hr.postsale-divider {
+  width: 100%;
+  height: 2px;
+  margin: 20px 0 24px;
+  border: 0;
+  background-color: #e0e0e0;
+  opacity: 1;
+}
+section#order-confirmation.klarna .button-container {
+  padding: 24px 0 8px;
+}
+section#order-confirmation.klarna a.btn.download-tickets {
+  display: block;
+  height: 52px;
+  margin-top: 0;
+  border-radius: 0;
+  background-color: var(--kl-black);
+  box-shadow: none;
+  color: var(--kl-paper);
+  font-family: var(--kl-font);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 52px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+section#order-confirmation.klarna a.btn.download-tickets:hover,
+section#order-confirmation.klarna a.btn.download-tickets:focus {
+  background-color: #333333;
+  filter: none;
+}
+section#order-confirmation .wallet-row {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+section#order-confirmation .hotel-upsell h3,
+section#order-confirmation .error-box h1 {
+  color: var(--kl-black);
+  font-family: var(--kl-font);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+section#order-confirmation .hotel-upsell h3 {
+  font-size: 22px;
+  line-height: 1.15;
+}
+section#order-confirmation .hotel-upsell p,
+section#order-confirmation .error-box p {
+  color: var(--kl-black);
+  font-size: 14px;
+  line-height: 1.6;
+}
+section#order-confirmation .error-box {
+  padding: 8px clamp(20px, 4vw, 40px) 32px;
+}
+section#order-confirmation .error-box h1 {
+  margin: 30px 56px 20px 0;
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 1.1;
+}
+section#order-confirmation .error-box a {
+  margin-top: 12px;
+  border-bottom: 2px solid var(--kl-black);
+  color: var(--kl-black);
+  font-weight: 800;
+}
+
+/* Långa ord i rubrikerna ("Exempelarrangören" i 36px mono) var bredare än en telefon */
+div#main-ribbon > h1,
+#standalone-addon-container .hero-wrapper h1,
+section#booking.payment-page .payment-section-header h2,
+section#active-events #show-listing .show-listing-show .combined-name-and-info .show-name {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .basket-cart-floating-buttons,
+  a.addon-href-style.open-addons,
+  :is(#basket-cart-warning-modal, #basket-cart-warning-modal-2) .modal-footer .btn-flat,
+  #share-modal #button-row .btn {
+    transition: none;
+  }
 }
